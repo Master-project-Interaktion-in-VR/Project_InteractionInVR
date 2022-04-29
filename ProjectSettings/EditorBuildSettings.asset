@@ -6,7 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Samples/Mixed Reality Toolkit Examples/2.7.3/Demos - HandTracking/Scenes/HandInteractionExamples.unity
+    path: Assets/ImportedAssets/Samples/Mixed Reality Toolkit Examples/2.7.3/Demos
+      - HandTracking/Scenes/HandInteractionExamples.unity
     guid: 3dd4a396b5225f8469b9a1eb608bfa57
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 97dcfc197fbff0e468a9f30db961fe9e, type: 2}
