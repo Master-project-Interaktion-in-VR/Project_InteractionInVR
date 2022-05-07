@@ -21,7 +21,14 @@ public class TestPlayer : MonoBehaviour
 
     void Start()
     {
-        
+#if PLATFORM_ANDROID
+        GameObject androidPlayer = gameObject.transform.GetChild(0).gameObject;
+        androidPlayer.SetActive(true);
+        androidPlayer.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
+
+#else
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+#endif
     }
 
     void Update()
