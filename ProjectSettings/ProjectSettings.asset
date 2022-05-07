@@ -702,8 +702,22 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    Android: OCULUSINTEGRATION_PRESENT
-    Standalone: OCULUSINTEGRATION_PRESENT
+    Android:
+    CloudRendering:
+    EmbeddedLinux:
+    GameCoreScarlett:
+    GameCoreXboxOne:
+    Lumin:
+    Nintendo Switch:
+    PS4:
+    PS5: 
+    Stadia:
+    Standalone: 
+    WebGL:
+    Windows Store Apps:
+    XboxOne:
+    iPhone:
+    tvOS:
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
