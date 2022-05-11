@@ -50,12 +50,20 @@ public class PlayerBrush : MonoBehaviourPunCallbacks
     private void CreateBrush()
     {
         //GameObject brushInstance = Instantiate(brush);
-        GameObject brushLine = PhotonNetwork.Instantiate("BrushLine", new Vector3(0, 0, 0), Quaternion.identity);
-        brushLine.transform.SetParent(transform);
-        //_lineRenderer = brushLine.GetComponent<LineRenderer>();
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.green, 5);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 200, 1 << LayerMask.NameToLayer("Drawable")))
+        {
+            GameObject brushLine = PhotonNetwork.Instantiate("BrushLine", new Vector3(0, 0, 0), Quaternion.identity);
+            brushLine.transform.SetParent(transform);
+            brushLine.GetComponent<PhotonView>().RPC("SetStart", RpcTarget.All, hit.point);
+        }
+
         //Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z + 10));
-        brushLine.GetComponent<PhotonView>().RPC("SetStart", RpcTarget.All, mousePosition);
+        
     }
 
 

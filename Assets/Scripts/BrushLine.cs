@@ -8,7 +8,7 @@ public class BrushLine : MonoBehaviour
     private PhotonView _photonView;
     private LineRenderer _lineRenderer;
 
-    private Vector2 _lastPosition;
+    //private Vector2 _lastPosition;
     private bool _drawing;
 
     void Awake()
@@ -33,20 +33,26 @@ public class BrushLine : MonoBehaviour
     {
         if (_photonView.IsMine)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                _photonView.RPC("SetStart", RpcTarget.All, mousePosition);
-            }
+            //if (Input.GetKeyDown(KeyCode.Mouse0))
+            //{
+            //    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //    _photonView.RPC("SetStart", RpcTarget.All, mousePosition);
+            //}
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                if (mousePosition != _lastPosition)
+                //if (mousePosition != _lastPosition)
+                //{
+                //    _lastPosition = mousePosition;
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 20, 1 << LayerMask.NameToLayer("Drawable")))
                 {
-                    //AddAPoint(mousePosition);
-                    _photonView.RPC("AddAPoint", RpcTarget.All, mousePosition);
-                    _lastPosition = mousePosition;
+                    Vector3 d = hit.point - ray.direction * 0.01f;
+                    _photonView.RPC("AddAPoint", RpcTarget.All, d);
                 }
+                //}
             }
             else
             {
@@ -61,14 +67,14 @@ public class BrushLine : MonoBehaviour
 
 
     [PunRPC]
-    private void SetStart(Vector2 position)
+    private void SetStart(Vector3 position)
     {
         _lineRenderer.SetPosition(0, position);
         _lineRenderer.SetPosition(1, position);
     }
 
     [PunRPC]
-    private void AddAPoint(Vector2 point)
+    private void AddAPoint(Vector3 point)
     {
         _lineRenderer.positionCount++;
         int positionIndex = _lineRenderer.positionCount - 1;
