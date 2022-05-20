@@ -9,8 +9,8 @@ public class PlayerBrush : MonoBehaviourPunCallbacks
     private GameObject brushLine;
 
 
-
     private PhotonView _photonView;
+
     
 
     private void Awake()
@@ -20,14 +20,16 @@ public class PlayerBrush : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        //if (_photonView.IsMine)
-        //{
+        if (_photonView.IsMine)
+        {
+            int me = PhotonNetwork.LocalPlayer.ActorNumber;
+            _photonView.RPC("SetName", RpcTarget.All, me);
+        }
+    }
 
-        //}
-        //var data = PaintCanvas.GetAllTextureData();
-        //var zippeddata = data.Compress();
-
-        //RpcSendFullTexture(zippeddata);
+    private void Update()
+    {
+        Draw();
     }
 
 
@@ -57,87 +59,36 @@ public class PlayerBrush : MonoBehaviourPunCallbacks
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 200, 1 << LayerMask.NameToLayer("Drawable")))
         {
-            GameObject brushLine = PhotonNetwork.Instantiate("BrushLine", new Vector3(0, 0, 0), Quaternion.identity);
-            brushLine.transform.SetParent(transform);
-            brushLine.GetComponent<PhotonView>().RPC("SetStart", RpcTarget.All, hit.point);
+            GameObject drawingOn = hit.transform.gameObject;
+            float width = drawingOn.GetComponent<MeshRenderer>().bounds.size.x * drawingOn.transform.localScale.x;
+            float height = drawingOn.GetComponent<MeshRenderer>().bounds.size.y * drawingOn.transform.localScale.y;
+            //_photonView.RPC("SetReferenceTransform", RpcTarget.All, hit.transform.position); // only send to mobile, if there are more than 2 players
+            SetReferenceTransform(hit.transform.position);
+
+            GameObject line = PhotonNetwork.Instantiate(brushLine.name, new Vector3(0, 0, 0), Quaternion.identity);
+            line.GetComponent<PhotonView>().RPC("Init", RpcTarget.All, name);
+            Vector3 d = hit.point - ray.direction * 0.01f;
+            Vector3 localPosition = hit.transform.InverseTransformPoint(d);
+            line.GetComponent<PhotonView>().RPC("SetStart", RpcTarget.All, localPosition);
         }
 
         //Vector2 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z + 10));
         
-    }
 
-
-
-
-
-
-    public override void OnPlayerEnteredRoom(Player other)
-    {
-        // player entered room while game is already running
-        if (PhotonNetwork.IsMasterClient)
-        {
-            var data = PaintCanvas.GetAllTextureData();
-            var zippeddata = data.Compress();
-            _photonView.RPC("RpcSendFullTexture", other, zippeddata);
-        }
+        // TODO: REF TRANSFORM IS SET IF WE ARE DRAWING; BUT HOW DO WE SET IT IF WE ARE NOT DRAWING??????????????
     }
 
     [PunRPC]
-    private void RpcSendFullTexture(byte[] textureData)
+    private void SetReferenceTransform(Vector3 position)
     {
-        PaintCanvas.SetAllTextureData(textureData.Decompress());
-    }
-
-    private void Update()
-    {
-        Draw();
-        //if (Input.GetMouseButton(0))
-        //{
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        //    RaycastHit hit;
-        //    if (Physics.Raycast(ray, out hit))
-        //    {
-        //        var pallet = hit.collider.GetComponent<PaintCanvas>();
-        //        if (pallet != null)
-        //        {
-        //            Debug.Log(hit.textureCoord);
-        //            Debug.Log(hit.point);
-
-        //            Renderer rend = hit.transform.GetComponent<Renderer>();
-        //            MeshCollider meshCollider = hit.collider as MeshCollider;
-
-        //            if (rend == null || rend.sharedMaterial == null || rend.sharedMaterial.mainTexture == null || meshCollider == null)
-        //                return;
-
-        //            Texture2D tex = rend.material.mainTexture as Texture2D;
-        //            Vector2 pixelUV = hit.textureCoord;
-        //            pixelUV.x *= tex.width;
-        //            pixelUV.y *= tex.height;
-
-        //            _photonView.RPC("RpcBrushAreaWithColor", RpcTarget.All, pixelUV);
-        //            BrushAreaWithColor(pixelUV, new Color(255, 0, 0), 5);
-        //        }
-        //    }
-        //}
+        transform.position = position;
     }
 
     [PunRPC]
-    private void RpcBrushAreaWithColor(Vector2 pixelUV)
+    private void SetName(int i)
     {
-        BrushAreaWithColor(pixelUV, new Color(255, 0, 0), 5);
+        name = "Player Brush " + i;
     }
 
-    private void BrushAreaWithColor(Vector2 pixelUV, Color color, int size)
-    {
-        for (int x = -size; x < size; x++)
-        {
-            for (int y = -size; y < size; y++)
-            {
-                PaintCanvas.Texture.SetPixel((int)pixelUV.x + x, (int)pixelUV.y + y, color);
-            }
-        }
 
-        PaintCanvas.Texture.Apply();
-    }
 }

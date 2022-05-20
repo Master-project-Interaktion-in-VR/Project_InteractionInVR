@@ -8,8 +8,11 @@ public class BrushLine : MonoBehaviour
     private PhotonView _photonView;
     private LineRenderer _lineRenderer;
 
+    private Transform _referenceTransform;
+
     //private Vector2 _lastPosition;
     private bool _drawing;
+
 
     void Awake()
     {
@@ -47,10 +50,15 @@ public class BrushLine : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 20, 1 << LayerMask.NameToLayer("Drawable")))
+                if (Physics.Raycast(ray, out hit, 20, (1 << LayerMask.NameToLayer("Drawable") | 1 << LayerMask.NameToLayer("Default"))))
                 {
+                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Default")) 
+                        return;
+
                     Vector3 d = hit.point - ray.direction * 0.01f;
-                    _photonView.RPC("AddAPoint", RpcTarget.All, d);
+                    Vector3 localPoint = hit.transform.InverseTransformPoint(d);
+                    _photonView.RPC("AddAPoint", RpcTarget.All, localPoint);
+                    Debug.Log(localPoint);
                 }
                 //}
             }
@@ -67,18 +75,28 @@ public class BrushLine : MonoBehaviour
 
 
     [PunRPC]
-    private void SetStart(Vector3 position)
+    private void Init(string parentName)
     {
-        _lineRenderer.SetPosition(0, position);
-        _lineRenderer.SetPosition(1, position);
+        GameObject parent = GameObject.Find(parentName);
+        transform.SetParent(parent.transform);
+        _referenceTransform = parent.transform;
     }
 
     [PunRPC]
-    private void AddAPoint(Vector3 point)
+    private void SetStart(Vector3 localPoint)
     {
+        Vector3 worldPoint = _referenceTransform.TransformPoint(localPoint);
+        _lineRenderer.SetPosition(0, worldPoint);
+        _lineRenderer.SetPosition(1, worldPoint);
+    }
+
+    [PunRPC]
+    private void AddAPoint(Vector3 localPoint)
+    {
+        Vector3 worldPoint = _referenceTransform.TransformPoint(localPoint);
         _lineRenderer.positionCount++;
         int positionIndex = _lineRenderer.positionCount - 1;
-        _lineRenderer.SetPosition(positionIndex, point);
+        _lineRenderer.SetPosition(positionIndex, worldPoint);
     }
 
     [PunRPC]
