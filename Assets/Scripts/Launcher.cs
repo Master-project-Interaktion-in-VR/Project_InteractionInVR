@@ -56,7 +56,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             if (!PhotonNetwork.IsMasterClient)
                 infoText.text = infoText.text + "\n" + "Master client starts the game";
             else
-                PhotonNetwork.LoadLevel("GameScene");
+                PhotonNetwork.LoadLevel("XDPaintDemo"); //XDPaintDemo GameScene
         }
         else
         {

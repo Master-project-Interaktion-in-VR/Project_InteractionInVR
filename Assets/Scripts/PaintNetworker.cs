@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,38 +7,65 @@ using XDPaint;
 using XDPaint.Controllers;
 using XDPaint.Core;
 using XDPaint.Core.PaintObject.Base;
+using XDPaint.Tools.Raycast;
 
-public class XDPaintTest : MonoBehaviour
+public class PaintNetworker : MonoBehaviour
 {
 
-    public PaintManager _pm;
-    public PaintManager _screen;
-    //private Renderer _plane;
+    [SerializeField]
+    private float delay;
 
-    //private Texture2D _screenTex;
+
+    private PaintManager _paintManager;
+    private PhotonView _photonView;
+
     private Vector2 _previousPoint;
+    private float _startTime;
 
-    void Start()
+
+    void Awake()
     {
-        //_screen = GameObject.Find("Screen").GetComponent<Renderer>();
-        //_plane = GameObject.Find("Plane").GetComponent<Renderer>();
-        //_screenTex = (Texture2D)_screen.material.mainTexture;
-        //_screen.material.mainTexture = _screenTex;
-        _pm.OnInitialized += OnPaintManagerInitialized;
-        //_pm.ToolsManager.CurrentTool.OnPaint;
-
+        _photonView = GetComponent<PhotonView>();
+        _paintManager = GetComponent<PaintManager>();
+        _paintManager.OnInitialized += OnPaintManagerInitialized;
     }
 
     private void OnPaintManagerInitialized(PaintManager paintManager)
     {
-        _pm = paintManager;
-        _pm.PaintObject.OnPaintDataHandler += OnPaint;
-        _pm.PaintObject.OnDrawLineHandler += Abc;
+        //_paintManager = paintManager;
+        //_paintManager.PaintObject.OnPaintDataHandler += OnPaint;
+        _paintManager.PaintObject.OnMouseHandler += OnMouseDown;
+        _paintManager.PaintObject.OnMouseUpHandler += OnEndLine;
     }
 
-    private void Abc(BasePaintObject sender, Vector2 lineStartPosition, Vector2 lineEndPosition, float lineStartPressure, float lineEndPressure)
+    private void OnMouseDown(BasePaintObject sender, Vector2 uv, Vector2 paintPosition, float pressure)
     {
-        _screen.PaintObject.DrawLine(lineStartPosition, lineEndPosition);
+        if (Time.time - _startTime < delay)
+        {
+            Debug.Log("not now");
+            return;
+        }
+        Debug.Log("send rpc");
+        if (Vector2.Distance(_previousPoint, Vector2.zero) != 0) // previous point is still empty
+            _photonView.RPC("DrawLineRpc", RpcTarget.Others, _previousPoint, paintPosition);
+        _previousPoint = paintPosition;
+        _startTime = Time.time;
+    }
+
+    private void OnEndLine(BasePaintObject sender, bool inBounds)
+    {
+        _previousPoint = Vector2.zero;
+    }
+
+    private void OnLineDrawn(BasePaintObject sender, Vector2 lineStartPosition, Vector2 lineEndPosition, float lineStartPressure, float lineEndPressure)
+    {
+        //_screen.PaintObject.DrawLine(lineStartPosition, lineEndPosition);
+    }
+
+    [PunRPC]
+    private void DrawLineRpc(Vector2 lineStartPosition, Vector2 lineEndPosition)
+    {
+        _paintManager.PaintObject.DrawLine(lineStartPosition, lineEndPosition);
     }
 
     private void OnPaint(BasePaintObject sender, Vector2 paintPosition, float brushSize, float pressure, Color brushColor, PaintTool tool)
@@ -50,10 +78,10 @@ public class XDPaintTest : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_pm.Initialized)
-        {
-            SendBytes();
-        }
+        //if (_paintManager.Initialized)
+        //{
+        //    SendBytes();
+        //}
     }
 
     //public byte[] GetRenderTexturePixels(RenderTexture tex)
