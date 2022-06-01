@@ -35,7 +35,7 @@ public class PaintNetworker : MonoBehaviour
         //_paintManager = paintManager;
         //_paintManager.PaintObject.OnPaintDataHandler += OnPaint;
         _paintManager.PaintObject.OnMouseHandler += OnMouseDown;
-        _paintManager.PaintObject.OnMouseUpHandler += OnEndLine;
+        _paintManager.PaintObject.OnMouseUpHandler += OnMouseUp;
     }
 
     private void OnMouseDown(BasePaintObject sender, Vector2 uv, Vector2 paintPosition, float pressure)
@@ -52,8 +52,10 @@ public class PaintNetworker : MonoBehaviour
         _startTime = Time.time;
     }
 
-    private void OnEndLine(BasePaintObject sender, bool inBounds)
+    private void OnMouseUp(BasePaintObject sender, bool inBounds)
     {
+        // end line, don't know the current draw pos
+        //_photonView.RPC("DrawLineRpc", RpcTarget.Others, _previousPoint, paintPosition);
         _previousPoint = Vector2.zero;
     }
 
