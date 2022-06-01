@@ -114,7 +114,6 @@ namespace XDPaint.Controllers
                 {
                     if (OnMouseDown != null)
 					{
-						Debug.Log("DOWN");
                         OnMouseDown(screenPoint);
                     }
                 }
@@ -123,7 +122,6 @@ namespace XDPaint.Controllers
                 {
                     if (OnMouseButton != null)
 					{
-						Debug.Log("BUTTON");
 						OnMouseButton(screenPoint);
                     }
                 }
@@ -132,7 +130,6 @@ namespace XDPaint.Controllers
                 {
                     if (OnMouseUp != null)
 					{
-						Debug.Log("UP");
 						OnMouseUp(screenPoint);
                     }
                 }
