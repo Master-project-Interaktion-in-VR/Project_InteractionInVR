@@ -107,8 +107,11 @@ namespace XDPaint.Controllers
 				// no need to calculate screen position, always take the center of the draw camera
 				screenPoint = new Vector3(drawCamera.pixelWidth / 2, drawCamera.pixelHeight / 2);
 
-                //screenPoint = drawCamera.WorldToScreenPoint(PenTransform.position);
-                Debug.DrawRay(PenTransform.position, Vector3.down, Color.green);
+				//screenPoint = drawCamera.WorldToScreenPoint(PenTransform.position);
+				//Debug.DrawRay(PenTransform.position, Vector3.down, Color.green);
+
+				if (PenTransform.position.y > 0.05) // only draw if < 5cm above ground
+					return;
 
                 if (down)
                 {
