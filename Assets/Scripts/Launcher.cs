@@ -15,6 +15,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     private Button playButton;
 
     [SerializeField]
+    private Toggle assistantToggle;
+
+    [SerializeField]
     private TMPro.TextMeshProUGUI infoText;
 
     [SerializeField]
@@ -24,11 +27,17 @@ public class Launcher : MonoBehaviourPunCallbacks
     private byte maxPlayersPerRoom;
 
 
+    private bool _isAssistant;
+    private bool _gameHasAssistant;
+    private PhotonView _photonView;
+
+
     private void Awake()
     {
         // load a new scene on all clients
         PhotonNetwork.AutomaticallySyncScene = true;
         playButton.interactable = false;
+        _photonView = GetComponent<PhotonView>();
     }
 
     void Start()
@@ -55,14 +64,35 @@ public class Launcher : MonoBehaviourPunCallbacks
             // start game
             if (!PhotonNetwork.IsMasterClient)
                 infoText.text = infoText.text + "\n" + "Master client starts the game";
+            else if (!_gameHasAssistant)
+                infoText.text = infoText.text + "\n" + "Can't start game without assistant";
             else
+            {
+                StaticClass.IsAssistant = _isAssistant;
                 PhotonNetwork.LoadLevel("XDPaintDemo"); //XDPaintDemo GameScene
+            }
         }
         else
         {
             // join room
             PhotonNetwork.JoinRandomRoom();
         }
+    }
+
+    public void OnAssistantToggleChanged()
+    {
+        _isAssistant = assistantToggle.isOn;
+        if (_isAssistant)
+            _gameHasAssistant = true;
+        _photonView.RPC("OnRemoteAssistantChanged", RpcTarget.Others, _isAssistant);
+    }
+
+    [PunRPC]
+    public void OnRemoteAssistantChanged(bool other)
+    {
+        _isAssistant = !other;
+        assistantToggle.isOn = !other;
+        _gameHasAssistant = true;
     }
 
     public override void OnConnectedToMaster()
@@ -81,6 +111,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         infoText.text = infoText.text + "\n" + "Joined room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount;
+        assistantToggle.gameObject.SetActive(true);
     }
 
     public override void OnPlayerEnteredRoom(Player other)
