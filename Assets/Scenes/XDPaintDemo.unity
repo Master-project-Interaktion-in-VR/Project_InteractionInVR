@@ -1406,7 +1406,7 @@ MonoBehaviour:
   deactivateObjects:
   - {fileID: 1208377995}
   - {fileID: 984245676}
-  assistantCamera: {fileID: 0}
+  assistantCamera: {fileID: 1247559785}
 --- !u!4 &1387336595
 Transform:
   m_ObjectHideFlags: 0

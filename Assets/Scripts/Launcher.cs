@@ -82,6 +82,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void OnAssistantToggleChanged()
     {
         _isAssistant = assistantToggle.isOn;
+        Debug.Log("is on: " + assistantToggle.isOn);
         if (_isAssistant)
             _gameHasAssistant = true;
         _photonView.RPC("OnRemoteAssistantChanged", RpcTarget.Others, _isAssistant);
@@ -90,6 +91,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [PunRPC]
     public void OnRemoteAssistantChanged(bool other)
     {
+        Debug.Log("Remote is assistant");
         _isAssistant = !other;
         assistantToggle.isOn = !other;
         _gameHasAssistant = true;
