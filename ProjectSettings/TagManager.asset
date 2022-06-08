@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - BuildObject
+  - InitialObject
   layers:
   - Default
   - TransparentFX
