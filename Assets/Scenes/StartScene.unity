@@ -2842,6 +2842,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977237986}
   m_CullTransparentMesh: 1
+--- !u!4 &2017247010 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7192818547691413832, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+  m_PrefabInstance: {fileID: 307985990}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2079985672
 GameObject:
   m_ObjectHideFlags: 0
@@ -2853,13 +2858,14 @@ GameObject:
   - component: {fileID: 2079985675}
   - component: {fileID: 2079985674}
   - component: {fileID: 2079985673}
+  - component: {fileID: 2079985676}
   m_Layer: 0
   m_Name: HoloMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2079985673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2905,6 +2911,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2079985676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079985672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 324e05fc9881e6846b19e9442f724452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  centerEyeAnchor: {fileID: 2017247010}
+  slerpSeconds: 2
+  toleranceDegrees: 40
 --- !u!1001 &5470417777293089314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3174,7 +3195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2154880721698165931, guid: 172aca5c812c96248aa4bb20ab4aacb1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2154880721698165931, guid: 172aca5c812c96248aa4bb20ab4aacb1, type: 3}
       propertyPath: m_StaticEditorFlags
