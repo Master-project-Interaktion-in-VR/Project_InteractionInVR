@@ -26,9 +26,17 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField]
     private byte maxPlayersPerRoom;
 
+    [SerializeField]
+    private Animation intro;
+
+    [SerializeField]
+    private GameObject menu;
+
 
     private bool _isAssistant;
     private bool _gameHasAssistant;
+    private ButtonVisuals _buttonVisuals;
+
     private PhotonView _photonView;
 
 
@@ -36,19 +44,30 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         // load a new scene on all clients
         PhotonNetwork.AutomaticallySyncScene = true;
-        playButton.interactable = false;
+        _buttonVisuals = menu.GetComponentInChildren<ButtonVisuals>();
         _photonView = GetComponent<PhotonView>();
     }
 
     void Start()
     {
-
+        StartCoroutine(Intro());
     }
 
 
     void Update()
     {
         
+    }
+
+    public IEnumerator Intro()
+    {
+        intro.Play();
+        while (intro.isPlaying)
+        {
+            yield return new WaitForSeconds(1);
+        }
+        menu.SetActive(true);
+        _buttonVisuals.DisableButton(playButton);
     }
 
     public void OnClickedConnectButton()
@@ -101,7 +120,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         infoText.text = infoText.text + "\n" + "Connected to Photon master";
         connectButton.interactable = false;
-        playButton.interactable = true;
+        _buttonVisuals.DisableButton(connectButton);
+        _buttonVisuals.EnableButton(playButton);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
