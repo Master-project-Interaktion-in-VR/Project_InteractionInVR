@@ -59,6 +59,9 @@ public class GazeTracker : MonoBehaviour
             Vector3 nextRotation = Vector3.zero;
             nextRotation.y = nextY;
             transform.rotation = Quaternion.Euler(nextRotation);
+
+
+            // TODO: FIX BUTTON DISABLE
         }
     }
 }

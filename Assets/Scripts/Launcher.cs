@@ -67,17 +67,20 @@ public class Launcher : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(1);
         }
         menu.SetActive(true);
-        _buttonVisuals.DisableButton(playButton);
     }
 
     public void OnClickedConnectButton()
     {
-        PhotonNetwork.ConnectUsingSettings();
-        PhotonNetwork.GameVersion = gameVersion;
     }
 
     public void OnClickedPlayButton()
     {
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.GameVersion = gameVersion;
+        }
+
         if (PhotonNetwork.InRoom)
         {
             // start game
@@ -98,6 +101,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
+    public override void OnConnectedToMaster()
+    {
+        infoText.text = infoText.text + "\n" + "Connected to Photon master";
+    }
+
     public void OnAssistantToggleChanged()
     {
         _isAssistant = assistantToggle.isOn;
@@ -114,14 +122,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         _isAssistant = !other;
         assistantToggle.isOn = !other;
         _gameHasAssistant = true;
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        infoText.text = infoText.text + "\n" + "Connected to Photon master";
-        connectButton.interactable = false;
-        _buttonVisuals.DisableButton(connectButton);
-        _buttonVisuals.EnableButton(playButton);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
