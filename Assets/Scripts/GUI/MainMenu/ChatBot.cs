@@ -1,3 +1,4 @@
+using Oculus.Interaction;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ public class ChatBot : MonoBehaviour
 {
     [SerializeField]
     private ScrollRect scrollRect;
+
+    [SerializeField]
+    private AudioTrigger messageAudio;
 
     [SerializeField]
     private float messageProbabilityPerSecond;
@@ -46,6 +50,7 @@ public class ChatBot : MonoBehaviour
         _text.text = _text.text + "\n" + line + "\n";
         Canvas.ForceUpdateCanvases();
         scrollRect.verticalNormalizedPosition = 0;
+        messageAudio.PlayAudio();
     }
 
 
