@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class CollisionManager : MonoBehaviour
 {
-    void OnCollisionEnter(Collision col)
+    private void OnTriggerEnter(Collider col)
     {
         GameObject colObject = col.gameObject;
         if (colObject.tag == "BuildObject")
         {
             BuildManager.CollisionEvent collision = new BuildManager.CollisionEvent();
 
-            collision.position = col.GetContact(0).point;
+            //collision.position = col.GetContact(0).point;
             collision.object1 = gameObject; // the object who called the collision
             collision.object2 = colObject; // the object it collided with
 
