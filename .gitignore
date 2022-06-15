@@ -78,5 +78,11 @@ crashlytics-build.properties
 **/[Aa]ssets/ImportedAssets/*
 !**/[Aa]ssets/ImportedAssets/.keep
 
-**/[Aa]ssets/*.Generated
+# **/[Aa]ssets/*.Generated
 
+/Assets/TextMesh Pro
+/Assets/TextMesh Pro.meta
+
+/OVRAssetBundles/*
+
+/[Aa]ssets/MRTK/**
