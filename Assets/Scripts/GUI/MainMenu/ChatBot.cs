@@ -7,10 +7,7 @@ using UnityEngine.UI;
 public class ChatBot : MonoBehaviour
 {
     [SerializeField]
-    private ScrollRect scrollRect;
-
-    [SerializeField]
-    private AudioTrigger messageAudio;
+    private LightsPanel lightsPanel;
 
     [SerializeField]
     private float messageProbabilityPerSecond;
@@ -18,12 +15,12 @@ public class ChatBot : MonoBehaviour
     [SerializeField]
     private List<string> arbitraryLines;
 
-    private TMPro.TextMeshProUGUI _text;
+    private TextPanel _textPanel;
     private bool _ready;
 
     void Awake()
     {
-        _text = GetComponent<TMPro.TextMeshProUGUI>();
+        _textPanel = GetComponent<TextPanel>();
     }
 
     private void OnEnable()
@@ -34,23 +31,27 @@ public class ChatBot : MonoBehaviour
     private IEnumerator WelcomeMessage()
     {
         yield return new WaitForSeconds(Random.Range(3, 8));
-        WriteLine("Welcome Chief! The board systems are currently booting...");
+        _textPanel.WriteLine("Welcome Chief! The board systems are currently booting...");
         yield return new WaitForSeconds(Random.Range(2, 4));
-        WriteLine("...");
+        _textPanel.WriteLine("...");
         yield return new WaitForSeconds(Random.Range(3, 7));
         if (Random.value < 0.5)
-            WriteLine("The core system is up and running. We've got some issues starting the external protectors...");
+        {
+            _textPanel.WriteLine("The core system is up and running. We've got some issues starting the external protectors...");
+        }
         else
-            WriteLine("The core system is up and running. No errors detected.");
-        _ready = true;
-    }
+        {
+            lightsPanel.SetGreen(GUIConstants.IndicatorLight.PROTECTORS);
+            _textPanel.WriteLine("The core system is up and running. No errors detected.");
+        }
+        yield return new WaitForSeconds(0.2f);
+        lightsPanel.SetGreen(GUIConstants.IndicatorLight.CORE);
+        yield return new WaitForSeconds(Random.Range(1, 2));
+        lightsPanel.SetGreen(GUIConstants.IndicatorLight.AIR_LOCK);
+        yield return new WaitForSeconds(0.5f);
+        lightsPanel.SetGreen(GUIConstants.IndicatorLight.OXYGEN);
 
-    private void WriteLine(string line)
-    {
-        _text.text = _text.text + "\n" + line + "\n";
-        Canvas.ForceUpdateCanvases();
-        scrollRect.verticalNormalizedPosition = 0;
-        messageAudio.PlayAudio();
+        _ready = true;
     }
 
 
@@ -67,7 +68,7 @@ public class ChatBot : MonoBehaviour
     {
         _ready = false;
         int randIndex = Random.Range(0, arbitraryLines.Count - 1);
-        WriteLine(arbitraryLines[randIndex]);
+        _textPanel.WriteLine(arbitraryLines[randIndex]);
         arbitraryLines.Remove(arbitraryLines[randIndex]);
         yield return new WaitForSeconds(Random.Range(7, 14));
         _ready = true;

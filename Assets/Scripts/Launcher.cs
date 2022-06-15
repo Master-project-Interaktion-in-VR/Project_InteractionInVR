@@ -18,7 +18,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     private Toggle assistantToggle;
 
     [SerializeField]
-    private TMPro.TextMeshProUGUI infoText;
+    private TextPanel infoTextPanel;
+
+    [SerializeField]
+    private LightsPanel lightsPanel;
 
     [SerializeField]
     private string gameVersion;
@@ -67,6 +70,23 @@ public class Launcher : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(1);
         }
         menu.SetActive(true);
+        yield return new WaitForSeconds(1);
+        ConnectToPhoton();
+    }
+
+    private void ConnectToPhoton()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.GameVersion = gameVersion;
+        }
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        infoTextPanel.WriteLine("Connected to Photon master. We are online!");
+        lightsPanel.SetGreen(GUIConstants.IndicatorLight.PHOTON);
     }
 
     public void OnClickedConnectButton()
@@ -77,17 +97,17 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.ConnectUsingSettings();
-            PhotonNetwork.GameVersion = gameVersion;
+            infoTextPanel.WriteLine("We are connecting to the network. Please wait.");
+            return;
         }
 
         if (PhotonNetwork.InRoom)
         {
             // start game
             if (!PhotonNetwork.IsMasterClient)
-                infoText.text = infoText.text + "\n" + "Master client starts the game";
+                infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
             else if (!_gameHasAssistant)
-                infoText.text = infoText.text + "\n" + "Can't start game without assistant";
+                infoTextPanel.WriteLine("Chief, you cannot start without an assistant!");
             else
             {
                 StaticClass.IsAssistant = _isAssistant;
@@ -99,11 +119,6 @@ public class Launcher : MonoBehaviourPunCallbacks
             // join room
             PhotonNetwork.JoinRandomRoom();
         }
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        infoText.text = infoText.text + "\n" + "Connected to Photon master";
     }
 
     public void OnAssistantToggleChanged()
@@ -127,24 +142,23 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
-        infoText.text = infoText.text + "\n" + "Create room...";
+        infoTextPanel.WriteLine("Create room...");
     }
 
     public override void OnJoinedRoom()
     {
-        infoText.text = infoText.text + "\n" + "Joined room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount;
+        infoTextPanel.WriteLine("Joined room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
         assistantToggle.gameObject.SetActive(true);
     }
 
     public override void OnPlayerEnteredRoom(Player other)
     {
         // not called if I am joining myself
-
-        infoText.text = infoText.text + "\n" + "Player joined room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount;
+        infoTextPanel.WriteLine("Player joined room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        infoText.text = infoText.text + "\n" + "Player left room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount;
+        infoTextPanel.WriteLine("Player left room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
     }
 }
