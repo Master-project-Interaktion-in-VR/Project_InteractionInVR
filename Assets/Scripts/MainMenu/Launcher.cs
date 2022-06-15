@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -59,7 +60,23 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        
+        // DEBUG START
+        if (Input.GetMouseButtonDown(0))
+        {
+            const float maxDistance = 100f;
+            Ray ray = GameObject.Find("DebugCamera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            RaycastHit[] hits = Physics.RaycastAll(ray, maxDistance).OrderBy(h => h.distance).ToArray();
+            for (int i = 0; i < hits.Length; i++)
+            {
+                RaycastHit hit = hits[i];
+
+                if (hit.collider.gameObject.name == "DebugStartButton")
+                {
+                    Debug.Log(hit.collider.gameObject.name);
+                    OnClickedDebugButton();
+                }
+            }
+        }
     }
 
     public IEnumerator Intro()
@@ -89,8 +106,23 @@ public class Launcher : MonoBehaviourPunCallbacks
         lightsPanel.SetGreen(GUIConstants.IndicatorLight.PHOTON);
     }
 
-    public void OnClickedConnectButton()
+    public void OnClickedDebugButton()
     {
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.GameVersion = gameVersion;
+        }
+        else if (!PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.JoinRandomRoom();
+        }
+        else
+        {
+            // load game scene for VR
+            SceneSpanningData.IsAssistant = false;
+            PhotonNetwork.LoadLevel("GameScene"); //XDPaintDemo GameScene
+        }
     }
 
     public void OnClickedPlayButton()
@@ -111,7 +143,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             else
             {
                 SceneSpanningData.IsAssistant = _isAssistant;
-                PhotonNetwork.LoadLevel("XDPaintDemo"); //XDPaintDemo GameScene
+                PhotonNetwork.LoadLevel("GameScene"); //XDPaintDemo GameScene
             }
         }
         else
