@@ -85,3 +85,5 @@ crashlytics-build.properties
 /Assets/TextMesh Pro.meta
 
 /OVRAssetBundles/*
+
+/[Aa]ssets/MRTK/**
