@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionSceneManager : MonoBehaviour
+public class GameSceneManager : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> deactivateObjects;
@@ -14,7 +14,7 @@ public class InteractionSceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (StaticClass.IsAssistant)
+        if (SceneSpanningData.IsAssistant)
         {
             Debug.Log("I AM THE ASSISTANT");
             foreach (GameObject obj in deactivateObjects)

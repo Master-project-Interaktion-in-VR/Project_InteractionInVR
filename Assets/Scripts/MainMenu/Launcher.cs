@@ -110,7 +110,7 @@ public class Launcher : MonoBehaviourPunCallbacks
                 infoTextPanel.WriteLine("Chief, you cannot start without an assistant!");
             else
             {
-                StaticClass.IsAssistant = _isAssistant;
+                SceneSpanningData.IsAssistant = _isAssistant;
                 PhotonNetwork.LoadLevel("XDPaintDemo"); //XDPaintDemo GameScene
             }
         }
