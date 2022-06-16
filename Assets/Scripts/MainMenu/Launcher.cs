@@ -153,6 +153,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
+    public void OnClickedQuitButton()
+    {
+        Application.Quit();
+    }
+
     public void OnAssistantToggleChanged()
     {
         _isAssistant = assistantToggle.isOn;
