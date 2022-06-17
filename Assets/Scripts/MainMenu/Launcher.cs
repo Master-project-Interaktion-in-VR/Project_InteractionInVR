@@ -148,9 +148,22 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else
         {
-            // join room
-            PhotonNetwork.JoinRandomRoom();
+            JoinRoom();
         }
+    }
+
+    private void JoinRoom()
+    {
+        if (Application.isMobilePlatform)
+        {
+            // join a room that has an assistant
+        }
+        else
+        {
+            // join a room that needs an assistant
+        }
+
+        PhotonNetwork.JoinRandomRoom();
     }
 
     public void OnClickedQuitButton()
