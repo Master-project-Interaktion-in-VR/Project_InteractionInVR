@@ -73,14 +73,14 @@ public class ListManager : MonoBehaviour
         newListItem.name = roomName;
 
         // disable separator of last list item
-        if (_listItems.Count > 0)
-        {
-            GameObject secondLastItem = _listItems[_listItems.Count - 1];
-            secondLastItem.transform.GetChild(secondLastItem.transform.childCount - 1).gameObject.SetActive(true);
-        }
-        newListItem.transform.GetChild(newListItem.transform.childCount - 1).gameObject.SetActive(false);
+        //if (_listItems.Count > 0)
+        //{
+        //    GameObject secondLastItem = _listItems[_listItems.Count - 1];
+        //    secondLastItem.transform.GetChild(secondLastItem.transform.childCount - 1).gameObject.SetActive(true);
+        //}
+        //newListItem.transform.GetChild(newListItem.transform.childCount - 1).gameObject.SetActive(false);
 
-        _listItems.Add(newListItem);
+        _listItems.Insert(0, newListItem);
         _listItemNames.Add(roomName);
         return newListItem.GetComponentInChildren<Button>();
     }

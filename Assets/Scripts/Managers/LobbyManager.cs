@@ -14,8 +14,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private List<string> roomNames;
 
+    [SerializeField]
+    private GameObject lobbyMenuContainer;
+
 
     private bool _platformMobile;
+    private List<string> _joinableRooms;
+    private bool _roomsChanged;
 
     void Awake()
     {
@@ -25,35 +30,40 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+        if (roomListManager.isActiveAndEnabled && _roomsChanged)
+        {
+            _roomsChanged = false;
+            // we are in the lobby menu, subscribe to click events
+            Dictionary<string, Button> addedItems = roomListManager.Refresh(_joinableRooms);
+            foreach (KeyValuePair<string, Button> pair in addedItems)
+            {
+                pair.Value.onClick.AddListener(delegate { JoinRoom(pair.Key); });
+            }
+        }
 
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log("ROOM LIST " + roomList.Count);
         base.OnRoomListUpdate(roomList);
 
-        if (!roomListManager.isActiveAndEnabled)
-            return;
-
         // filter rooms that have a free slot for my platform
-        List<string> joinableRooms = roomList.Where(room => room.CustomProperties["n"].ToString().Equals(_platformMobile ? GUIConstants.PLATFORM_VR : GUIConstants.PLATFORM_PC))
+        _joinableRooms = roomList.Where(room => !room.RemovedFromList) // if a room is closed, an update containing the room with null values in it and RemovedFromList == true is sent by Photon
+            .Where(room => room.CustomProperties["n"].ToString().Equals(_platformMobile ? GUIConstants.PLATFORM_VR : GUIConstants.PLATFORM_PC))
             .Select(room => room.Name)
             .ToList();
-
-        // subscribe to click event
-        Dictionary<string, Button> addedItems = roomListManager.Refresh(joinableRooms);
-        foreach(KeyValuePair<string, Button> pair in addedItems)
-        {
-            pair.Value.onClick.AddListener(delegate { JoinRoom(pair.Key); });
-        }
+        _roomsChanged = true;
     }
 
     public void CreateRoom()
     {
+        lobbyMenuContainer.SetActive(false);
         RoomOptions roomOptions = new RoomOptions();
         //roomOptions.IsOpen = true;
         //roomOptions.IsVisible = true;
         roomOptions.MaxPlayers = 2;
+        roomOptions.EmptyRoomTtl = 500;
         roomOptions.CustomRoomProperties = new Hashtable();
         roomOptions.CustomRoomProperties.Add("n", _platformMobile ? GUIConstants.PLATFORM_PC : GUIConstants.PLATFORM_VR);
 

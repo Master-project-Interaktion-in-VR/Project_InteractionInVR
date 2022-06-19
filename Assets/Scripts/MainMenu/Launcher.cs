@@ -37,9 +37,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     private GameObject menu;
 
     [SerializeField]
-    private GameObject lobbyMenuContainer;
-
-    [SerializeField]
     private GameObject roomMenuContainer;
 
     [SerializeField]
@@ -47,6 +44,20 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private LightsPanel playerReadyPanel;
+
+    [Header("PC Configuration")]
+
+    [SerializeField]
+    private List<GameObject> deactivateObjects;
+
+    [SerializeField]
+    private Camera pcCamera;
+
+    [SerializeField]
+    private GameObject cylinderMenuCanvas;
+
+    [SerializeField]
+    private Canvas menuCanvas;
 
 
     private bool _isAssistant;
@@ -62,6 +73,19 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         _buttonVisuals = menu.GetComponentInChildren<ButtonVisuals>();
         _photonView = GetComponent<PhotonView>();
+
+//#if !UNITY_EDITOR
+        if (!Application.isMobilePlatform)
+        {
+            // configure scene for PC
+            menuCanvas.transform.parent = null;
+            menuCanvas.transform.position = new Vector3(0, 1.2f, 1);
+            deactivateObjects.ForEach(o => o.SetActive(false));
+            pcCamera.gameObject.SetActive(true);
+            //cylinderMenuCanvas.GetComponent<MeshRenderer>().enabled = false;
+            menuCanvas.worldCamera = pcCamera;
+        }
+//#endif
     }
 
     void Start()
@@ -230,7 +254,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         infoTextPanel.WriteLine("Joined room \"" + PhotonNetwork.CurrentRoom.Name + "\", current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
-        lobbyMenuContainer.SetActive(false);
         roomMenuNameText.text = PhotonNetwork.CurrentRoom.Name;
         roomMenuContainer.SetActive(true);
         playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.OPERATOR : GUIConstants.IndicatorLight.ASSISTANT); // set myself ready
@@ -246,5 +269,13 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         infoTextPanel.WriteLine("Player left room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
     }
 }
