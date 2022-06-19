@@ -13,6 +13,7 @@ public class TextPanel : MonoBehaviour
     private AudioTrigger messageAudio;
 
     private TMPro.TextMeshProUGUI _text;
+    private float _lastWritten;
 
     private void Awake()
     {
@@ -21,9 +22,12 @@ public class TextPanel : MonoBehaviour
 
     public void WriteLine(string line)
     {
+        _lastWritten = Time.time;
         _text.text = _text.text + "\n" + line + "\n";
         Canvas.ForceUpdateCanvases();
         scrollRect.verticalNormalizedPosition = 0;
         messageAudio.PlayAudio();
     }
+
+    public float GetLastWrittenTime() => _lastWritten;
 }

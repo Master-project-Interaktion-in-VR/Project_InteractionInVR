@@ -1256,7 +1256,7 @@ GameObject:
   - component: {fileID: 2017382957488132981}
   - component: {fileID: 2017382957488132983}
   - component: {fileID: 2017382957488132980}
-  - component: {fileID: 2017382957488132982}
+  - component: {fileID: 1282367771860897259}
   m_Layer: 5
   m_Name: LightsPanel
   m_TagString: Untagged
@@ -1327,7 +1327,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2017382957488132982
+--- !u!114 &1282367771860897259
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1336,13 +1336,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2017382957488132978}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e6765698613bf40832b9d6a4ebad51, type: 3}
+  m_Script: {fileID: 11500000, guid: 78e0d8bd7c109814889f1febbbb5d024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   greenLightSprite: {fileID: 21300000, guid: ecdb02aa099eb904faedeea16f4db4ec, type: 3}
   redLightSprite: {fileID: 21300000, guid: d94806a83fc7fc04fa4c661c2f802086, type: 3}
-  coreLight: {fileID: 2017382955526124738}
-  photonLight: {fileID: 2017382956770882917}
-  airLockLight: {fileID: 2017382955620346742}
-  oxygenLight: {fileID: 2017382956873200508}
-  protectorsLight: {fileID: 2017382955968919730}
+  lights:
+  - light: 0
+    image: {fileID: 2017382955526124738}
+  - light: 1
+    image: {fileID: 2017382956770882917}
+  - light: 2
+    image: {fileID: 2017382955620346742}
+  - light: 3
+    image: {fileID: 2017382956873200508}
+  - light: 4
+    image: {fileID: 2017382955968919730}

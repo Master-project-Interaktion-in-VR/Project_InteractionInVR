@@ -36,6 +36,18 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject menu;
 
+    [SerializeField]
+    private GameObject lobbyMenuContainer;
+
+    [SerializeField]
+    private GameObject roomMenuContainer;
+
+    [SerializeField]
+    private TMPro.TextMeshProUGUI roomMenuNameText;
+
+    [SerializeField]
+    private LightsPanel playerReadyPanel;
+
 
     private bool _isAssistant;
     private bool _gameHasAssistant;
@@ -54,7 +66,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        StartCoroutine(Intro());
+        //StartCoroutine(Intro());
+        ConnectToPhoton();
     }
 
 
@@ -104,6 +117,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         infoTextPanel.WriteLine("Connected to Photon master. We are online!");
         lightsPanel.SetGreen(GUIConstants.IndicatorLight.PHOTON);
+        PhotonNetwork.JoinLobby();
     }
 
     public void OnClickedDebugButton()
@@ -133,61 +147,79 @@ public class Launcher : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (PhotonNetwork.InRoom)
-        {
-            // start game
-            if (!PhotonNetwork.IsMasterClient)
-                infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
-            else if (!_gameHasAssistant)
-                infoTextPanel.WriteLine("Chief, you cannot start without an assistant!");
-            else
-            {
-                SceneSpanningData.IsAssistant = _isAssistant;
-                PhotonNetwork.LoadLevel("GameScene"); //XDPaintDemo GameScene
-            }
-        }
-        else
-        {
-            JoinRoom();
-        }
+
+
+        //if (PhotonNetwork.InRoom)
+        //{
+        //    // start game
+        //    if (!PhotonNetwork.IsMasterClient)
+        //        infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
+        //    else if (!_gameHasAssistant)
+        //        infoTextPanel.WriteLine("Chief, you cannot start without an assistant!");
+        //    else
+        //    {
+        //        SceneSpanningData.IsAssistant = _isAssistant;
+        //        PhotonNetwork.LoadLevel("GameScene"); //XDPaintDemo GameScene
+        //    }
+        //}
+        //else
+        //{
+        //    JoinRoom();
+        //}
     }
 
-    private void JoinRoom()
+    public void OnClickedStartButton()
     {
-        if (Application.isMobilePlatform)
+        if (PhotonNetwork.CurrentRoom.PlayerCount != 2)
         {
-            // join a room that has an assistant
+            infoTextPanel.WriteLine("We need support by another player.");
+            return;
         }
+        // start game
+        if (!PhotonNetwork.IsMasterClient)
+            infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
         else
         {
-            // join a room that needs an assistant
+            PhotonNetwork.LoadLevel("GameScene");
         }
-
-        PhotonNetwork.JoinRandomRoom();
     }
+
+    //private void JoinRoom()
+    //{
+    //    if (Application.isMobilePlatform)
+    //    {
+    //        // join a room that has an assistant
+    //    }
+    //    else
+    //    {
+    //        // join a room that needs an assistant
+    //    }
+
+    //    PhotonNetwork.JoinRandomRoom();
+    //}
 
     public void OnClickedQuitButton()
     {
         Application.Quit();
     }
 
-    public void OnAssistantToggleChanged()
-    {
-        _isAssistant = assistantToggle.isOn;
-        Debug.Log("is on: " + assistantToggle.isOn);
-        if (_isAssistant)
-            _gameHasAssistant = true;
-        _photonView.RPC("OnRemoteAssistantChanged", RpcTarget.Others, _isAssistant);
-    }
+    //public void OnAssistantToggleChanged()
+    //{
+    //    _isAssistant = assistantToggle.isOn;
+    //    Debug.Log("is on: " + assistantToggle.isOn);
+    //    if (_isAssistant)
+    //        _gameHasAssistant = true;
+    //    _photonView.RPC("OnRemoteAssistantChanged", RpcTarget.Others, _isAssistant);
+    //}
 
-    [PunRPC]
-    public void OnRemoteAssistantChanged(bool other)
-    {
-        Debug.Log("Remote is assistant");
-        _isAssistant = !other;
-        assistantToggle.isOn = !other;
-        _gameHasAssistant = true;
-    }
+    //[PunRPC]
+    //public void OnRemoteAssistantChanged(bool other)
+    //{
+    //    Debug.Log("Remote is assistant");
+    //    _isAssistant = !other;
+    //    assistantToggle.isOn = !other;
+    //    _gameHasAssistant = true;
+    //}
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
@@ -197,14 +229,18 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        infoTextPanel.WriteLine("Joined room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
-        assistantToggle.gameObject.SetActive(true);
+        infoTextPanel.WriteLine("Joined room \"" + PhotonNetwork.CurrentRoom.Name + "\", current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        lobbyMenuContainer.SetActive(false);
+        roomMenuNameText.text = PhotonNetwork.CurrentRoom.Name;
+        roomMenuContainer.SetActive(true);
+        playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.OPERATOR : GUIConstants.IndicatorLight.ASSISTANT); // set myself ready
     }
 
     public override void OnPlayerEnteredRoom(Player other)
     {
         // not called if I am joining myself
         infoTextPanel.WriteLine("Player joined room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.ASSISTANT : GUIConstants.IndicatorLight.OPERATOR);
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)

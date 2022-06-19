@@ -985,7 +985,6 @@ GameObject:
   - component: {fileID: 1715079961}
   - component: {fileID: 1715079966}
   - component: {fileID: 1715079965}
-  - component: {fileID: 1715079967}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1093,29 +1092,6 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!114 &1715079967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1715079960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf98dd1206224111a38765365e98e207, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lockCursorWhenFocusLocked: 1
-  setCursorInvisibleWhenFocusLocked: 0
-  maxGazeCollisionDistance: 10
-  raycastLayerMasks:
-  - serializedVersion: 2
-    m_Bits: 4294967291
-  stabilizer:
-    storedStabilitySamples: 60
-  gazeTransform: {fileID: 0}
-  minHeadVelocityThreshold: 0.5
-  maxHeadVelocityThreshold: 2
 --- !u!20 &1783342632 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 1783342632, guid: 5d706636d99af8844a2022ab4f112944, type: 3}
@@ -1356,6 +1332,10 @@ PrefabInstance:
     - target: {fileID: 7968590886339186749, guid: 17655651c1bd61042806b2fe12946130, type: 3}
       propertyPath: sceneViewId
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7968590886339187140, guid: 17655651c1bd61042806b2fe12946130, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17655651c1bd61042806b2fe12946130, type: 3}
