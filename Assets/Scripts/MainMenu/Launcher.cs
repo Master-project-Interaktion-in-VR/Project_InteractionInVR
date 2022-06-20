@@ -74,7 +74,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         _buttonVisuals = menu.GetComponentInChildren<ButtonVisuals>();
         _photonView = GetComponent<PhotonView>();
 
-//#if !UNITY_EDITOR
+#if !UNITY_EDITOR
         if (!Application.isMobilePlatform)
         {
             // configure scene for PC
@@ -85,7 +85,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             //cylinderMenuCanvas.GetComponent<MeshRenderer>().enabled = false;
             menuCanvas.worldCamera = pcCamera;
         }
-//#endif
+#endif
     }
 
     void Start()
@@ -257,6 +257,9 @@ public class Launcher : MonoBehaviourPunCallbacks
         roomMenuNameText.text = PhotonNetwork.CurrentRoom.Name;
         roomMenuContainer.SetActive(true);
         playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.OPERATOR : GUIConstants.IndicatorLight.ASSISTANT); // set myself ready
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.ASSISTANT : GUIConstants.IndicatorLight.OPERATOR);
+
     }
 
     public override void OnPlayerEnteredRoom(Player other)

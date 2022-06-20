@@ -20,11 +20,17 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private bool _platformMobile;
     private List<string> _joinableRooms;
+    private List<string> _closedRooms;
     private bool _roomsChanged;
 
     void Awake()
     {
         _platformMobile = Application.isMobilePlatform;
+    }
+
+    private void Start()
+    {
+
     }
 
     // Update is called once per frame
@@ -39,20 +45,27 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             {
                 pair.Value.onClick.AddListener(delegate { JoinRoom(pair.Key); });
             }
+            _closedRooms.ForEach(room => roomListManager.RemoveItem(room));
         }
 
     }
 
+    /// <summary>
+    /// Only contains the newly added rooms. If a room is closed, an update containing 
+    /// the room with null values in it and RemovedFromList == true is sent by Photon.
+    /// </summary>
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         Debug.Log("ROOM LIST " + roomList.Count);
         base.OnRoomListUpdate(roomList);
 
         // filter rooms that have a free slot for my platform
-        _joinableRooms = roomList.Where(room => !room.RemovedFromList) // if a room is closed, an update containing the room with null values in it and RemovedFromList == true is sent by Photon
+        _joinableRooms = roomList.Where(room => !room.RemovedFromList)
             .Where(room => room.CustomProperties["n"].ToString().Equals(_platformMobile ? GUIConstants.PLATFORM_VR : GUIConstants.PLATFORM_PC))
             .Select(room => room.Name)
             .ToList();
+        // filter closed rooms if this update closed a room
+        _closedRooms = roomList.Where(room => room.RemovedFromList).Select(room => room.Name).ToList();
         _roomsChanged = true;
     }
 
@@ -77,6 +90,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void JoinRoom(string roomName)
     {
+        lobbyMenuContainer.SetActive(false);
         PhotonNetwork.JoinRoom(roomName);
     }
 }
