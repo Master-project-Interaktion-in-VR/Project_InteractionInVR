@@ -201,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638274841}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.25, y: 0.54999995, z: 0}
+  m_LocalPosition: {x: 0.364, y: 0.54999995, z: 0}
   m_LocalScale: {x: 0.05, y: 0.1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -304,7 +304,12 @@ MonoBehaviour:
     id: 1
     description: Select
     axisConstraint: 2
+  GrabAction:
+    id: 0
+    description: 
+    axisConstraint: 0
   CollidedWithHand: 0
+  item: {fileID: 11400000, guid: 10c1ce9dc9a69874cac9f4cd1fd81bd4, type: 2}
 --- !u!1 &742039419
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +339,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 742039419}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.25, y: 0.54999995, z: 0}
+  m_LocalPosition: {x: -0.136, y: 0.54999995, z: 0}
   m_LocalScale: {x: 0.05, y: 0.1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -437,7 +442,12 @@ MonoBehaviour:
     id: 1
     description: Select
     axisConstraint: 2
+  GrabAction:
+    id: 0
+    description: 
+    axisConstraint: 0
   CollidedWithHand: 0
+  item: {fileID: 11400000, guid: 10c1ce9dc9a69874cac9f4cd1fd81bd4, type: 2}
 --- !u!1 &984245676
 GameObject:
   m_ObjectHideFlags: 0
