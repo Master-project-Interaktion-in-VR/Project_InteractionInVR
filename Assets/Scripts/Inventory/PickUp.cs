@@ -2,30 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEngine;
 
-public class PickUp : BaseInputHandler, IMixedRealityHandJointHandler, IMixedRealityPointerHandler
+public class PickUp : BaseInputHandler, IMixedRealityPointerHandler
 {
     public MixedRealityInputAction PickUpAction;
-    public MixedRealityInputAction GrabAction;
-    public bool CollidedWithHand;
-
-    public Item item;
-    
-    protected override void RegisterHandlers()
-    {
-        
-    }
-
-    protected override void UnregisterHandlers()
-    {
-        
-    }
-
-    public void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
-    {
-        CollidedWithHand = !CollidedWithHand;
-    }
+    public SolverHandler SolverHandler;
+    public InventoryManager InventoryManager;
 
     public void OnPointerDown(MixedRealityPointerEventData eventData)
     {
@@ -43,16 +27,20 @@ public class PickUp : BaseInputHandler, IMixedRealityHandJointHandler, IMixedRea
 
     public void OnPointerClicked(MixedRealityPointerEventData eventData)
     {
-        if (eventData.MixedRealityInputAction == PickUpAction && CollidedWithHand)
+        if (eventData.MixedRealityInputAction == PickUpAction && InventoryManager.HandIsFree())
         {
-            //gameObject.SetActive(false);
-            InventoryManager.instance.Add(item);
-            Destroy(gameObject);
+            SolverHandler.UpdateSolvers = true;
+            InventoryManager.PutItemInHand(gameObject);
         }
+    }
 
-        if (eventData.MixedRealityInputAction == GrabAction)
-        {
-            Debug.Log("dein vataaa");
-        }
+    protected override void RegisterHandlers()
+    {
+        
+    }
+
+    protected override void UnregisterHandlers()
+    {
+        
     }
 }

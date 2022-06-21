@@ -1,25 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public static InventoryManager instance;
+    [SerializeField] private GameObject itemInHand;
 
-    public List<Item> items = new List<Item>();
+    [SerializeField] private List<GameObject> items = new List<GameObject>();
 
-    private void Awake()
+    public void PutItemInHand(GameObject item)
     {
-        instance = this;
+        itemInHand = item;
     }
 
-    public void Add(Item item)
+    public bool HandIsFree()
     {
-        items.Add(item);
+        return itemInHand == null;
     }
 
-    public void Remove(Item item)
+    private void Update()
     {
-        items.Remove(item);
+        if (Input.GetKey(KeyCode.Space) && itemInHand != null)
+        {
+            items.Add(itemInHand);
+            itemInHand.SetActive(false);
+            itemInHand = null;
+        }
+        else if (Input.GetKey(KeyCode.G) && itemInHand != null)
+        {
+            itemInHand.GetComponent<PickUp>().SolverHandler.UpdateSolvers = false;
+            itemInHand = null;
+        }
     }
 }
