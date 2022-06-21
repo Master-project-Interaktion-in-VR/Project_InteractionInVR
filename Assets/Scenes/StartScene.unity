@@ -599,17 +599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae60cfa43388e449a7518f36418f81c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &798996318 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6494801972650676355, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-  m_PrefabInstance: {fileID: 6494801972305471453}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &954389596 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5764631286100830680, guid: e3aabeca5b29c76408570f2f75f3ec88, type: 3}
@@ -980,18 +969,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6486e65284607334faa2f265955c8d9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectButton: {fileID: 798996318}
-  playButton: {fileID: 0}
-  assistantToggle: {fileID: 0}
+  gameVersion: 1
+  intro: {fileID: 509067010}
   infoTextPanel: {fileID: 204606972}
   lightsPanel: {fileID: 1592659426}
-  gameVersion: 1
-  maxPlayersPerRoom: 2
-  intro: {fileID: 509067010}
+  playerReadyPanel: {fileID: 211566930950370686}
   menu: {fileID: 2079985672}
+  mainMenuContainer: {fileID: 6494801972305471454}
   roomMenuContainer: {fileID: 1986939911}
   roomMenuNameText: {fileID: 1064701401}
-  playerReadyPanel: {fileID: 211566930950370686}
+  lobbyMenuContainer: {fileID: 7852946522303693844}
   deactivateObjects:
   - {fileID: 415923899}
   - {fileID: 2079985672}
@@ -2326,6 +2313,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6494801972650676355, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6494801972650676355, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1363240332}
@@ -2483,6 +2474,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
+--- !u!1 &6494801972305471454 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6494801972214862487, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
+  m_PrefabInstance: {fileID: 6494801972305471453}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7852946522303693844 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3952311896422163401, guid: df09b8210f2194f4b97970ff97af340b, type: 3}

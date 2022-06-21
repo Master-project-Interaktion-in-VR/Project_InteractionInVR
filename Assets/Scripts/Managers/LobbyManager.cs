@@ -33,7 +33,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (roomListManager.isActiveAndEnabled && _roomsChanged)
@@ -78,16 +78,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomOptions.MaxPlayers = 2;
         roomOptions.EmptyRoomTtl = 500;
         roomOptions.CustomRoomProperties = new Hashtable();
-        roomOptions.CustomRoomProperties.Add("n", _platformMobile ? GUIConstants.PLATFORM_PC : GUIConstants.PLATFORM_VR);
+        roomOptions.CustomRoomProperties.Add("n", _platformMobile ? GUIConstants.PLATFORM_PC : GUIConstants.PLATFORM_VR); // n for need
 
         string[] customLobbyProperties = new string[] { "n" };
         roomOptions.CustomRoomPropertiesForLobby = customLobbyProperties;
 
-        int randIndex = Random.Range(0, roomNames.Count - 1);
+        int randIndex = Random.Range(0, roomNames.Count);
         PhotonNetwork.CreateRoom(roomNames[randIndex], roomOptions);
         roomNames.Remove(roomNames[randIndex]);
     }
 
+    /// <summary>
+    /// Join an existing room.
+    /// </summary>
     private void JoinRoom(string roomName)
     {
         lobbyMenuContainer.SetActive(false);

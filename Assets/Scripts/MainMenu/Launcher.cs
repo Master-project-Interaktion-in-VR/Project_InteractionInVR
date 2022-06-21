@@ -8,15 +8,11 @@ using UnityEngine.UI;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
+    [SerializeField]
+    private string gameVersion;
 
     [SerializeField]
-    private Button connectButton;
-
-    [SerializeField]
-    private Button playButton;
-
-    [SerializeField]
-    private Toggle assistantToggle;
+    private Animation intro;
 
     [SerializeField]
     private TextPanel infoTextPanel;
@@ -25,16 +21,16 @@ public class Launcher : MonoBehaviourPunCallbacks
     private LightsPanel lightsPanel;
 
     [SerializeField]
-    private string gameVersion;
+    private LightsPanel playerReadyPanel;
 
-    [SerializeField]
-    private byte maxPlayersPerRoom;
 
-    [SerializeField]
-    private Animation intro;
+    [Header("Menus")]
 
     [SerializeField]
     private GameObject menu;
+
+    [SerializeField]
+    private GameObject mainMenuContainer;
 
     [SerializeField]
     private GameObject roomMenuContainer;
@@ -43,7 +39,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     private TMPro.TextMeshProUGUI roomMenuNameText;
 
     [SerializeField]
-    private LightsPanel playerReadyPanel;
+    private GameObject lobbyMenuContainer;
+
 
     [Header("PC Configuration")]
 
@@ -60,9 +57,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     private Canvas menuCanvas;
 
 
-    private bool _isAssistant;
-    private bool _gameHasAssistant;
-    private ButtonVisuals _buttonVisuals;
 
     private PhotonView _photonView;
 
@@ -71,7 +65,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         // load a new scene on all clients
         PhotonNetwork.AutomaticallySyncScene = true;
-        _buttonVisuals = menu.GetComponentInChildren<ButtonVisuals>();
         _photonView = GetComponent<PhotonView>();
 
 #if !UNITY_EDITOR
@@ -116,6 +109,9 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Short cutscene. Afterwards show menu and connect to photon.
+    /// </summary>
     public IEnumerator Intro()
     {
         intro.Play();
@@ -144,25 +140,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
     }
 
-    public void OnClickedDebugButton()
-    {
-        if (!PhotonNetwork.IsConnected)
-        {
-            PhotonNetwork.ConnectUsingSettings();
-            PhotonNetwork.GameVersion = gameVersion;
-        }
-        else if (!PhotonNetwork.InRoom)
-        {
-            PhotonNetwork.JoinRandomRoom();
-        }
-        else
-        {
-            // load game scene for VR
-            SceneSpanningData.IsAssistant = false;
-            PhotonNetwork.LoadLevel("GameScene"); //XDPaintDemo GameScene
-        }
-    }
-
     public void OnClickedPlayButton()
     {
         if (!PhotonNetwork.IsConnected)
@@ -171,25 +148,8 @@ public class Launcher : MonoBehaviourPunCallbacks
             return;
         }
 
-
-
-        //if (PhotonNetwork.InRoom)
-        //{
-        //    // start game
-        //    if (!PhotonNetwork.IsMasterClient)
-        //        infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
-        //    else if (!_gameHasAssistant)
-        //        infoTextPanel.WriteLine("Chief, you cannot start without an assistant!");
-        //    else
-        //    {
-        //        SceneSpanningData.IsAssistant = _isAssistant;
-        //        PhotonNetwork.LoadLevel("GameScene"); //XDPaintDemo GameScene
-        //    }
-        //}
-        //else
-        //{
-        //    JoinRoom();
-        //}
+        lobbyMenuContainer.SetActive(true);
+        mainMenuContainer.SetActive(false);
     }
 
     public void OnClickedStartButton()
@@ -208,49 +168,32 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
-    //private void JoinRoom()
-    //{
-    //    if (Application.isMobilePlatform)
-    //    {
-    //        // join a room that has an assistant
-    //    }
-    //    else
-    //    {
-    //        // join a room that needs an assistant
-    //    }
-
-    //    PhotonNetwork.JoinRandomRoom();
-    //}
-
     public void OnClickedQuitButton()
     {
         Application.Quit();
     }
 
-    //public void OnAssistantToggleChanged()
-    //{
-    //    _isAssistant = assistantToggle.isOn;
-    //    Debug.Log("is on: " + assistantToggle.isOn);
-    //    if (_isAssistant)
-    //        _gameHasAssistant = true;
-    //    _photonView.RPC("OnRemoteAssistantChanged", RpcTarget.Others, _isAssistant);
-    //}
-
-    //[PunRPC]
-    //public void OnRemoteAssistantChanged(bool other)
-    //{
-    //    Debug.Log("Remote is assistant");
-    //    _isAssistant = !other;
-    //    assistantToggle.isOn = !other;
-    //    _gameHasAssistant = true;
-    //}
-
-    public override void OnJoinRandomFailed(short returnCode, string message)
+    public void OnClickedDebugButton()
     {
-        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
-        infoTextPanel.WriteLine("Create room...");
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.GameVersion = gameVersion;
+        }
+        else if (!PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.JoinRandomRoom();
+        }
+        else
+        {
+            // load game scene for VR
+            PhotonNetwork.LoadLevel("GameScene");
+        }
     }
 
+    /// <summary>
+    /// Activate room menu and set status lights.
+    /// </summary>
     public override void OnJoinedRoom()
     {
         infoTextPanel.WriteLine("Joined room \"" + PhotonNetwork.CurrentRoom.Name + "\", current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
@@ -259,7 +202,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.OPERATOR : GUIConstants.IndicatorLight.ASSISTANT); // set myself ready
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
             playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.ASSISTANT : GUIConstants.IndicatorLight.OPERATOR);
-
     }
 
     public override void OnPlayerEnteredRoom(Player other)
@@ -272,6 +214,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         infoTextPanel.WriteLine("Player left room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        playerReadyPanel.SetRed(Application.isMobilePlatform ? GUIConstants.IndicatorLight.ASSISTANT : GUIConstants.IndicatorLight.OPERATOR);
     }
 
     private void OnApplicationQuit()
