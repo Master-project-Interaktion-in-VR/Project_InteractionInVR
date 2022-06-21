@@ -7,7 +7,10 @@ using UnityEngine;
 public class PickUp : BaseInputHandler, IMixedRealityHandJointHandler, IMixedRealityPointerHandler
 {
     public MixedRealityInputAction PickUpAction;
+    public MixedRealityInputAction GrabAction;
     public bool CollidedWithHand;
+
+    public Item item;
     
     protected override void RegisterHandlers()
     {
@@ -42,7 +45,14 @@ public class PickUp : BaseInputHandler, IMixedRealityHandJointHandler, IMixedRea
     {
         if (eventData.MixedRealityInputAction == PickUpAction && CollidedWithHand)
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            InventoryManager.instance.Add(item);
+            Destroy(gameObject);
+        }
+
+        if (eventData.MixedRealityInputAction == GrabAction)
+        {
+            Debug.Log("dein vataaa");
         }
     }
 }
