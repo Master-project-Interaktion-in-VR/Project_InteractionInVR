@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
+    private static bool DEBUG = false;
+    // DEBUG: menu scene with mouse (PC view), skip intro, enable debug scene load
+
     [SerializeField]
     private string gameVersion;
 
@@ -67,7 +70,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         _photonView = GetComponent<PhotonView>();
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && !DEBUG
         if (!Application.isMobilePlatform)
         {
             // configure scene for PC
@@ -83,7 +86,13 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        //StartCoroutine(Intro());
+        if (!DEBUG)
+        {
+            // just make sure, menu is disabled and cutscene is enabled and played
+            menu.SetActive(false);
+            GameObjectExtensions.FindObject("MenuCorridor").SetActive(true);
+            StartCoroutine(Intro());
+        }
         ConnectToPhoton();
     }
 
@@ -91,19 +100,22 @@ public class Launcher : MonoBehaviourPunCallbacks
     void Update()
     {
         // DEBUG START
-        if (Input.GetMouseButtonDown(0))
+        if (DEBUG)
         {
-            const float maxDistance = 100f;
-            Ray ray = GameObject.Find("DebugCamera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-            RaycastHit[] hits = Physics.RaycastAll(ray, maxDistance).OrderBy(h => h.distance).ToArray();
-            for (int i = 0; i < hits.Length; i++)
+            if (Input.GetMouseButtonDown(0))
             {
-                RaycastHit hit = hits[i];
-
-                if (hit.collider.gameObject.name == "DebugStartButton")
+                const float maxDistance = 100f;
+                Ray ray = GameObject.Find("DebugCamera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+                RaycastHit[] hits = Physics.RaycastAll(ray, maxDistance).OrderBy(h => h.distance).ToArray();
+                for (int i = 0; i < hits.Length; i++)
                 {
-                    Debug.Log(hit.collider.gameObject.name);
-                    OnClickedDebugButton();
+                    RaycastHit hit = hits[i];
+
+                    if (hit.collider.gameObject.name == "DebugStartButton")
+                    {
+                        Debug.Log(hit.collider.gameObject.name);
+                        OnClickedDebugButton();
+                    }
                 }
             }
         }
@@ -182,7 +194,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else if (!PhotonNetwork.InRoom)
         {
-            PhotonNetwork.JoinRandomRoom();
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 2 });
+            infoTextPanel.WriteLine("Create debug room...");
         }
         else
         {
