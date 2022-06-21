@@ -48,19 +48,6 @@ namespace XDPaint.Controllers
 		private bool isWebgl = false;
 #endif
 
-		void TryInitialize()
-		{
-			List<InputDevice> allDevices = new List<InputDevice>();
-			InputDevices.GetDevices(allDevices);
-			foreach (InputDevice device in allDevices)
-			{
-				if (device.name.Contains("Right"))
-				{
-					rightHandedController = device;
-				}
-			}
-		}
-
 		void Start()
 		{
 #if VR_ENABLED
@@ -68,19 +55,22 @@ namespace XDPaint.Controllers
 #endif
 		}
 
-        void Update()
+		void Update()
 		{
-			if (!rightHandedController.isValid)
-            {
-				TryInitialize();
-				return;
-            }
-			//VR
 			if (IsVRMode)
 			{
+				if (!rightHandedController.isValid)
+				{
+					// controllers are not instantly available
+					TryInitialize();
+					return;
+				}
+
+				// button up, down and press events
 				bool up = false;
 				bool down = false;
 				bool button = false;
+
 				rightHandedController.TryGetFeatureValue(CommonUsages.triggerButton, out var triggerValue);
 				if (_trigger && !triggerValue)
 					up = true;
@@ -123,6 +113,7 @@ namespace XDPaint.Controllers
 
                 if (button)
                 {
+					Debug.Log("draw draw draw");
                     if (OnMouseButton != null)
 					{
 						OnMouseButton(screenPoint);
@@ -224,5 +215,20 @@ namespace XDPaint.Controllers
 				}
 			}
 		}
+
+
+		void TryInitialize()
+		{
+			List<InputDevice> allDevices = new List<InputDevice>();
+			InputDevices.GetDevices(allDevices);
+			foreach (InputDevice device in allDevices)
+			{
+				if (device.name.Contains("Right"))
+				{
+					rightHandedController = device;
+				}
+			}
+		}
+
 	}
 }
