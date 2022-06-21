@@ -101,7 +101,11 @@ namespace XDPaint.Controllers
 				//Debug.DrawRay(PenTransform.position, Vector3.down, Color.green);
 
 				if (PenTransform.position.y > 0.05) // only draw if < 5cm above ground
+				{
+					if (button) // mouse up if drawing is interrupted
+						OnMouseUp(screenPoint);
 					return;
+				}
 
                 if (down)
                 {
@@ -113,7 +117,6 @@ namespace XDPaint.Controllers
 
                 if (button)
                 {
-					Debug.Log("draw draw draw");
                     if (OnMouseButton != null)
 					{
 						OnMouseButton(screenPoint);
