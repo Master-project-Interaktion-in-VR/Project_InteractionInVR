@@ -184,8 +184,8 @@ GameObject:
   - component: {fileID: 638274847}
   - component: {fileID: 638274846}
   - component: {fileID: 638274845}
-  - component: {fileID: 638274844}
   - component: {fileID: 638274843}
+  - component: {fileID: 638274848}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -224,23 +224,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &638274844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638274841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d61468f8b77ae4b92c344bc9a600fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_allowOffhandGrab: 1
-  m_snapPosition: 0
-  m_snapOrientation: 0
-  m_snapOffset: {fileID: 0}
-  m_grabPoints: []
 --- !u!65 &638274845
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -304,6 +287,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638274841}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &638274848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638274841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74e1b465bf02ff43bc451535a3255bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFocusRequired: 1
+  PickUpAction:
+    id: 1
+    description: Select
+    axisConstraint: 2
+  CollidedWithHand: 0
 --- !u!1 &742039419
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,8 +317,8 @@ GameObject:
   - component: {fileID: 742039425}
   - component: {fileID: 742039424}
   - component: {fileID: 742039423}
-  - component: {fileID: 742039422}
   - component: {fileID: 742039421}
+  - component: {fileID: 742039426}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -356,23 +357,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &742039422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 742039419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d61468f8b77ae4b92c344bc9a600fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_allowOffhandGrab: 1
-  m_snapPosition: 0
-  m_snapOrientation: 0
-  m_snapOffset: {fileID: 0}
-  m_grabPoints: []
 --- !u!65 &742039423
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -436,6 +420,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 742039419}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &742039426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742039419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74e1b465bf02ff43bc451535a3255bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFocusRequired: 1
+  PickUpAction:
+    id: 1
+    description: Select
+    axisConstraint: 2
+  CollidedWithHand: 0
 --- !u!1 &984245676
 GameObject:
   m_ObjectHideFlags: 0
