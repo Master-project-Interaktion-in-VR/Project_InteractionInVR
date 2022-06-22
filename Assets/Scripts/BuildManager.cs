@@ -2,7 +2,10 @@ using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuildManager : MonoBehaviour
 {
@@ -13,17 +16,33 @@ public class BuildManager : MonoBehaviour
         public Vector3 position;
     }
 
+    struct AssembledBuildPoints
+    {
+        public GameObject buildPoint1 { get; set; }
+        public GameObject buildPoint2 { get; set; }
+
+        public AssembledBuildPoints(GameObject buildPoint1, GameObject buildPoint2)
+        {
+            this.buildPoint1 = buildPoint1;
+            this.buildPoint2 = buildPoint2;
+        }
+    }
+
     public static Queue<CollisionEvent> collisions;
 
     public GameObject build_objects_Prefab;
     GameObject build_objects;
     static List<GameObject> holdingObjects_List;
+    List<AssembledBuildPoints> assembledBuildPoints;
+
+    public GameObject infoCanvas_Prefab;
 
     // Start is called before the first frame update
     void Start()
     {
         collisions = new Queue<CollisionEvent>();
         build_objects = Instantiate(build_objects_Prefab);
+        assembledBuildPoints = new List<AssembledBuildPoints>();
 
         ToggleHandVisualisation handVisualisation = new ToggleHandVisualisation();
         handVisualisation.OnToggleHandJoint();
@@ -50,6 +69,9 @@ public class BuildManager : MonoBehaviour
 
     public void AssembleObjects(GameObject buildPoint1, GameObject buildPoint2)
     {
+        AssembledBuildPoints assembledBuildPoint = new AssembledBuildPoints(buildPoint1, buildPoint2);
+        assembledBuildPoints.Add(assembledBuildPoint);
+
         GameObject buildModel1 = buildPoint1.transform.parent.gameObject;
 
         // switch snapPoints if object1 is not the new object
@@ -69,14 +91,10 @@ public class BuildManager : MonoBehaviour
         GameObject buildModel1 = snapPoint.transform.parent.gameObject;
         GameObject buildModel2 = otherPoint.transform.parent.gameObject;
 
-        Debug.Log("object1: " + buildModel1 + " object2: " + buildModel2);
-
         // turn snapPoint
         snapPoint.transform.localEulerAngles = new Vector3(snapPoint.transform.localEulerAngles.x, snapPoint.transform.localEulerAngles.y, snapPoint.transform.localEulerAngles.z + 180);
 
-        Debug.Log("---buildModel1 parent: " + buildModel1.transform.parent + " buildModel2 parent: " + buildModel2.transform.parent);
         bool newHoldingBody = false;
-        bool combineBody = false;
         // if there are already assembled objects in a holding body, make a new one
         if (buildModel1.transform.parent.name == "AntennaPieces(Clone)" && buildModel2.transform.parent.name == "AntennaPieces(Clone)" && GameObject.Find("holdingBody") != null)
             newHoldingBody = true;
@@ -84,7 +102,6 @@ public class BuildManager : MonoBehaviour
         // if both objects of the collision are already in a collection of assembled objects, put all in one holdingObject
         if (buildModel1.transform.parent.name == "holdingBody" && buildModel2.transform.parent.name == "holdingBody")
         {
-            combineBody = true;
             // find the holdingObjects of buildModels and make it the main holdingObject
             GameObject snap_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel1.name));
             GameObject other_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel2.name));
@@ -105,16 +122,18 @@ public class BuildManager : MonoBehaviour
             snapPoint.transform.parent = buildModel1.transform;
 
             // make all children of the snap_HoldingObject to children of the other_HoldingObject
-            // TODO: Bug fixen children get deleted
-            int childCount = transform.childCount;
+            int childCount = snap_HoldingObject.transform.childCount;
             List<Transform> children = new List<Transform>();
             for (int i = 0; i < childCount; ++i)
-                children.Add(transform.GetChild(i));
+                children.Add(snap_HoldingObject.transform.GetChild(i));
 
             foreach (Transform child in children)
                 child.parent = other_HoldingObject.transform;
 
             Destroy(snap_HoldingObject);
+
+            CheckAssembly();
+
             return;
         }
 
@@ -145,7 +164,6 @@ public class BuildManager : MonoBehaviour
 
         if (newHoldingBody)
         {
-            Debug.Log("---new");
             GameObject newHoldingObject = new GameObject();
             newHoldingObject.name = "holdingBody";
             newHoldingObject = AddComponents(newHoldingObject);
@@ -154,26 +172,25 @@ public class BuildManager : MonoBehaviour
             buildModel1.transform.parent = newHoldingObject.transform;
             buildModel2.transform.parent = newHoldingObject.transform;
             holdingObjects_List.Add(newHoldingObject);
+
+            CheckAssembly();
+
             return;
         }
-
-        //if (combineBody)
-        //{
-        //    Debug.Log("---combineBody");
-        //    return;
-        //}
 
         // make two objects children of new object
         buildModel1.transform.parent = holdingObjects_List[0].transform;
         buildModel2.transform.parent = holdingObjects_List[0].transform;
-        Debug.Log("---old");
+
+        CheckAssembly();
     }
 
     public void DisassembleObjects()
     {
         GameObject[] objects = GameObject.FindGameObjectsWithTag("InitialObject");
         Destroy(build_objects);
-        foreach(GameObject holdingObject in holdingObjects_List)
+
+        foreach (GameObject holdingObject in holdingObjects_List)
         {
             Destroy(holdingObject);
         }
@@ -181,7 +198,42 @@ public class BuildManager : MonoBehaviour
         {
             Destroy(obj);
         }
+
+        collisions = new Queue<CollisionEvent>();
+        assembledBuildPoints = new List<AssembledBuildPoints>();
+        holdingObjects_List = new List<GameObject>();
+
         build_objects = Instantiate(build_objects_Prefab);
+    }
+
+    void CheckAssembly()
+    {
+        // check newest assembling
+        AssembledBuildPoints newest_assembledBuildPoint = assembledBuildPoints.Last();
+        bool newest_correctAssembling = CollisionManager.correct_AssembledBuildPoints.Contains((newest_assembledBuildPoint.buildPoint1.name, newest_assembledBuildPoint.buildPoint2.name));
+        Debug.Log("--- " + newest_assembledBuildPoint.buildPoint1.name + " + " + newest_assembledBuildPoint.buildPoint2.name + (newest_correctAssembling == true ? " CORRECT ASSEMBLED!" : " NOT CORECT ASSEMBLED. Try again..."));
+
+        // if not all objects are assembled do nothing
+        if (holdingObjects_List[0].transform.childCount < 8)
+            return;
+
+        Debug.Log("--- you have assembled all objects - checking if assmbled correctly");
+
+        // checking all assembled Build Points
+        foreach (AssembledBuildPoints assembledBuildPoint in assembledBuildPoints)
+        {
+            bool correctAssembling = CollisionManager.correct_AssembledBuildPoints.Contains((assembledBuildPoint.buildPoint1.name, assembledBuildPoint.buildPoint2.name));
+            if (!correctAssembling)
+            {
+                string loseText = "NOT CORRECT ASSEMBLED. Try again..";
+                Debug.Log(loseText);
+                ShowTextForSeconds(loseText, 5);
+                return;
+            }
+        }
+        string winText = "WHOOO you have build the Antenna!";
+        Debug.Log(winText);
+        ShowTextForSeconds(winText, 5);
     }
 
     public GameObject RemoveComponents(GameObject obj)
@@ -220,6 +272,21 @@ public class BuildManager : MonoBehaviour
         //obj.tag = "BuildObject";
 
         return obj;
+    }
+
+    public void ShowTextForSeconds(string text, int seconds)
+    {
+        GameObject infoCanvas = Instantiate(infoCanvas_Prefab);
+        infoCanvas.transform.Find("InfoText_VR").GetComponent<TextMeshPro>().text = text;
+
+        IEnumerator coroutine = WaitAndDelete(seconds, infoCanvas);
+        StartCoroutine(coroutine);
+    }
+
+    private IEnumerator WaitAndDelete(float waitTime, GameObject hideObject)
+    {
+        yield return new WaitForSeconds(waitTime);
+        hideObject.SetActive(false);
     }
 }
 

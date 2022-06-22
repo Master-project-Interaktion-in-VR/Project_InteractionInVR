@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 4878008987023027469}
   - component: {fileID: 6134144242589711049}
   m_Layer: 0
-  m_Name: mittelstange_BuildCollider1
+  m_Name: zwischenhalterung_BuildCollider1
   m_TagString: BuildObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2351,7 +2351,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 1184357829295822651}
+  constraintsManager: {fileID: 6539061029442692178}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -2941,7 +2941,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 1184357829295822651}
+  constraintsManager: {fileID: 2542069669648951823}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
