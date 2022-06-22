@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameSceneManager : MonoBehaviour
 {
+    [Header("PC Configuration")]
+
     [SerializeField]
     private List<GameObject> deactivateObjects;
 
@@ -11,12 +13,13 @@ public class GameSceneManager : MonoBehaviour
     private Camera assistantCamera;
 
 
-    // Start is called before the first frame update
     void Start()
     {
-        if (SceneSpanningData.IsAssistant)
+#if !UNITY_EDITOR
+        // do VR in Editor
+        if (!Application.isMobilePlatform)
         {
-            Debug.Log("I AM THE ASSISTANT");
+            // is assistant
             foreach (GameObject obj in deactivateObjects)
             {
                 obj.SetActive(false);
@@ -26,8 +29,7 @@ public class GameSceneManager : MonoBehaviour
             //playspaceTransform = GameObject.Find("DefaultGazeCursor");
             //playerTransform = GameObject.Find("MixedRealityPlayspace");
         }
-        else
-            Debug.Log("I AM THE PLAYER");
+#endif
     }
 
     // Update is called once per frame

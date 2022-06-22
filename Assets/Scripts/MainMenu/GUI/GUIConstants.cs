@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class GUIConstants
 {
@@ -16,6 +18,19 @@ public static class GUIConstants
         PHOTON,
         AIR_LOCK,
         OXYGEN,
-        PROTECTORS
+        PROTECTORS,
+        OPERATOR,
+        ASSISTANT
     }
+
+    [Serializable]
+    public struct Light
+    {
+        public IndicatorLight light;
+        public Image image;
+    }
+
+
+    public static string PLATFORM_PC = "PC";
+    public static string PLATFORM_VR = "VR";
 }

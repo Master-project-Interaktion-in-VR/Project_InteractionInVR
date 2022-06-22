@@ -8,15 +8,14 @@ using UnityEngine.UI;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
+    private static bool DEBUG = false;
+    // DEBUG: menu scene with mouse (PC view), skip intro, enable debug scene load
 
     [SerializeField]
-    private Button connectButton;
+    private string gameVersion;
 
     [SerializeField]
-    private Button playButton;
-
-    [SerializeField]
-    private Toggle assistantToggle;
+    private Animation intro;
 
     [SerializeField]
     private TextPanel infoTextPanel;
@@ -25,21 +24,42 @@ public class Launcher : MonoBehaviourPunCallbacks
     private LightsPanel lightsPanel;
 
     [SerializeField]
-    private string gameVersion;
+    private LightsPanel playerReadyPanel;
 
-    [SerializeField]
-    private byte maxPlayersPerRoom;
 
-    [SerializeField]
-    private Animation intro;
+    [Header("Menus")]
 
     [SerializeField]
     private GameObject menu;
 
+    [SerializeField]
+    private GameObject mainMenuContainer;
 
-    private bool _isAssistant;
-    private bool _gameHasAssistant;
-    private ButtonVisuals _buttonVisuals;
+    [SerializeField]
+    private GameObject roomMenuContainer;
+
+    [SerializeField]
+    private TMPro.TextMeshProUGUI roomMenuNameText;
+
+    [SerializeField]
+    private GameObject lobbyMenuContainer;
+
+
+    [Header("PC Configuration")]
+
+    [SerializeField]
+    private List<GameObject> deactivateObjects;
+
+    [SerializeField]
+    private Camera pcCamera;
+
+    [SerializeField]
+    private GameObject cylinderMenuCanvas;
+
+    [SerializeField]
+    private Canvas menuCanvas;
+
+
 
     private PhotonView _photonView;
 
@@ -48,37 +68,62 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         // load a new scene on all clients
         PhotonNetwork.AutomaticallySyncScene = true;
-        _buttonVisuals = menu.GetComponentInChildren<ButtonVisuals>();
         _photonView = GetComponent<PhotonView>();
+
+#if !UNITY_EDITOR && !DEBUG
+        if (!Application.isMobilePlatform)
+        {
+            // configure scene for PC
+            menuCanvas.transform.parent = null;
+            menuCanvas.transform.position = new Vector3(0, 1.2f, 1);
+            deactivateObjects.ForEach(o => o.SetActive(false));
+            pcCamera.gameObject.SetActive(true);
+            //cylinderMenuCanvas.GetComponent<MeshRenderer>().enabled = false;
+            menuCanvas.worldCamera = pcCamera;
+        }
+#endif
     }
 
     void Start()
     {
-        StartCoroutine(Intro());
+        if (!DEBUG)
+        {
+            // just make sure, menu is disabled and cutscene is enabled and played
+            menu.SetActive(false);
+            GameObjectExtensions.FindObject("MenuCorridor").SetActive(true);
+            StartCoroutine(Intro());
+        }
+        ConnectToPhoton();
     }
 
 
     void Update()
     {
         // DEBUG START
-        if (Input.GetMouseButtonDown(0))
+        if (DEBUG)
         {
-            const float maxDistance = 100f;
-            Ray ray = GameObject.Find("DebugCamera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-            RaycastHit[] hits = Physics.RaycastAll(ray, maxDistance).OrderBy(h => h.distance).ToArray();
-            for (int i = 0; i < hits.Length; i++)
+            if (Input.GetMouseButtonDown(0))
             {
-                RaycastHit hit = hits[i];
-
-                if (hit.collider.gameObject.name == "DebugStartButton")
+                const float maxDistance = 100f;
+                Ray ray = GameObject.Find("DebugCamera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+                RaycastHit[] hits = Physics.RaycastAll(ray, maxDistance).OrderBy(h => h.distance).ToArray();
+                for (int i = 0; i < hits.Length; i++)
                 {
-                    Debug.Log(hit.collider.gameObject.name);
-                    OnClickedDebugButton();
+                    RaycastHit hit = hits[i];
+
+                    if (hit.collider.gameObject.name == "DebugStartButton")
+                    {
+                        Debug.Log(hit.collider.gameObject.name);
+                        OnClickedDebugButton();
+                    }
                 }
             }
         }
     }
 
+    /// <summary>
+    /// Short cutscene. Afterwards show menu and connect to photon.
+    /// </summary>
     public IEnumerator Intro()
     {
         intro.Play();
@@ -104,6 +149,40 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         infoTextPanel.WriteLine("Connected to Photon master. We are online!");
         lightsPanel.SetGreen(GUIConstants.IndicatorLight.PHOTON);
+        PhotonNetwork.JoinLobby();
+    }
+
+    public void OnClickedPlayButton()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            infoTextPanel.WriteLine("We are connecting to the network. Please wait.");
+            return;
+        }
+
+        lobbyMenuContainer.SetActive(true);
+        mainMenuContainer.SetActive(false);
+    }
+
+    public void OnClickedStartButton()
+    {
+        if (PhotonNetwork.CurrentRoom.PlayerCount != 2)
+        {
+            infoTextPanel.WriteLine("We need support by another player.");
+            return;
+        }
+        // start game
+        if (!PhotonNetwork.IsMasterClient)
+            infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
+        else
+        {
+            PhotonNetwork.LoadLevel("GameScene");
+        }
+    }
+
+    public void OnClickedQuitButton()
+    {
+        Application.Quit();
     }
 
     public void OnClickedDebugButton()
@@ -115,82 +194,47 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else if (!PhotonNetwork.InRoom)
         {
-            PhotonNetwork.JoinRandomRoom();
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 2 });
+            infoTextPanel.WriteLine("Create debug room...");
         }
         else
         {
             // load game scene for VR
-            SceneSpanningData.IsAssistant = false;
-            PhotonNetwork.LoadLevel("GameScene"); //XDPaintDemo GameScene
+            PhotonNetwork.LoadLevel("GameScene");
         }
     }
 
-    public void OnClickedPlayButton()
-    {
-        if (!PhotonNetwork.IsConnected)
-        {
-            infoTextPanel.WriteLine("We are connecting to the network. Please wait.");
-            return;
-        }
-
-        if (PhotonNetwork.InRoom)
-        {
-            // start game
-            if (!PhotonNetwork.IsMasterClient)
-                infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
-            else if (!_gameHasAssistant)
-                infoTextPanel.WriteLine("Chief, you cannot start without an assistant!");
-            else
-            {
-                SceneSpanningData.IsAssistant = _isAssistant;
-                PhotonNetwork.LoadLevel("GameScene"); //XDPaintDemo GameScene
-            }
-        }
-        else
-        {
-            // join room
-            PhotonNetwork.JoinRandomRoom();
-        }
-    }
-
-    public void OnAssistantToggleChanged()
-    {
-        _isAssistant = assistantToggle.isOn;
-        Debug.Log("is on: " + assistantToggle.isOn);
-        if (_isAssistant)
-            _gameHasAssistant = true;
-        _photonView.RPC("OnRemoteAssistantChanged", RpcTarget.Others, _isAssistant);
-    }
-
-    [PunRPC]
-    public void OnRemoteAssistantChanged(bool other)
-    {
-        Debug.Log("Remote is assistant");
-        _isAssistant = !other;
-        assistantToggle.isOn = !other;
-        _gameHasAssistant = true;
-    }
-
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
-        infoTextPanel.WriteLine("Create room...");
-    }
-
+    /// <summary>
+    /// Activate room menu and set status lights.
+    /// </summary>
     public override void OnJoinedRoom()
     {
-        infoTextPanel.WriteLine("Joined room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
-        assistantToggle.gameObject.SetActive(true);
+        infoTextPanel.WriteLine("Joined room \"" + PhotonNetwork.CurrentRoom.Name + "\", current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        roomMenuNameText.text = PhotonNetwork.CurrentRoom.Name;
+        roomMenuContainer.SetActive(true);
+        playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.OPERATOR : GUIConstants.IndicatorLight.ASSISTANT); // set myself ready
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.ASSISTANT : GUIConstants.IndicatorLight.OPERATOR);
     }
 
     public override void OnPlayerEnteredRoom(Player other)
     {
         // not called if I am joining myself
         infoTextPanel.WriteLine("Player joined room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        playerReadyPanel.SetGreen(Application.isMobilePlatform ? GUIConstants.IndicatorLight.ASSISTANT : GUIConstants.IndicatorLight.OPERATOR);
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         infoTextPanel.WriteLine("Player left room, current players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        playerReadyPanel.SetRed(Application.isMobilePlatform ? GUIConstants.IndicatorLight.ASSISTANT : GUIConstants.IndicatorLight.OPERATOR);
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
     }
 }

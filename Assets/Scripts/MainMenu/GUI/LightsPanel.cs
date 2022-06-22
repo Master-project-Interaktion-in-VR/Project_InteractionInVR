@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class LightsPanel : MonoBehaviour
 {
@@ -14,19 +15,7 @@ public class LightsPanel : MonoBehaviour
     [Space(10)]
 
     [SerializeField]
-    private Image coreLight;
-
-    [SerializeField]
-    private Image photonLight;
-
-    [SerializeField]
-    private Image airLockLight;
-
-    [SerializeField]
-    private Image oxygenLight;
-
-    [SerializeField]
-    private Image protectorsLight;
+    private GUIConstants.Light[] lights;
 
     // Start is called before the first frame update
     void Start()
@@ -42,45 +31,11 @@ public class LightsPanel : MonoBehaviour
 
     public void SetRed(GUIConstants.IndicatorLight light)
     {
-        switch (light)
-        {
-            case GUIConstants.IndicatorLight.CORE:
-                coreLight.sprite = redLightSprite;
-                break;
-            case GUIConstants.IndicatorLight.PHOTON:
-                photonLight.sprite = redLightSprite;
-                break;
-            case GUIConstants.IndicatorLight.AIR_LOCK:
-                airLockLight.sprite = redLightSprite;
-                break;
-            case GUIConstants.IndicatorLight.OXYGEN:
-                oxygenLight.sprite = redLightSprite;
-                break;
-            case GUIConstants.IndicatorLight.PROTECTORS:
-                protectorsLight.sprite = redLightSprite;
-                break;
-        }
+        lights.Where(l => l.light == light).First().image.sprite = redLightSprite;
     }
 
     public void SetGreen(GUIConstants.IndicatorLight light)
     {
-        switch (light)
-        {
-            case GUIConstants.IndicatorLight.CORE:
-                coreLight.sprite = greenLightSprite;
-                break;
-            case GUIConstants.IndicatorLight.PHOTON:
-                photonLight.sprite = greenLightSprite;
-                break;
-            case GUIConstants.IndicatorLight.AIR_LOCK:
-                airLockLight.sprite = greenLightSprite;
-                break;
-            case GUIConstants.IndicatorLight.OXYGEN:
-                oxygenLight.sprite = greenLightSprite;
-                break;
-            case GUIConstants.IndicatorLight.PROTECTORS:
-                protectorsLight.sprite = greenLightSprite;
-                break;
-        }
+        lights.Where(l => l.light == light).First().image.sprite = greenLightSprite;
     }
 }

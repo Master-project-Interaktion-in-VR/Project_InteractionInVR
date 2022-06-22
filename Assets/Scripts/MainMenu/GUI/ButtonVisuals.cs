@@ -19,12 +19,12 @@ public class ButtonVisuals : MonoBehaviour
     private Color disabled;
 
 
-    private List<Button> _disabledButtons;
+    private List<Selectable> _disabledButtons;
 
     // Start is called before the first frame update
     void Start()
     {
-        _disabledButtons = new List<Button>();
+        _disabledButtons = new List<Selectable>();
     }
 
     // Update is called once per frame
@@ -38,7 +38,7 @@ public class ButtonVisuals : MonoBehaviour
         
     }
 
-    public void DisableButton(Button button)
+    public void DisableButton(Selectable button)
     {
         button.interactable = false;
         button.gameObject.GetComponent<Image>().color = disabled;
@@ -48,7 +48,7 @@ public class ButtonVisuals : MonoBehaviour
         button.transform.parent.GetComponent<Image>().color = tempColor;
         _disabledButtons.Add(button);
     }
-    public void EnableButton(Button button)
+    public void EnableButton(Selectable button)
     {
         button.interactable = true;
         button.gameObject.GetComponent<Image>().color = normal;
@@ -59,7 +59,7 @@ public class ButtonVisuals : MonoBehaviour
         _disabledButtons.Remove(button);
     }
 
-    public void OnButtonHovered(Button button)
+    public void OnButtonHovered(Selectable button)
     {
         if (_disabledButtons.Contains(button))
             return;
@@ -67,7 +67,7 @@ public class ButtonVisuals : MonoBehaviour
         button.gameObject.GetComponent<Image>().color = hover;
         button.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = hover;
     }
-    public void OnButtonUnhovered(Button button)
+    public void OnButtonUnhovered(Selectable button)
     {
         if (_disabledButtons.Contains(button))
             return;
@@ -77,7 +77,7 @@ public class ButtonVisuals : MonoBehaviour
     }
 
 
-    public void OnButtonDown(Button button)
+    public void OnButtonDown(Selectable button)
     {
         if (_disabledButtons.Contains(button))
             return;
@@ -86,7 +86,7 @@ public class ButtonVisuals : MonoBehaviour
         button.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = pressed;
     }
 
-    public void OnButtonUp(Button button)
+    public void OnButtonUp(Selectable button)
     {
         if (_disabledButtons.Contains(button))
             return;
@@ -94,4 +94,14 @@ public class ButtonVisuals : MonoBehaviour
         button.gameObject.GetComponent<Image>().color = normal;
         button.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = normal;
     }
+
+    //public void OnSliderDown(Image sliderImage)
+    //{
+    //    sliderImage.color = pressed;
+    //}
+
+    //public void OnSliderUp(Image sliderImage)
+    //{
+    //    sliderImage.color = normal;
+    //}
 }

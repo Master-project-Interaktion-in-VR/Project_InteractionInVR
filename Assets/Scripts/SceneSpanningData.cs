@@ -1,5 +1,5 @@
 
 public static class SceneSpanningData
 {
-    public static bool IsAssistant { get; set; }
+    public static bool Example { get; set; }
 }
