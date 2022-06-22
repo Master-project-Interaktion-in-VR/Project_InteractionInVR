@@ -80,6 +80,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             pcCamera.gameObject.SetActive(true);
             //cylinderMenuCanvas.GetComponent<MeshRenderer>().enabled = false;
             menuCanvas.worldCamera = pcCamera;
+            menuCanvas.gameObject.SetActive(false);
         }
 #endif
     }
@@ -131,7 +132,14 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             yield return new WaitForSeconds(1);
         }
+#if !UNITY_EDITOR
+        if (Application.isMobilePlatform) // vr
+            menu.SetActive(true);
+        else // pc
+            menuCanvas.gameObject.SetActive(true);
+#else
         menu.SetActive(true);
+#endif
         yield return new WaitForSeconds(1);
         ConnectToPhoton();
     }
