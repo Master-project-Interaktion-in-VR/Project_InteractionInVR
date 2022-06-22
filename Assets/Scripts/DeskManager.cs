@@ -13,7 +13,7 @@ public class DeskManager : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Entering!");
-        if (other.gameObject.name == "PlayerEmpty")
+        if (other.gameObject.name == "PlayerEmpty") //TODO: exchange with MRTK-Quest_OVRCameraRig(Clone)
         {
             rockTable.GetComponentInChildren<Renderer>().enabled = true;
         }
@@ -22,7 +22,7 @@ public class DeskManager : MonoBehaviour
     {
         Debug.Log("Exiting!");
         if (other.gameObject.name == "PlayerEmpty")
-        {.cs
+        {
             rockTable.GetComponentInChildren<Renderer>().enabled = false;
         }
     }
