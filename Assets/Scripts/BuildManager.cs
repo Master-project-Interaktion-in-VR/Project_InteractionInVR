@@ -31,9 +31,9 @@ public class BuildManager : MonoBehaviour
     public static Queue<CollisionEvent> collisions;
 
     public GameObject build_objects_Prefab;
-    GameObject build_objects;
-    static List<GameObject> holdingObjects_List;
-    List<AssembledBuildPoints> assembledBuildPoints;
+    public static GameObject build_objects;
+    public static List<GameObject> holdingObjects_List;
+    static List<AssembledBuildPoints> assembledBuildPoints;
 
     public GameObject infoCanvas_Prefab;
 
@@ -41,14 +41,11 @@ public class BuildManager : MonoBehaviour
     void Start()
     {
         collisions = new Queue<CollisionEvent>();
-        build_objects = Instantiate(build_objects_Prefab);
-        build_objects.transform.parent = Calibration.table.transform;
+        
         assembledBuildPoints = new List<AssembledBuildPoints>();
 
         ToggleHandVisualisation handVisualisation = new ToggleHandVisualisation();
         handVisualisation.OnToggleHandJoint();
-
-        GameObject.Find("Disassemble_Button").GetComponent<Interactable>().OnClick.AddListener(DisassembleObjects);
 
         holdingObjects_List = new List<GameObject>();
     }
@@ -74,6 +71,11 @@ public class BuildManager : MonoBehaviour
         assembledBuildPoints.Add(assembledBuildPoint);
 
         GameObject buildModel1 = buildPoint1.transform.parent.gameObject;
+
+        if (holdingObjects_List == null)
+        {
+            holdingObjects_List = new List<GameObject>();
+        }
 
         // switch snapPoints if object1 is not the new object
         if (holdingObjects_List.Count > 0 && buildModel1.transform.parent.name == "holdingBody")

@@ -1,3 +1,4 @@
+using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,9 @@ public class Calibration : MonoBehaviour
                 if(table == null)
                 {
                     table = Instantiate(table_Prefab);
+                    BuildManager.build_objects = table.transform.Find("AntennaPieces").gameObject;
+                    BuildManager manager = new BuildManager();
+                    GameObject.Find("Disassemble_Button").GetComponent<Interactable>().OnClick.AddListener(manager.DisassembleObjects);
                 }
 
                 fixedMarker = GameObject.Find("fixedMarker").transform;
