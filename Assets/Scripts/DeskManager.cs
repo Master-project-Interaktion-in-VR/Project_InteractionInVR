@@ -18,4 +18,12 @@ public class DeskManager : MonoBehaviour
             rockTable.GetComponentInChildren<Renderer>().enabled = true;
         }
     }
+    void OnTriggerExit(Collider other)
+    {
+        Debug.Log("Exiting!");
+        if (other.gameObject.name == "PlayerEmpty")
+        {.cs
+            rockTable.GetComponentInChildren<Renderer>().enabled = false;
+        }
+    }
 }
