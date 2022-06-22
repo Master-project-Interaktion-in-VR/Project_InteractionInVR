@@ -42,6 +42,7 @@ public class BuildManager : MonoBehaviour
     {
         collisions = new Queue<CollisionEvent>();
         build_objects = Instantiate(build_objects_Prefab);
+        build_objects.transform.parent = Calibration.table.transform;
         assembledBuildPoints = new List<AssembledBuildPoints>();
 
         ToggleHandVisualisation handVisualisation = new ToggleHandVisualisation();
