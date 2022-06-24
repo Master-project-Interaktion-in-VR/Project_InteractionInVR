@@ -50,6 +50,8 @@ namespace XDPaint.Controllers
 
 		void Start()
 		{
+			//drawCamera.rect = new Rect((float)(Screen.width - 0) / Screen.width, (float)(Screen.height - 0) / Screen.height, 847 / Screen.width, 861 / Screen.height);
+			//drawCamera.SetRes(847, 861);
 #if VR_ENABLED
 			TryInitialize();
 #endif
@@ -65,6 +67,14 @@ namespace XDPaint.Controllers
 					TryInitialize();
 					return;
 				}
+
+
+				// Camera has fixed width and height on every screen solution
+				float x = (100f - 100f / (Screen.width / 847)) / 100f;
+				float y = (100f - 100f / (Screen.height / 861)) / 100f;
+				Debug.LogError("xy: " + x + ", " + y);
+				drawCamera.rect = new Rect(x, y, 1, 1);
+
 
 				// button up, down and press events
 				bool up = false;
@@ -111,7 +121,8 @@ namespace XDPaint.Controllers
                 {
                     if (OnMouseDown != null)
 					{
-                        OnMouseDown(screenPoint);
+						//GameObject.Find("DebugConsole").GetComponent<DebugConsole>().WriteLine("down");
+						OnMouseDown(screenPoint);
                     }
                 }
 
@@ -119,6 +130,11 @@ namespace XDPaint.Controllers
                 {
                     if (OnMouseButton != null)
 					{
+						Debug.LogError("draw: " + screenPoint);
+						Debug.LogError("fov: " + drawCamera.fieldOfView);
+						Debug.LogError("pix: " + drawCamera.pixelWidth + ", " + drawCamera.pixelHeight);
+						Debug.LogError("cam: " + drawCamera.transform.position);
+						//GameObject.Find("DebugConsole").GetComponent<DebugConsole>().WriteLine("draw");
 						OnMouseButton(screenPoint);
                     }
                 }
@@ -127,6 +143,7 @@ namespace XDPaint.Controllers
                 {
                     if (OnMouseUp != null)
 					{
+						//GameObject.Find("DebugConsole").GetComponent<DebugConsole>().WriteLine("up");
 						OnMouseUp(screenPoint);
                     }
                 }

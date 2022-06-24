@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    private static bool DEBUG = false;
+    //private static bool DEBUG = false;
     // DEBUG: menu scene with mouse (PC view), skip intro, enable debug scene load
 
     [SerializeField]
@@ -70,39 +70,39 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         _photonView = GetComponent<PhotonView>();
 
-#if !UNITY_EDITOR && !DEBUG
-        if (!Application.isMobilePlatform)
-        {
-            // configure scene for PC
-            menuCanvas.transform.parent = null;
-            menuCanvas.transform.position = new Vector3(0, 1.2f, 1);
-            deactivateObjects.ForEach(o => o.SetActive(false));
-            pcCamera.gameObject.SetActive(true);
-            //cylinderMenuCanvas.GetComponent<MeshRenderer>().enabled = false;
-            menuCanvas.worldCamera = pcCamera;
-            menuCanvas.gameObject.SetActive(false);
-        }
+#if !UNITY_EDITOR// && !DEBUG
+                if (!Application.isMobilePlatform)
+                {
+                    // configure scene for PC
+                    menuCanvas.transform.parent = null;
+                    menuCanvas.transform.position = new Vector3(0, 1.2f, 1);
+                    deactivateObjects.ForEach(o => o.SetActive(false));
+                    pcCamera.gameObject.SetActive(true);
+                    //cylinderMenuCanvas.GetComponent<MeshRenderer>().enabled = false;
+                    menuCanvas.worldCamera = pcCamera;
+                    menuCanvas.gameObject.SetActive(false);
+                }
 #endif
     }
 
     void Start()
     {
-        if (!DEBUG)
-        {
-            // just make sure, menu is disabled and cutscene is enabled and played
-            menu.SetActive(false);
-            GameObjectExtensions.FindObject("MenuCorridor").SetActive(true);
-            StartCoroutine(Intro());
-        }
-        ConnectToPhoton();
+        //if (!DEBUG)
+        //{
+        //// just make sure, menu is disabled and cutscene is enabled and played
+        //menu.SetActive(false);
+        //GameObjectExtensions.FindObject("MenuCorridor").SetActive(true);
+        StartCoroutine(Intro());
+        //}
+        //ConnectToPhoton();
     }
 
 
     void Update()
     {
         // DEBUG START
-        if (DEBUG)
-        {
+        //if (DEBUG)
+        //{
             if (Input.GetMouseButtonDown(0))
             {
                 const float maxDistance = 100f;
@@ -119,7 +119,7 @@ public class Launcher : MonoBehaviourPunCallbacks
                     }
                 }
             }
-        }
+        //}
     }
 
     /// <summary>
