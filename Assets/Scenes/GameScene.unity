@@ -1638,10 +1638,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 69839255944002451, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-      propertyPath: brush.size
-      value: 0.24
-      objectReference: {fileID: 0}
     - target: {fileID: 2639519925789878253, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
       propertyPath: m_Name
       value: PaintController
@@ -1689,14 +1685,6 @@ PrefabInstance:
     - target: {fileID: 4386831151853825179, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6355842455672300159, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6355842455672300159, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-      propertyPath: drawCamera
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6355842455672300159, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
       propertyPath: PenTransform
@@ -1764,9 +1752,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4345758872585610705, guid: 17655651c1bd61042806b2fe12946130, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345758872585610705, guid: 17655651c1bd61042806b2fe12946130, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 2ba8548ce09b2db448c1ba0aa63bff59, type: 2}
+      objectReference: {fileID: 2100000, guid: f94ecda34ac162e4dbc9b0fa8c1680dc, type: 2}
     - target: {fileID: 4345758872585610708, guid: 17655651c1bd61042806b2fe12946130, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1776,13 +1768,29 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4345758872585610711, guid: 17655651c1bd61042806b2fe12946130, type: 3}
+      propertyPath: paintTool
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345758872585610711, guid: 17655651c1bd61042806b2fe12946130, type: 3}
+      propertyPath: paintModeType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345758872585610711, guid: 17655651c1bd61042806b2fe12946130, type: 3}
       propertyPath: overrideCamera
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4345758872585610711, guid: 17655651c1bd61042806b2fe12946130, type: 3}
       propertyPath: Material.SourceMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 2ba8548ce09b2db448c1ba0aa63bff59, type: 2}
+      objectReference: {fileID: 2100000, guid: f94ecda34ac162e4dbc9b0fa8c1680dc, type: 2}
+    - target: {fileID: 4345758872585610711, guid: 17655651c1bd61042806b2fe12946130, type: 3}
+      propertyPath: useSourceTextureAsBackground
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345758872585610711, guid: 17655651c1bd61042806b2fe12946130, type: 3}
+      propertyPath: CopySourceTextureToPaintTexture
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4345758872585610715, guid: 17655651c1bd61042806b2fe12946130, type: 3}
       propertyPath: m_Layer
       value: 6

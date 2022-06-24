@@ -11,7 +11,7 @@ using Microsoft.MixedReality.Toolkit;
 
 namespace XDPaint.Controllers
 {
-	public class InputController : Singleton<InputController>, IMixedRealitySourceStateHandler
+	public class InputController : Singleton<InputController>
 	{
 		public delegate void OnInputUpdate();
 		public delegate void OnInputPosition(Vector3 position);
@@ -55,35 +55,12 @@ namespace XDPaint.Controllers
 
 		void Start()
 		{
-			//drawCamera.rect = new Rect((float)(Screen.width - 0) / Screen.width, (float)(Screen.height - 0) / Screen.height, 847 / Screen.width, 861 / Screen.height);
-			//drawCamera.SetRes(847, 861);
 #if VR_ENABLED
 			TryInitialize();
 #endif
 		}
 
         // TODO: draw on a transparent plane that is laid on top of the other
-
-        private void OnEnable()
-		{
-			CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
-        }
-
-        private void OnDisable()
-        {
-			CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
-		}
-		
-		// IMixedRealitySourceStateHandler interface
-		void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
-		{
-			var hand = eventData.Controller;
-		}
-
-		void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
-		{
-			var hand = eventData.Controller;
-		}
 
 
 		void Update()
