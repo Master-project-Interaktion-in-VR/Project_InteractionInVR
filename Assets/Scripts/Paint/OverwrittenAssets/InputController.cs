@@ -23,6 +23,8 @@ namespace XDPaint.Controllers
 
         [Header("VR Settings")]
         public bool IsVRMode;
+
+		// need VR pen because controller position and rotation are local to the playspace
         public Transform PenTransform;
         //[SerializeField]
         //private Camera drawCamera;
@@ -135,20 +137,22 @@ namespace XDPaint.Controllers
 
 #if VR_ENABLED
 
-                rightHandedController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
-                rightHandedController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion localCoordinateSystem);
+                //rightHandedController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+                //rightHandedController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion localCoordinateSystem);
 
 				// https://forum.unity.com/threads/get-local-direction-vector-with-no-transform.1105711/
 				// point forward direction of controller
 				// we only do this to enable "ray" painting (for research purposes maybe?)
 				// otherwise we could just use the world's Vector3.down
-				Vector3 forward = localCoordinateSystem * Vector3.forward;
+				//Vector3 forward = localCoordinateSystem * Vector3.forward;
+				// for world (and not playspace) values, we have to use the VR pen
+				Vector3 forward = PenTransform.TransformDirection(Vector3.forward);
 				//Debug.DrawRay(position, forward * 10, Color.red);
 
 				int layerMask = 1 << LayerMask.NameToLayer("Drawable");
 
 				RaycastHit hit;
-				if (Physics.Raycast(position, forward, out hit, 0.05f, layerMask))
+				if (Physics.Raycast(PenTransform.position, forward, out hit, 0.05f, layerMask))
                 {
 					Debug.LogError("HIT");
 					Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
