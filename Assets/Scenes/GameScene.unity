@@ -386,6 +386,50 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &609236142
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 609236144}
+  - component: {fileID: 609236143}
+  m_Layer: 0
+  m_Name: Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &609236143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609236142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69f56346258bdb1418747b27fd9bf430, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &609236144
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609236142}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.9279287, y: 1.5699463, z: 0.92686653}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &984245676
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +667,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -820,6 +864,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1208377996}
     m_Modifications:
+    - target: {fileID: 2109193088, guid: 5d706636d99af8844a2022ab4f112944, type: 3}
+      propertyPath: m_TrackingType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6542306573827040074, guid: 5d706636d99af8844a2022ab4f112944, type: 3}
       propertyPath: m_Name
       value: VRPen
@@ -1381,11 +1429,6 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
---- !u!20 &1783342632 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 1783342632, guid: 5d706636d99af8844a2022ab4f112944, type: 3}
-  m_PrefabInstance: {fileID: 1259526919}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1848428652
 GameObject:
   m_ObjectHideFlags: 0
@@ -1648,13 +1691,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6355842455672300159, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6355842455672300159, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
       propertyPath: drawCamera
       value: 
-      objectReference: {fileID: 1783342632}
+      objectReference: {fileID: 0}
     - target: {fileID: 6355842455672300159, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
       propertyPath: PenTransform
       value: 
-      objectReference: {fileID: 2109193091}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
 --- !u!1001 &4345758870923553548
@@ -1731,11 +1778,15 @@ PrefabInstance:
     - target: {fileID: 4345758872585610711, guid: 17655651c1bd61042806b2fe12946130, type: 3}
       propertyPath: overrideCamera
       value: 
-      objectReference: {fileID: 1783342632}
+      objectReference: {fileID: 0}
     - target: {fileID: 4345758872585610711, guid: 17655651c1bd61042806b2fe12946130, type: 3}
       propertyPath: Material.SourceMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 2ba8548ce09b2db448c1ba0aa63bff59, type: 2}
+    - target: {fileID: 4345758872585610715, guid: 17655651c1bd61042806b2fe12946130, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4345758872585610710, guid: 17655651c1bd61042806b2fe12946130, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 17655651c1bd61042806b2fe12946130, type: 3}

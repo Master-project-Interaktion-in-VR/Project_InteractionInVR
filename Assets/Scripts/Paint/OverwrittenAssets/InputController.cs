@@ -6,10 +6,12 @@ using UnityEngine.XR;
 #endif
 using UnityEngine;
 using XDPaint.Tools;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit;
 
 namespace XDPaint.Controllers
 {
-	public class InputController : Singleton<InputController>
+	public class InputController : Singleton<InputController>, IMixedRealitySourceStateHandler
 	{
 		public delegate void OnInputUpdate();
 		public delegate void OnInputPosition(Vector3 position);
@@ -18,14 +20,14 @@ namespace XDPaint.Controllers
 		[Header("Ignore Raycasts Settings")]
 		[SerializeField] private Canvas canvas;
 		[SerializeField] private GameObject[] ignoreForRaycasts;
-		
-		[Header("VR Settings")]
-		public bool IsVRMode;
-		public Transform PenTransform;
-		[SerializeField]
-		private Camera drawCamera;
 
-		public event OnInputUpdate OnUpdate;
+        [Header("VR Settings")]
+        public bool IsVRMode;
+        public Transform PenTransform;
+        //[SerializeField]
+        //private Camera drawCamera;
+
+        public event OnInputUpdate OnUpdate;
 		public event OnInputPosition OnMouseHover;
 		public event OnInputPositionPressure OnMouseDown;
 		public event OnInputPositionPressure OnMouseButton;
@@ -41,6 +43,7 @@ namespace XDPaint.Controllers
 		private InputDevice rightHandedController;
 #endif
 		private bool _trigger;
+		private Vector3 _lastScreenPoint;
 		private bool initialized;
 #if UNITY_WEBGL
 		private bool isWebgl = true;
@@ -57,6 +60,30 @@ namespace XDPaint.Controllers
 #endif
 		}
 
+        // TODO: draw on a transparent plane that is laid on top of the other
+
+        private void OnEnable()
+		{
+			CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+        }
+
+        private void OnDisable()
+        {
+			CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+		}
+		
+		// IMixedRealitySourceStateHandler interface
+		void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
+		{
+			var hand = eventData.Controller;
+		}
+
+		void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
+		{
+			var hand = eventData.Controller;
+		}
+
+
 		void Update()
 		{
 			if (IsVRMode)
@@ -70,10 +97,10 @@ namespace XDPaint.Controllers
 
 
 				// Camera has fixed width and height on every screen solution
-				float x = (100f - 100f / (Screen.width / 847)) / 100f;
-				float y = (100f - 100f / (Screen.height / 861)) / 100f;
-				Debug.LogError("xy: " + x + ", " + y);
-				drawCamera.rect = new Rect(x, y, 1, 1);
+				//float x = (100f - 100f / (Screen.width / 847)) / 100f;
+				//float y = (100f - 100f / (Screen.height / 861)) / 100f;
+				//Debug.LogError("xy: " + x + ", " + y);
+				//drawCamera.rect = new Rect(x, y, 1, 1);
 
 
 				// button up, down and press events
@@ -95,58 +122,69 @@ namespace XDPaint.Controllers
 				{
 					OnUpdate();
 				}
-				
-				var screenPoint = -Vector3.one;
-				if (OnMouseHover != null)
-				{
-					screenPoint = Camera.WorldToScreenPoint(PenTransform.position);
-					OnMouseHover(screenPoint);
-				}
+
+				if (!up && !down && !button)
+					return;
+
+				//var screenPoint = -Vector3.one;
+				//if (OnMouseHover != null)
+				//{
+				//	screenPoint = Camera.WorldToScreenPoint(PenTransform.position);
+				//	OnMouseHover(screenPoint);
+				//}
 
 #if VR_ENABLED
-				// no need to calculate screen position, always take the center of the draw camera
-				screenPoint = new Vector3(drawCamera.pixelWidth / 2, drawCamera.pixelHeight / 2);
 
-				//screenPoint = drawCamera.WorldToScreenPoint(PenTransform.position);
-				//Debug.DrawRay(PenTransform.position, Vector3.down, Color.green);
+                rightHandedController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+                rightHandedController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion localCoordinateSystem);
 
-				if (PenTransform.position.y > 0.05) // only draw if < 5cm above ground
-				{
-					if (button) // mouse up if drawing is interrupted
-						OnMouseUp(screenPoint);
-					return;
+				// https://forum.unity.com/threads/get-local-direction-vector-with-no-transform.1105711/
+				// point forward direction of controller
+				// we only do this to enable "ray" painting (for research purposes maybe?)
+				// otherwise we could just use the world's Vector3.down
+				Vector3 forward = localCoordinateSystem * Vector3.forward;
+				//Debug.DrawRay(position, forward * 10, Color.red);
+
+				int layerMask = 1 << LayerMask.NameToLayer("Drawable");
+
+				RaycastHit hit;
+				if (Physics.Raycast(position, forward, out hit, 0.05f, layerMask))
+                {
+					Debug.LogError("HIT");
+					Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
+					_lastScreenPoint = screenPoint;
+
+					if (down)
+					{
+						if (OnMouseDown != null)
+						{
+							OnMouseDown(screenPoint);
+						}
+					}
+
+					if (button)
+					{
+						if (OnMouseButton != null)
+						{
+							OnMouseButton(screenPoint);
+						}
+					}
+
+					if (up)
+					{
+						if (OnMouseUp != null)
+						{
+							OnMouseUp(screenPoint);
+						}
+					}
 				}
-
-                if (down)
-                {
-                    if (OnMouseDown != null)
+				else
+				{
+					if (OnMouseUp != null)
 					{
-						//GameObject.Find("DebugConsole").GetComponent<DebugConsole>().WriteLine("down");
-						OnMouseDown(screenPoint);
-                    }
-                }
-
-                if (button)
-                {
-                    if (OnMouseButton != null)
-					{
-						Debug.LogError("draw: " + screenPoint);
-						Debug.LogError("fov: " + drawCamera.fieldOfView);
-						Debug.LogError("pix: " + drawCamera.pixelWidth + ", " + drawCamera.pixelHeight);
-						Debug.LogError("cam: " + drawCamera.transform.position);
-						//GameObject.Find("DebugConsole").GetComponent<DebugConsole>().WriteLine("draw");
-						OnMouseButton(screenPoint);
-                    }
-                }
-
-                if (up)
-                {
-                    if (OnMouseUp != null)
-					{
-						//GameObject.Find("DebugConsole").GetComponent<DebugConsole>().WriteLine("up");
-						OnMouseUp(screenPoint);
-                    }
-                }
+						OnMouseUp(_lastScreenPoint);
+					}
+				}
 #endif
             }
 			else
@@ -249,6 +287,5 @@ namespace XDPaint.Controllers
 				}
 			}
 		}
-
-	}
+    }
 }
