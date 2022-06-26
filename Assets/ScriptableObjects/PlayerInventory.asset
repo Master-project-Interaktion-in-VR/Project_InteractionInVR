@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c78a4803225a47442911614f03f7fa79, type: 3}
-  m_Name: Cube
+  m_Script: {fileID: 11500000, guid: 00921c1d156be9f49aab83b9cfc3cc6e, type: 3}
+  m_Name: PlayerInventory
   m_EditorClassIdentifier: 
-  id: 1
-  itemName: Cube1
+  antennaParts: []
