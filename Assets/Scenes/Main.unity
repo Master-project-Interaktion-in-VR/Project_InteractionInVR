@@ -533,7 +533,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 254a9dab0f66a41418bde616b322a8bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 11400000, guid: fd332f63e4f65054f8fdae94afb72fc8, type: 2}
+  antennaPartsPickedUp: 0
+  maxAntennaParts: 3
 --- !u!4 &797886764
 Transform:
   m_ObjectHideFlags: 0
