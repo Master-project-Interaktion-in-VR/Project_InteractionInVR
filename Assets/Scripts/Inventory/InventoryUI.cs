@@ -2,30 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class InventoryUI : MonoBehaviour
 {
-    public GameObject Inventory;
-    public GameObject Anchor;
-    bool UIActive;
+    public GameObject wristUI;
+    public bool activeWristUI = true;
 
-    private void Start()
+    void Start()
     {
-        Inventory.SetActive(false);
-        UIActive = false;
+        DisplayWristUI();
     }
 
-    private void Update()
+    public void OpenMenu(InputAction.CallbackContext context)
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (context.performed)
         {
-            UIActive = !UIActive;
-            Inventory.SetActive(UIActive);
+            DisplayWristUI();
         }
-        if (UIActive)
+    }
+
+    public void PressButton()
+    {
+        Debug.Log("dein vataaa");
+    }
+
+    public void DisplayWristUI()
+    {
+        if (activeWristUI)
         {
-            Inventory.transform.position = Anchor.transform.position;
-            Inventory.transform.eulerAngles = new Vector3(Anchor.transform.eulerAngles.x + 15, Anchor.transform.eulerAngles.y, 0);
+            wristUI.SetActive(false);
+            activeWristUI = false;
         }
+        else if (!activeWristUI)
+        {
+            wristUI.SetActive(true);
+            activeWristUI = true;
+        }
+    }
+
+    void Update()
+    {
+        
     }
 }
