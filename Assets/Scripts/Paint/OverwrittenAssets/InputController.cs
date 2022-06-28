@@ -124,12 +124,12 @@ namespace XDPaint.Controllers
 				//Vector3 forward = localCoordinateSystem * Vector3.forward;
 				// for world (and not playspace) values, we have to use the VR pen
 				Vector3 forward = PenTransform.TransformDirection(Vector3.forward);
-                Debug.DrawRay(PenTransform.position, forward * 100, Color.red);
+                Debug.DrawRay(PenTransform.position, forward * 0.05f, Color.red);
 
                 int layerMask = 1 << LayerMask.NameToLayer("Drawable");
 
 				RaycastHit hit;
-				if (Physics.Raycast(PenTransform.position, forward, out hit, 100f, layerMask))
+				if (Physics.Raycast(PenTransform.position, forward, out hit, 0.05f, layerMask))
                 {
                     Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
 					_lastScreenPoint = screenPoint;
