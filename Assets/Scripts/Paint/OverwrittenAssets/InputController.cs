@@ -146,7 +146,6 @@ namespace XDPaint.Controllers
 					{
 						if (OnMouseButton != null)
 						{
-							Debug.Log("DOWN");
 							OnMouseButton(screenPoint);
 						}
 					}
