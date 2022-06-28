@@ -50,8 +50,4 @@ public class TeleportHandler : MonoBehaviour, IMixedRealityTeleportHandler
         CoreServices.TeleportSystem.RegisterHandler<IMixedRealityTeleportHandler>(this);
     }
 
-    void OnDisable()
-    {
-        CoreServices.TeleportSystem.UnregisterHandler<IMixedRealityTeleportHandler>(this);
-    }
 }

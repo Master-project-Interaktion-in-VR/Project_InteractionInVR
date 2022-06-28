@@ -30,18 +30,25 @@ public class BuildManager : MonoBehaviour
 
     public static Queue<CollisionEvent> collisions;
 
-    public GameObject build_objects_Prefab;
-    public static GameObject build_objects;
+    public List<GameObject> build_objects_Prefab;
+    public static List <GameObject> build_objects;
+
     public static List<GameObject> holdingObjects_List;
     static List<AssembledBuildPoints> assembledBuildPoints;
 
+    public GameObject assembledAntenna_Prefab;
     public GameObject infoCanvas_Prefab;
+    public GameObject dialog_Prefab;
+    static GameObject dialog;
+
+    static int buildTries = 2;
+    const int maxTries = 3;
 
     // Start is called before the first frame update
     void Start()
     {
         collisions = new Queue<CollisionEvent>();
-        
+        build_objects = new List<GameObject>();
         assembledBuildPoints = new List<AssembledBuildPoints>();
 
         ToggleHandVisualisation handVisualisation = new ToggleHandVisualisation();
@@ -99,7 +106,7 @@ public class BuildManager : MonoBehaviour
 
         bool newHoldingBody = false;
         // if there are already assembled objects in a holding body, make a new one
-        if (buildModel1.transform.parent.name == "AntennaPieces(Clone)" && buildModel2.transform.parent.name == "AntennaPieces(Clone)" && GameObject.Find("holdingBody") != null)
+        if (buildModel1.transform.parent.name == "AntennaPieces" && buildModel2.transform.parent.name == "AntennaPieces" && GameObject.Find("holdingBody") != null)
             newHoldingBody = true;
 
         // if both objects of the collision are already in a collection of assembled objects, put all in one holdingObject
@@ -190,25 +197,27 @@ public class BuildManager : MonoBehaviour
 
     public void DisassembleObjects()
     {
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("InitialObject");
-        Destroy(build_objects);
-
+        foreach(GameObject buildObj in build_objects)
+        {
+            Destroy(buildObj);
+        }
         foreach (GameObject holdingObject in holdingObjects_List)
         {
             Destroy(holdingObject);
-        }
-        foreach(GameObject obj in objects)
-        {
-            Destroy(obj);
         }
 
         collisions = new Queue<CollisionEvent>();
         assembledBuildPoints = new List<AssembledBuildPoints>();
         holdingObjects_List = new List<GameObject>();
 
-        build_objects = Instantiate(build_objects_Prefab);
+        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
+        foreach (GameObject buildObj_prefab in build_objects_Prefab)
+        {
+            GameObject obj = Instantiate(buildObj_prefab, antennaPieces.transform);
+            build_objects.Add(obj);
+        }
     }
-
+    
     void CheckAssembly()
     {
         // check newest assembling
@@ -228,6 +237,22 @@ public class BuildManager : MonoBehaviour
             bool correctAssembling = CollisionManager.correct_AssembledBuildPoints.Contains((assembledBuildPoint.buildPoint1.name, assembledBuildPoint.buildPoint2.name));
             if (!correctAssembling)
             {
+                buildTries++;
+                if(buildTries >= maxTries) 
+                {
+                    dialog = Instantiate(dialog_Prefab);
+                    dialog.transform.Find("TitleText").GetComponent<TextMeshPro>().text = "System Warning: Not correct assembled!";
+                    dialog.transform.Find("DescriptionText").GetComponent<TextMeshPro>().text =
+                        "You have tried to build the Antenna three times \n" +
+                        "Do you need some Help?";
+
+                    GameObject buttonNo = dialog.transform.Find("ButtonParent").Find("ButtonNo").gameObject;
+                    buttonNo.GetComponent<Interactable>().OnClick.AddListener(() => Destroy(dialog));
+                    GameObject buttonYes = dialog.transform.Find("ButtonParent").Find("ButtonYes").gameObject;
+                    buttonYes.GetComponent<Interactable>().OnClick.AddListener(SpawnAssembledAntenna);
+                    return;
+                }
+
                 string loseText = "NOT CORRECT ASSEMBLED. Try again..";
                 Debug.Log(loseText);
                 ShowTextForSeconds(loseText, 5);
@@ -275,6 +300,20 @@ public class BuildManager : MonoBehaviour
         //obj.tag = "BuildObject";
 
         return obj;
+    }
+
+    public void SpawnAssembledAntenna()
+    {
+        foreach (GameObject buildObj in build_objects)
+        {
+            Destroy(buildObj);
+        }
+        foreach (GameObject holdingObject in holdingObjects_List)
+        {
+            Destroy(holdingObject);
+        }
+        Instantiate(assembledAntenna_Prefab);
+        Destroy(dialog);
     }
 
     public void ShowTextForSeconds(string text, int seconds)

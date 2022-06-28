@@ -539,7 +539,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5739234678731576920}
   m_LocalRotation: {x: -0, y: 0.5151704, z: -0, w: 0.85708785}
-  m_LocalPosition: {x: 0.165, y: 0.578, z: 0.2139}
+  m_LocalPosition: {x: 0.165, y: 0.2, z: 0.2139}
   m_LocalScale: {x: 7, y: 7, z: 7}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -688,7 +688,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 0}
+  constraintsManager: {fileID: 5287015508668187932, guid: a752a5f05dc1bfc4db2fd9d29819aa68, type: 3}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:

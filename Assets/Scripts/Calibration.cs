@@ -1,6 +1,7 @@
 using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Calibration : MonoBehaviour
@@ -10,6 +11,7 @@ public class Calibration : MonoBehaviour
     Transform fixedMarker; //the fixed controller
     public GameObject table_Prefab;
     public static GameObject table;
+    public List<GameObject> build_objects_Prefab;
 
     void Start()
     {
@@ -26,9 +28,17 @@ public class Calibration : MonoBehaviour
                 if(table == null)
                 {
                     table = Instantiate(table_Prefab);
-                    BuildManager.build_objects = table.transform.Find("AntennaPieces").gameObject;
-                    BuildManager manager = new BuildManager();
-                    GameObject.Find("Disassemble_Button").GetComponent<Interactable>().OnClick.AddListener(manager.DisassembleObjects);
+                    GameObject antennaPieces = new GameObject();
+                    antennaPieces.name = "AntennaPieces";
+                    antennaPieces.transform.parent = table.transform;
+
+                    foreach (GameObject buildObj_prefab in build_objects_Prefab)
+                    {
+                        GameObject obj = Instantiate(buildObj_prefab, antennaPieces.transform);
+                        BuildManager.build_objects.Add(obj);
+                    }
+
+                    AddDisassembleListeners();
                 }
 
                 fixedMarker = GameObject.Find("fixedMarker").transform;
@@ -48,5 +58,13 @@ public class Calibration : MonoBehaviour
                 fixedMarker.transform.parent = table.transform.parent;
             }
         }
+    }
+
+    private void AddDisassembleListeners()
+    {
+        List<GameObject> disassembleButtons = GameObject.FindGameObjectsWithTag("DisassembleButton").ToList();
+        BuildManager manager = GameObject.Find("BuildManager").GetComponent<BuildManager>();
+
+        disassembleButtons.Find(x => x.name == "Disassemble_Button").GetComponent<Interactable>().OnClick.AddListener(manager.DisassembleObjects);
     }
 }
