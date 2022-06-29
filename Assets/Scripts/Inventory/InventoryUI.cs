@@ -1,48 +1,35 @@
+// Script name: InventoryVR
+// Script purpose: attaching a gameobject to a certain anchor and having the ability to enable and disable it.
+// This script is a property of Realary, Inc
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 
 public class InventoryUI : MonoBehaviour
 {
-    public GameObject wristUI;
-    public bool activeWristUI = true;
+    public GameObject Inventory;
+    public GameObject Anchor;
+    bool UIActive;
 
-    void Start()
+    private void Start()
     {
-        DisplayWristUI();
+        Inventory.SetActive(false);
+        UIActive = false;
     }
 
-    public void OpenMenu(InputAction.CallbackContext context)
+    private void Update()
     {
-        if (context.performed)
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            DisplayWristUI();
+            UIActive = !UIActive;
+            Inventory.SetActive(UIActive);
         }
-    }
-
-    public void PressButton()
-    {
-        Debug.Log("dein vataaa");
-    }
-
-    public void DisplayWristUI()
-    {
-        if (activeWristUI)
+        if (UIActive)
         {
-            wristUI.SetActive(false);
-            activeWristUI = false;
+            Inventory.transform.position = Anchor.transform.position;
+            Inventory.transform.eulerAngles = new Vector3(Anchor.transform.eulerAngles.x + 15, Anchor.transform.eulerAngles.y, 0);
         }
-        else if (!activeWristUI)
-        {
-            wristUI.SetActive(true);
-            activeWristUI = true;
-        }
-    }
-
-    void Update()
-    {
-        
     }
 }

@@ -37,10 +37,10 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void DeinVater()
+    /*public void HideHandTest()
     {
         rightHandModel.GetComponent<MeshRenderer>().enabled = false;
-    }
+    }*/
 
     private void NextLevel()
     {
@@ -54,7 +54,7 @@ public class InventoryManager : MonoBehaviour
              if (inventoryItems[i].name == "Stick")
              {
                  Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
-                 inventoryItems.Remove(inventoryItems[i]);
+                 Destroy(GameObject.Find("MetalDetector(Clone)"));
                  rightHandModel.GetComponent<MeshRenderer>().enabled = false;
                  stickButton.interactable = false;
                  detectorButton.interactable = true;
@@ -76,13 +76,11 @@ public class InventoryManager : MonoBehaviour
             if (inventoryItems[i].name == "MetalDetector")
             {
                 Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
-                inventoryItems.Remove(inventoryItems[i]);
+                Destroy(GameObject.Find("Stick(Clone)"));
                 rightHandModel.GetComponent<MeshRenderer>().enabled = false;
-                stickButton.interactable = false;
-                detectorButton.interactable = true;
+                stickButton.interactable = true;
+                detectorButton.interactable = false;
                 //stickButton.gameObject.SetActive(false);
-                GameObject stick = GameObject.Find("Stick");
-                inventoryItems.Add(stick);
             }
         }
     }
