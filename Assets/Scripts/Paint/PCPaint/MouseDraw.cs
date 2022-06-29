@@ -36,6 +36,10 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 		[Tooltip("UI Camera")]
 		public Camera drawCamera;
 
+		public GameObject plane;
+
+		private Material drawingMaterial = new Material(Shader.Find("Diffuse"));
+
 		private bool _isInFocus = false;
 		/// <summary>
 		/// Is this Component in focus.
@@ -69,7 +73,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				TogglePenPointerVisibility(false);
 		}
 
-		// TODO: Replace with IPointerDownHandler...
 		void Update()
 		{
 				var pos = Input.mousePosition;
@@ -89,19 +92,27 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 						m_lastPos = null;
 		}
 
+		void UpdatePlaneTexture()
+		{
+				var tex = m_image.texture;
 
-		/// <summary>
-		/// Initialisation logic.
-		/// </summary>
+				// Material material = new Material(Shader.Find("Diffuse"));
+
+				// material.mainTexture = tex;
+
+				// plane.GetComponent<Renderer>().material = material;
+
+				MeshRenderer rend;
+				rend = plane.GetComponent<MeshRenderer>();
+				UnityEngine.Assertions.Assert.IsNotNull(rend);
+				Material mat = rend.material;
+				UnityEngine.Assertions.Assert.IsNotNull(mat);
+
+				mat.mainTexture = tex;
+		}
+
 		private void Init()
 		{
-				// float widthFactor = Screen.width / 720f;
-				// float heithFactor = Screen.height / 1280f;
-				// int width = Mathf.FloorToInt(panel.rect.width * widthFactor);
-				// int height = Mathf.FloorToInt(panel.rect.height * heithFactor);
-
-
-				// Set scale Factor...
 				m_scaleFactor = HostCanvas.scaleFactor * 2;
 
 				var tex = new Texture2D(Convert.ToInt32(drawRect.rect.width / m_scaleFactor), Convert.ToInt32(drawRect.rect.height / m_scaleFactor), TextureFormat.RGBA32, false);
@@ -116,6 +127,9 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 				tex.Apply();
 				m_image.texture = tex;
+
+
+				UpdatePlaneTexture();
 		}
 
 		private bool GetNormalizedPosition(Vector2 pos, out Vector2 normalizedPosition)
@@ -128,21 +142,12 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(drawRect, pos, drawCamera, out var localPosition)) return false;
 
 				normalizedPosition = Rect.PointToNormalized(drawRect.rect, localPosition);
-				// I think this kind of equals doing something like
-				//var rect = drawRect.rect;
-				//var normalizedPosition = new Vector2 (
-				//    (localPosition.x - rect.x) / rect.width, 
-				//    (localPosition.y - rect.y) / rect.height);  
 
 				Debug.Log(normalizedPosition);
 
 				return true;
 		}
 
-		/// <summary>
-		/// Writes the pixels to the Texture at the given ScreenSpace position.
-		/// </summary>
-		/// <param name="pos"></param>
 		private void WritePixels(Vector2 pos)
 		{
 				var mainTex = m_image.texture;
@@ -183,6 +188,8 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 				m_image.texture = tex2d;
 				m_lastPos = newPos;
+
+				UpdatePlaneTexture();
 		}
 
 		/// <summary>
@@ -204,6 +211,8 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 				tex2d.Apply();
 				m_image.texture = tex2d;
+
+				UpdatePlaneTexture();
 		}
 
 		/// <summary>
@@ -313,50 +322,4 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 		/// </summary>
 		/// <param name="eventData"></param>
 		public void OnPointerExit(PointerEventData eventData) => IsInFocus = false;
-
-		/// <summary>
-		/// Exports the Sketch as a PNG.
-		/// </summary>
-		/// <param name="targetDirectory"></param>
-		/// <param name="fileName"></param>
-		public void ExportSketch(string targetDirectory, string fileName)
-		{
-				var dt = DateTime.Now.ToString("yyMMdd_hhmmss");
-				fileName += $"_{dt}";
-
-				targetDirectory = Path.Combine(targetDirectory, "Pixel Drawings");
-
-				var mainTex = m_image.texture;
-				var tex2d = new Texture2D(mainTex.width, mainTex.height, TextureFormat.RGBA32, false);
-
-				var curTex = RenderTexture.active;
-				var renTex = new RenderTexture(mainTex.width, mainTex.height, 32);
-
-				Graphics.Blit(mainTex, renTex);
-				RenderTexture.active = renTex;
-
-				tex2d.ReadPixels(new Rect(0, 0, mainTex.width, mainTex.height), 0, 0);
-
-				tex2d.Apply();
-
-				RenderTexture.active = curTex;
-				Destroy(renTex);
-				curTex = null;
-				renTex = null;
-				mainTex = null;
-
-				var png = tex2d.EncodeToPNG();
-
-				if (!Directory.Exists(targetDirectory))
-						Directory.CreateDirectory(targetDirectory);
-
-				var fp = Path.Combine(targetDirectory, fileName + ".png");
-
-				if (File.Exists(fp))
-						File.Delete(fp);
-
-				File.WriteAllBytes(fp, png);
-
-				System.Diagnostics.Process.Start(targetDirectory);
-		}
 }
