@@ -2,12 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class InventoryManager : MonoBehaviour
 {
+    [SerializeField] private GameObject inventory;
+    [SerializeField] private GameObject anchor;
+    
+    [SerializeField] private InputActionReference uiActivationReference;
+
     [SerializeField] private int antennaPartsPickedUp;
     [SerializeField] private int maxAntennaParts;
 
@@ -20,9 +26,19 @@ public class InventoryManager : MonoBehaviour
     public Button stickButton;
     public Button detectorButton;
 
-    void Start()
+    private void Start()
     {
-       // PutItemInHand();    
+        uiActivationReference.action.performed += OpenCloseInventory;
+    }
+
+    private void Update()
+    {
+        if (inventory.activeInHierarchy)
+        {
+            inventory.transform.position = anchor.transform.position;
+            var eulerAngles = anchor.transform.eulerAngles;
+            inventory.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
+        }
     }
 
     public void PutItemInInventory(ActivateEventArgs args)
@@ -36,11 +52,11 @@ public class InventoryManager : MonoBehaviour
             NextLevel();
         }
     }
-
-    /*public void HideHandTest()
+    
+    public void OpenCloseInventory(InputAction.CallbackContext obj)
     {
-        rightHandModel.GetComponent<MeshRenderer>().enabled = false;
-    }*/
+        inventory.SetActive(!inventory.activeInHierarchy);
+    }
 
     private void NextLevel()
     {

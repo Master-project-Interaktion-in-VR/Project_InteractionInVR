@@ -22,6 +22,7 @@ public class AntennaPart : MonoBehaviour
     {
         _renderer = GetComponent<Renderer>();
         _grabInteractable = GetComponent<XRGrabInteractable>();
+        _rigidbody = GetComponent<Rigidbody>();
         _originPos = transform.position;
         _originRotation = transform.rotation;
     }
