@@ -13,12 +13,6 @@ public class InventoryUI : MonoBehaviour
     public GameObject Anchor;
     bool UIActive;
 
-    private void Start()
-    {
-        Inventory.SetActive(false);
-        UIActive = false;
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.DownArrow))
