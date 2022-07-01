@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Photon.Pun;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -36,7 +37,7 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 		[Tooltip("UI Camera")]
 		public Camera drawCamera;
 
-		public GameObject plane;
+		public PhotonView plane;
 
 		private Material drawingMaterial = new Material(Shader.Find("Diffuse"));
 
@@ -90,37 +91,10 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 						m_lastPos = null;
 		}
 
-		void UpdatePlaneTexture()
+		void UpdatePlaneTexture(Vector2 pos)
 		{
-				MeshRenderer rend;
-				rend = plane.GetComponent<MeshRenderer>();
-				UnityEngine.Assertions.Assert.IsNotNull(rend);
-				Material mat = rend.material;
-				UnityEngine.Assertions.Assert.IsNotNull(mat);
+				plane.RPC("DrawPointRpc", RpcTarget.All, pos);
 
-				Texture newTexture = m_image.texture;
-				var tex2d = new Texture2D(newTexture.width, newTexture.height, TextureFormat.RGBA32, false);
-
-				// Material material = new Material(Shader.Find("Diffuse"));
-				// material.newTexture = tex;
-				// plane.GetComponent<Renderer>().material = material;
-
-				var curTex = RenderTexture.active;
-				var renTex = new RenderTexture(newTexture.width, newTexture.height, 32);
-
-				Graphics.Blit(newTexture, renTex);
-				RenderTexture.active = renTex;
-				tex2d.ReadPixels(new Rect(0, 0, newTexture.width, newTexture.height), 0, 0);
-
-				tex2d.Apply();
-
-				RenderTexture.active = curTex;
-				renTex.Release();
-				Destroy(renTex);
-				curTex = null;
-				renTex = null;
-
-				m_image.texture = tex2d;
 		}
 
 		private void Init()
@@ -140,8 +114,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				tex.Apply();
 				m_image.texture = tex;
 
-
-				UpdatePlaneTexture();
 		}
 
 		private bool GetNormalizedPosition(Vector2 pos, out Vector2 normalizedPosition)
@@ -195,7 +167,7 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				m_image.texture = tex2d;
 				m_lastPos = newPos;
 
-				UpdatePlaneTexture();
+				UpdatePlaneTexture(pos);
 		}
 
 		[ContextMenu("Clear Texture")]
@@ -215,7 +187,7 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				tex2d.Apply();
 				m_image.texture = tex2d;
 
-				UpdatePlaneTexture();
+				// UpdatePlaneTexture();
 		}
 
 		private List<Vector2> GetNeighbouringPixels(Vector2 textureSize, Vector2 position, int brushRadius)
