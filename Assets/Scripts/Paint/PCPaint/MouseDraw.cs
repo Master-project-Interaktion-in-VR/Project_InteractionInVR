@@ -41,9 +41,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 		private Material drawingMaterial = new Material(Shader.Find("Diffuse"));
 
 		private bool _isInFocus = false;
-		/// <summary>
-		/// Is this Component in focus.
-		/// </summary>
 		public bool IsInFocus
 		{
 				get => _isInFocus;
@@ -51,6 +48,7 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				{
 						if (value != _isInFocus)
 						{
+								Debug.Log("MouseDraw.IsInFocus: " + value);
 								_isInFocus = value;
 								TogglePenPointerVisibility(value);
 						}
@@ -101,7 +99,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				// material.mainTexture = tex;
 
 				// plane.GetComponent<Renderer>().material = material;
-
 				MeshRenderer rend;
 				rend = plane.GetComponent<MeshRenderer>();
 				UnityEngine.Assertions.Assert.IsNotNull(rend);
@@ -116,7 +113,7 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				m_scaleFactor = HostCanvas.scaleFactor * 2;
 
 				var tex = new Texture2D(Convert.ToInt32(drawRect.rect.width / m_scaleFactor), Convert.ToInt32(drawRect.rect.height / m_scaleFactor), TextureFormat.RGBA32, false);
-				Debug.Log("Texure Size: " + tex.width + "x" + tex.height);
+
 				for (int i = 0; i < tex.width; i++)
 				{
 						for (int j = 0; j < tex.height; j++)
@@ -136,14 +133,9 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 		{
 				normalizedPosition = default;
 
-				// get the pointer position in the local space of the UI element
-				// NOTE: For click vents use "pointerEventData.pressEventCamera"
-				// For hover events you would rather use "pointerEventData.enterEventCamera"
 				if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(drawRect, pos, drawCamera, out var localPosition)) return false;
 
 				normalizedPosition = Rect.PointToNormalized(drawRect.rect, localPosition);
-
-				Debug.Log(normalizedPosition);
 
 				return true;
 		}
@@ -154,7 +146,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				var tex2d = new Texture2D(mainTex.width, mainTex.height, TextureFormat.RGBA32, false);
 
 				Vector2 newPos = new Vector2(pos.x * mainTex.width, pos.y * mainTex.height);
-				Debug.Log(newPos);
 
 				var curTex = RenderTexture.active;
 				var renTex = new RenderTexture(mainTex.width, mainTex.height, 32);
@@ -192,9 +183,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				UpdatePlaneTexture();
 		}
 
-		/// <summary>
-		/// Clears the Texture.
-		/// </summary>
 		[ContextMenu("Clear Texture")]
 		public void ClearTexture()
 		{
@@ -215,13 +203,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				UpdatePlaneTexture();
 		}
 
-		/// <summary>
-		/// Gets the neighbouring pixels at a given screenspace position.
-		/// </summary>
-		/// <param name="textureSize">The texture size or pixel domain.</param>
-		/// <param name="position">The ScreenSpace position.</param>
-		/// <param name="brushRadius">The Brush radius.</param>
-		/// <returns>List of pixel positions.</returns>
 		private List<Vector2> GetNeighbouringPixels(Vector2 textureSize, Vector2 position, int brushRadius)
 		{
 				var pixels = new List<Vector2>();
@@ -238,14 +219,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 				return pixels;
 		}
-
-		/// <summary>
-		/// Interpolates between two positions with a spacing (default = 2)
-		/// </summary>
-		/// <param name="firstPos"></param>
-		/// <param name="secondPos"></param>
-		/// <param name="spacing"></param>
-		/// <returns>List of interpolated positions</returns>
 		private List<Vector2> GetLinearPositions(Vector2 firstPos, Vector2 secondPos, int spacing = 2)
 		{
 				var positions = new List<Vector2>();
@@ -268,40 +241,21 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				return positions;
 		}
 
-		/// <summary>
-		/// Sets the Pens Colour.
-		/// </summary>
-		/// <param name="color"></param>
 		public void SetPenColour(Color32 color) => penColour = color;
 
-		/// <summary>
-		/// Sets the Radius of the Pen.
-		/// </summary>
-		/// <param name="radius"></param>
 		public void SetPenRadius(int radius) => penRadius = radius;
 
-		/// <summary>
-		/// Sets the Size of the Pen Pointer.
-		/// </summary>
 		private void SetPenPointerSize()
 		{
 				var rt = penPointer.rectTransform;
 				rt.sizeDelta = new Vector2(penRadius * 5, penRadius * 5);
 		}
 
-		/// <summary>
-		/// Sets the position of the Pen Pointer Graphic.
-		/// </summary>
-		/// <param name="pos"></param>
 		private void SetPenPointerPosition(Vector2 pos)
 		{
 				penPointer.transform.position = pos;
 		}
 
-		/// <summary>
-		/// Toggles the visibility of the Pen Pointer Graphic.
-		/// </summary>
-		/// <param name="isVisible"></param>
 		private void TogglePenPointerVisibility(bool isVisible)
 		{
 				if (isVisible)
@@ -310,16 +264,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				penPointer.gameObject.SetActive(isVisible);
 				Cursor.visible = !isVisible;
 		}
-
-		/// <summary>
-		/// On Mouse Pointer entering this Components Image Space.
-		/// </summary>
-		/// <param name="eventData"></param>
 		public void OnPointerEnter(PointerEventData eventData) => IsInFocus = true;
-
-		/// <summary>
-		/// On Mouse Pointer exiting this Components Image Space.
-		/// </summary>
-		/// <param name="eventData"></param>
 		public void OnPointerExit(PointerEventData eventData) => IsInFocus = false;
 }
