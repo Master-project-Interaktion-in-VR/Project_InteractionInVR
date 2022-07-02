@@ -44,6 +44,11 @@ public class InventoryManager : MonoBehaviour
             var eulerAngles = leftAnchor.transform.eulerAngles;
             inventory.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
         }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            OpenCloseLeftInventory(new InputAction.CallbackContext());
+        }
+
     }
 
     public void PutItemInInventory(ActivateEventArgs args)
@@ -77,7 +82,7 @@ public class InventoryManager : MonoBehaviour
      {
          for (int i = 0; i < inventoryItems.Count; i++)
          {
-             if (inventoryItems[i].name == "Stick")
+             if (inventoryItems[i].name == "Magnifying Glass")
              {
                  Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
                  Destroy(GameObject.Find("MetalDetector(Clone)"));
@@ -99,10 +104,10 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < inventoryItems.Count; i++)
         {
-            if (inventoryItems[i].name == "MetalDetector")
+            if (inventoryItems[i].name == "Metal Detector")
             {
                 Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
-                Destroy(GameObject.Find("Stick(Clone)"));
+                Destroy(GameObject.Find("Magnifying Glass(Clone)"));
                 rightHandModel.GetComponent<MeshRenderer>().enabled = false;
                 stickButton.interactable = true;
                 detectorButton.interactable = false;
