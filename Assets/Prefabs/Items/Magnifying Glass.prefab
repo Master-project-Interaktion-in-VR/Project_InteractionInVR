@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -5862311886350618237}
   - component: {fileID: -8236170650610618854}
   m_Layer: 0
-  m_Name: Stick
+  m_Name: Magnifying Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

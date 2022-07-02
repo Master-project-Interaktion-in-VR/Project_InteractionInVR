@@ -10,9 +10,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject inventory;
-    [SerializeField] private GameObject anchor;
+    [SerializeField] private GameObject leftAnchor;
+    [SerializeField] private GameObject rightAnchor;
     
-    [SerializeField] private InputActionReference uiActivationReference;
+    [SerializeField] private InputActionReference leftUIActivationReference;
+    [SerializeField] private InputActionReference rightUIActivationReference;
 
     [SerializeField] private int antennaPartsPickedUp;
     [SerializeField] private int maxAntennaParts;
@@ -26,17 +28,20 @@ public class InventoryManager : MonoBehaviour
     public Button stickButton;
     public Button detectorButton;
 
+    private bool _isRight;
+
     private void Start()
     {
-        uiActivationReference.action.performed += OpenCloseInventory;
+        leftUIActivationReference.action.performed += OpenCloseLeftInventory;
+        rightUIActivationReference.action.performed += OpenCloseRightInventory;
     }
 
     private void Update()
     {
         if (inventory.activeInHierarchy)
         {
-            inventory.transform.position = anchor.transform.position;
-            var eulerAngles = anchor.transform.eulerAngles;
+            inventory.transform.position = leftAnchor.transform.position;
+            var eulerAngles = leftAnchor.transform.eulerAngles;
             inventory.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
         }
     }
@@ -53,7 +58,12 @@ public class InventoryManager : MonoBehaviour
         }
     }
     
-    public void OpenCloseInventory(InputAction.CallbackContext obj)
+    private void OpenCloseLeftInventory(InputAction.CallbackContext obj)
+    {
+        inventory.SetActive(!inventory.activeInHierarchy);
+    }
+    
+    private void OpenCloseRightInventory(InputAction.CallbackContext obj)
     {
         inventory.SetActive(!inventory.activeInHierarchy);
     }

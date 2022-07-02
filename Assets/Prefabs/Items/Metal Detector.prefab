@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -5280973693278995527}
   - component: {fileID: -2795511287424277623}
   m_Layer: 0
-  m_Name: MetalDetector
+  m_Name: Metal Detector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

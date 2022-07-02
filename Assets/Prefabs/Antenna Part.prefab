@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 249301495397599300}
   - component: {fileID: 249301495397599298}
   - component: {fileID: 249301495397599302}
-  - component: {fileID: 249301495397599297}
   - component: {fileID: 249301495397599296}
-  - component: {fileID: 949074171}
+  - component: {fileID: 249301494809578752}
+  - component: {fileID: 249301494809578753}
   m_Layer: 0
   m_Name: Antenna Part
   m_TagString: Untagged
@@ -255,19 +255,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!65 &249301495397599297
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 249301495397599309}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.26, y: 0.07, z: 0.02}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &249301495397599296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,8 +269,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetToOrigin: 1
   resetDelayTime: 2
---- !u!65 &949074171
-BoxCollider:
+--- !u!64 &249301494809578752
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -292,6 +279,21 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.26, y: 0.07, z: 0.02}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7265744515449303197, guid: 410f1dd21eb99f844b5e497a2f141f31, type: 3}
+--- !u!64 &249301494809578753
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249301495397599309}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7265744515449303197, guid: 410f1dd21eb99f844b5e497a2f141f31, type: 3}
