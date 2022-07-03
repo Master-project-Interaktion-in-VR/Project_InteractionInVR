@@ -39,8 +39,6 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 		public PhotonView plane;
 
-		private Material drawingMaterial = new Material(Shader.Find("Diffuse"));
-
 		private bool _isInFocus = false;
 		public bool IsInFocus
 		{

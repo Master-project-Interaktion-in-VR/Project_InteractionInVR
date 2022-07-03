@@ -12,11 +12,13 @@ public class Calibration : MonoBehaviour
     public GameObject table_Prefab;
     public static GameObject table;
     public List<GameObject> build_objects_Prefab;
+    static GameObject antennaPieces;
 
     void Start()
     {
         CameraRig = GameObject.Find("MRTK-Quest_OVRCameraRig(Clone)").transform;
         handMarker = CameraRig.FindChildRecursive("RightControllerAnchor").transform;
+        table = GameObject.Find("Table");
     }
 
     void Update()
@@ -25,12 +27,19 @@ public class Calibration : MonoBehaviour
         {
             if (OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch)) //detect is button 'A' has been pressed
             {
-                if(table == null)
+                //if(table == null)
+                //{
+                //    table = Instantiate(table_Prefab);
+                //}
+
+                if (BuildManager.build_objects.Count == 0)
                 {
-                    table = Instantiate(table_Prefab);
-                    GameObject antennaPieces = new GameObject();
-                    antennaPieces.name = "AntennaPieces";
-                    antennaPieces.transform.parent = table.transform;
+                    if(antennaPieces == null)
+                    {
+                        antennaPieces = new GameObject("AntennaPieces");
+                        antennaPieces.transform.position = new Vector3(0, 0.8f, 0);
+                        antennaPieces.transform.parent = table.transform;
+                    }
 
                     foreach (GameObject buildObj_prefab in build_objects_Prefab)
                     {
