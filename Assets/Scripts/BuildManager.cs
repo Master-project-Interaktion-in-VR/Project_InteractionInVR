@@ -316,6 +316,25 @@ public class BuildManager : MonoBehaviour
         Destroy(dialog);
     }
 
+    public void Respawn_object(string objectName)
+    {
+        GameObject old_object = build_objects.Find(x => x.name == objectName);
+        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
+        // if the object is attached to one other object in a holdingBody
+        if (old_object.transform.parent != antennaPieces && antennaPieces.transform.childCount == 2)
+        {
+            // move other object to antennaPieces 
+            // destroy holding body
+        }
+        // reset position of the object
+        Destroy(old_object);
+        build_objects.Remove(old_object);
+        GameObject new_object = Instantiate(build_objects_Prefab.Find(x => x.name == objectName));
+        
+        new_object.transform.parent = antennaPieces.transform;
+        build_objects.Add(new_object);
+    }
+
     public void ShowTextForSeconds(string text, int seconds)
     {
         GameObject infoCanvas = Instantiate(infoCanvas_Prefab);

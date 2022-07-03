@@ -66,5 +66,7 @@ public class Calibration : MonoBehaviour
         BuildManager manager = GameObject.Find("BuildManager").GetComponent<BuildManager>();
 
         disassembleButtons.Find(x => x.name == "Disassemble_Button").GetComponent<Interactable>().OnClick.AddListener(manager.DisassembleObjects);
+
+        //disassembleButtons.Find(x => x.name == "Disassemble_halterungsstange1_Button").GetComponent<Interactable>().OnClick.AddListener(() => manager.Respawn_object("halterungsstange_1(Clone)"));
     }
 }
