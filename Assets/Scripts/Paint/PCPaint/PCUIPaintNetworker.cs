@@ -22,6 +22,8 @@ public class PCUIPaintNetworker : MonoBehaviour
 		private Vector2 _previousPoint;
 		private float _startTime;
 
+		private Vector2 lastPoint;
+
 
 		void Awake()
 		{
@@ -49,6 +51,16 @@ public class PCUIPaintNetworker : MonoBehaviour
 		[PunRPC]
 		private void DrawPointRpc(Vector2 position)
 		{
-				_paintManager.PaintObject.DrawPoint(position);
+				Vector2 scaledPosition = new Vector2(position.x * 2048, position.y * 1024);
+				Debug.Log("DrawPointRpc" + scaledPosition);
+
+				if (lastPoint == null)
+				{
+						lastPoint = scaledPosition;
+				}
+
+				_paintManager.PaintObject.DrawLine(lastPoint, scaledPosition);
+
+				lastPoint = scaledPosition;
 		}
 }

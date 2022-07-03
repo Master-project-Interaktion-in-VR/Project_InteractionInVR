@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4841039851516920827}
   - component: {fileID: 4841039851516920831}
   - component: {fileID: 4841039851516920824}
+  - component: {fileID: 5199812598178785031}
   m_Layer: 0
   m_Name: DrawingPlane
   m_TagString: Untagged
@@ -134,12 +135,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ef3ab0404d6c40319cedaf900bc0847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectForPainting: {fileID: 0}
+  ObjectForPainting: {fileID: 4841039851516920709}
   Material:
     shaderTextureName: _MainTex
     defaultTextureWidth: 1024
     defaultTextureHeight: 1024
-    SourceMaterial: {fileID: 0}
+    SourceMaterial: {fileID: 2100000, guid: 869e952ff073d8b43b0a75e8de787a25, type: 2}
   ShouldOverrideCamera: 0
   CopySourceTextureToPaintTexture: 1
   paintModeType: 0
@@ -161,3 +162,16 @@ MonoBehaviour:
   useNeighborsVerticesForRaycasts: 0
   trianglesContainer: {fileID: 0}
   triangles: []
+--- !u!114 &5199812598178785031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4841039851516920709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4374b97f35f4de09c0ca2d5f63a2ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
