@@ -31,7 +31,7 @@ public class BuildManager : MonoBehaviour
     public static Queue<CollisionEvent> collisions;
 
     public List<GameObject> build_objects_Prefab;
-    public static List <GameObject> build_objects;
+    public static List<GameObject> build_objects;
 
     public static List<GameObject> holdingObjects_List;
     static List<AssembledBuildPoints> assembledBuildPoints;
@@ -195,9 +195,12 @@ public class BuildManager : MonoBehaviour
         CheckAssembly();
     }
 
+    /// <summary>
+    /// Disassembles the objects by destroying all build objects and instantiating them again
+    /// </summary>
     public void DisassembleObjects()
     {
-        foreach(GameObject buildObj in build_objects)
+        foreach (GameObject buildObj in build_objects)
         {
             Destroy(buildObj);
         }
@@ -209,6 +212,7 @@ public class BuildManager : MonoBehaviour
         collisions = new Queue<CollisionEvent>();
         assembledBuildPoints = new List<AssembledBuildPoints>();
         holdingObjects_List = new List<GameObject>();
+        build_objects = new List<GameObject>();
 
         GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
         foreach (GameObject buildObj_prefab in build_objects_Prefab)
@@ -217,7 +221,10 @@ public class BuildManager : MonoBehaviour
             build_objects.Add(obj);
         }
     }
-    
+
+    /// <summary>
+    /// Checks if the buildObjects are assembled correctly 
+    /// </summary>
     void CheckAssembly()
     {
         // check newest assembling
@@ -238,7 +245,7 @@ public class BuildManager : MonoBehaviour
             if (!correctAssembling)
             {
                 buildTries++;
-                if(buildTries >= maxTries) 
+                if (buildTries >= maxTries)
                 {
                     dialog = Instantiate(dialog_Prefab);
                     dialog.transform.Find("TitleText").GetComponent<TextMeshPro>().text = "System Warning: Not correct assembled!";
@@ -264,6 +271,11 @@ public class BuildManager : MonoBehaviour
         ShowTextForSeconds(winText, 5);
     }
 
+    /// <summary>
+    /// Removes the components of the single object which is now assembled in a holdingBody
+    /// </summary>
+    /// <param name="obj">The build object</param>
+    /// <returns>same GameObject with les components</returns>
     public GameObject RemoveComponents(GameObject obj)
     {
         try
@@ -278,7 +290,7 @@ public class BuildManager : MonoBehaviour
             // remove tag
             //obj.tag = "InitialObject";
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.LogWarning(ex);
         }
@@ -286,6 +298,11 @@ public class BuildManager : MonoBehaviour
         return obj;
     }
 
+    /// <summary>
+    /// Adds the components to the assembled object
+    /// </summary>
+    /// <param name="obj">The object</param>
+    /// <returns> same GameObject with added components</returns>
     public GameObject AddComponents(GameObject obj)
     {
         // add rigidBody to Object
@@ -302,6 +319,9 @@ public class BuildManager : MonoBehaviour
         return obj;
     }
 
+    /// <summary>
+    /// Spawns the assembled antenna and destroyes every build object and holding object
+    /// </summary>
     public void SpawnAssembledAntenna()
     {
         foreach (GameObject buildObj in build_objects)
@@ -316,6 +336,10 @@ public class BuildManager : MonoBehaviour
         Destroy(dialog);
     }
 
+    /// <summary>
+    /// deletes an object by name and instantiates it again
+    /// </summary>
+    /// <param name="objectName">The object name.</param>
     public void Respawn_object(string objectName)
     {
         GameObject old_object = build_objects.Find(x => x.name == objectName);
@@ -330,15 +354,40 @@ public class BuildManager : MonoBehaviour
         // if the object is attached to one other object in a holdingBody
         if (parent != antennaPieces && parent.childCount == 2)
         {
-            // move other object to antennaPieces 
+            // get all children of the parent
+            List<GameObject> children = new List<GameObject>();
+            int childCount = parent.childCount;
+            for (int i = 0; i < childCount; ++i)
+                // add child from parent to list
+                children.Add(parent.GetChild(i).gameObject);
+
+            foreach (GameObject child in children)
+            {
+                if (child.name != objectName)
+                {
+                    // move child to the antennaPieces
+                    child.transform.parent = antennaPieces.transform;
+                    AddComponents(child);
+                }
+            }
+
             // destroy holding body
+            Destroy(parent.gameObject);
+            holdingObjects_List.Remove(parent.gameObject);
         }
 
-        GameObject new_object = Instantiate(build_objects_Prefab.Find(x => x.name == objectName));
-        new_object.transform.parent = antennaPieces.transform;
+        // crete prefab name from objectname without "(Clone)"
+        string prefabName = objectName.Replace("(Clone)", "");
+
+        GameObject new_object = Instantiate(build_objects_Prefab.Find(x => x.name == prefabName), antennaPieces.transform);
         build_objects.Add(new_object);
     }
 
+    /// <summary>
+    /// Shows the text for seconds on a plane in VR
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="seconds">number of seconds.</param>
     public void ShowTextForSeconds(string text, int seconds)
     {
         GameObject infoCanvas = Instantiate(infoCanvas_Prefab);

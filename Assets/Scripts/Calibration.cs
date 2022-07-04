@@ -14,6 +14,9 @@ public class Calibration : MonoBehaviour
     public List<GameObject> build_objects_Prefab;
     static GameObject antennaPieces;
 
+    static BuildManager manager;
+    static List<GameObject> disassembleButtons;
+
     void Start()
     {
         CameraRig = GameObject.Find("MRTK-Quest_OVRCameraRig(Clone)").transform;
@@ -34,7 +37,7 @@ public class Calibration : MonoBehaviour
 
                 if (BuildManager.build_objects.Count == 0)
                 {
-                    if(antennaPieces == null)
+                    if (antennaPieces == null)
                     {
                         antennaPieces = new GameObject("AntennaPieces");
                         antennaPieces.transform.position = new Vector3(0, 0.8f, 0);
@@ -69,13 +72,36 @@ public class Calibration : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Adds the disassemble listeners.
+    /// </summary>
     private void AddDisassembleListeners()
     {
-        List<GameObject> disassembleButtons = GameObject.FindGameObjectsWithTag("DisassembleButton").ToList();
-        BuildManager manager = GameObject.Find("BuildManager").GetComponent<BuildManager>();
+        disassembleButtons = GameObject.FindGameObjectsWithTag("DisassembleButton").ToList();
+        manager = GameObject.Find("BuildManager").GetComponent<BuildManager>();
 
         disassembleButtons.Find(x => x.name == "Disassemble_Button").GetComponent<Interactable>().OnClick.AddListener(manager.DisassembleObjects);
 
-        //disassembleButtons.Find(x => x.name == "Disassemble_halterungsstange1_Button").GetComponent<Interactable>().OnClick.AddListener(() => manager.Respawn_object("halterungsstange_1(Clone)"));
+        // add listener for each disassemble button
+        AddListener("Disassemble_halterungsstange1_Button", "halterungsstange_1(Clone)");
+        AddListener("Disassemble_halterungsstange2_Button", "halterungsstange_2(Clone)");
+        AddListener("Disassemble_schuessel1_Button", "schüssel_1(Clone)");
+        AddListener("Disassemble_schuessel2_Button", "schüssel_2(Clone)");
+        AddListener("Disassemble_mittelstange_Button", "mittelstange(Clone)");
+        AddListener("Disassemble_bodenteil_Button", "bodenteil(Clone)");
+        AddListener("Disassemble_seitenteil_Button", "seitenteil(Clone)");
+        AddListener("Disassemble_zwischenhalterung_Button", "zwischenhalterung(Clone)");
+    }
+
+    /// <summary>
+    /// method for adding a listener to a disassemble button which will respawn the object by name
+    /// </summary>
+    /// <param name="buttonName">The button name.</param>
+    /// <param name="objectName">The object name.</param>
+    private void AddListener(string buttonName, string objectName)
+    {
+        // add listener for the button in disassembleButtons
+        disassembleButtons.Find(x => x.name == buttonName).GetComponent<Interactable>().OnClick.AddListener(() => manager.Respawn_object(objectName));
+
     }
 }
