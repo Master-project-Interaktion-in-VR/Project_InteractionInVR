@@ -1108,6 +1108,9 @@ GameObject:
   - component: {fileID: 6023572877618761849}
   - component: {fileID: 6023572877618761850}
   - component: {fileID: 6023572877618761852}
+  - component: {fileID: 8813067282525317040}
+  - component: {fileID: 4259294267771716492}
+  - component: {fileID: 8278459346617359604}
   m_Layer: 0
   m_Name: VRAvatar
   m_TagString: Untagged
@@ -1294,6 +1297,51 @@ MonoBehaviour:
   turnSmoothness: 0
   ikHead: {fileID: 1013746254}
   headBodyOffset: {x: 0, y: -1.615, z: 0}
+--- !u!114 &8813067282525317040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2734571742959011247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c1bec40e1ab84e4797652ec3170c392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 9161702563661139014}
+  leftFootPositionWeight: 0.957
+  rightFootPositionWeight: 0.957
+  leftFootRotationWeight: 0.78
+  rightFootRotationWeight: 0.78
+  footOffset: {x: 0, y: 0.16, z: 0}
+  raycastLeftOffset: {x: 0, y: 1.11, z: 0}
+  raycastRightOffset: {x: 0, y: 1.11, z: 0}
+--- !u!114 &4259294267771716492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2734571742959011247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 580dccf5e6d81dc45b8024e1fa9a7079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8278459346617359604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2734571742959011247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b1c69010eccdb748b10794f76470ca8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  move: {fileID: 7862207684358717888, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1 &2780720728183463684
 GameObject:
   m_ObjectHideFlags: 0
