@@ -1,7 +1,3 @@
-// Script name: InventoryVR
-// Script purpose: attaching a gameobject to a certain anchor and having the ability to enable and disable it.
-// This script is a property of Realary, Inc
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
