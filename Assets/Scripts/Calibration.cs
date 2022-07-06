@@ -1,4 +1,5 @@
 using Microsoft.MixedReality.Toolkit.UI;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,8 @@ public class Calibration : MonoBehaviour
 
                     foreach (GameObject buildObj_prefab in build_objects_Prefab)
                     {
-                        GameObject obj = Instantiate(buildObj_prefab, antennaPieces.transform);
+                        GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, buildObj_prefab.transform.position, buildObj_prefab.transform.rotation);
+                        obj.transform.parent = antennaPieces.transform;
                         BuildManager.build_objects.Add(obj);
                     }
 

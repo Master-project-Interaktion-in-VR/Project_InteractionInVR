@@ -761,7 +761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6611552314585996644, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: m_Size
-      value: 0.00000044878792
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6611552314639813667, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: messageAudio
