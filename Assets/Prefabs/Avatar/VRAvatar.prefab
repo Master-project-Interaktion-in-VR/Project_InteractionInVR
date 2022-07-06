@@ -733,7 +733,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7007494955760552137}
   - component: {fileID: 146716543710272142}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1154,8 +1154,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2734571742959011247}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: ba5173a85368a4f4eb45fbc497be292c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 40e894d4806e53d4698d8cbd34bb5802, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1341,7 +1341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b1c69010eccdb748b10794f76470ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move: {fileID: 7862207684358717888, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1 &2780720728183463684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,7 +1546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1055588705634753398}
   - component: {fileID: 2406179609201040675}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Glasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1731,7 +1730,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6391280538024458273}
   - component: {fileID: 444768495570382114}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_EyeRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2049,7 +2048,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3824344011766625878}
   - component: {fileID: 4253757670925741128}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Outfit_Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2201,7 +2200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6783161441590766106}
   - component: {fileID: 7897354819971168868}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_EyeLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2342,7 +2341,7 @@ SkinnedMeshRenderer:
   m_AABB:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
-  m_DirtyAABB: 1
+  m_DirtyAABB: 0
 --- !u!1 &4678021539449945098
 GameObject:
   m_ObjectHideFlags: 0
@@ -2671,7 +2670,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4656006064425351444}
   - component: {fileID: 3975380501900397667}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Facewear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2823,7 +2822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8298995455355245284}
   - component: {fileID: 2212432942678806175}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Headwear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3165,7 +3164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2061036636260947793}
   - component: {fileID: 1561589009241407419}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Outfit_Footwear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3475,7 +3474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8751527277889854974}
   - component: {fileID: 6928298890111963771}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Teeth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3790,7 +3789,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1085949881133053655}
   - component: {fileID: 2259107691872012182}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Outfit_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
