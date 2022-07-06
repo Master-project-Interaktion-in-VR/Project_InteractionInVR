@@ -186,6 +186,8 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				m_image.texture = tex2d;
 
 				// UpdatePlaneTexture();
+
+				plane.RPC("ResetDrawingRpc", RpcTarget.All);
 		}
 
 		private List<Vector2> GetNeighbouringPixels(Vector2 textureSize, Vector2 position, int brushRadius)

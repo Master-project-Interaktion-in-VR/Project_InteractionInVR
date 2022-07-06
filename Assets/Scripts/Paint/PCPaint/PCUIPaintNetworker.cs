@@ -59,8 +59,19 @@ public class PCUIPaintNetworker : MonoBehaviour
 						lastPoint = scaledPosition;
 				}
 
-				_paintManager.PaintObject.DrawLine(lastPoint, scaledPosition);
+				_paintManager.PaintObject.DrawLine(scaledPosition, scaledPosition);
+				// _paintManager.PaintObject.DrawPoint(scaledPosition, 30);
 
 				lastPoint = scaledPosition;
+		}
+
+		[PunRPC]
+		private void ResetDrawingRpc()
+		{
+				Debug.Log("ResetDrawingRpc");
+				_paintManager.PaintObject.DoDispose();
+				_paintManager.PaintObject.ClearTexture();
+				_paintManager.PaintObject.Render();
+
 		}
 }
