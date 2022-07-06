@@ -138,7 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141062560867744}
   - component: {fileID: 3946141062560867745}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Outfit_Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1088,7 +1088,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141063324394357}
   - component: {fileID: 3946141063324394358}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Outfit_Footwear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1779,7 +1779,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141063651376584}
   - component: {fileID: 3946141063651376585}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Glasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2211,7 +2211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141063670555230}
   - component: {fileID: 3946141063670555231}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2706,7 +2706,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141063889059537}
   - component: {fileID: 3946141063889059538}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Outfit_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2924,7 +2924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141064025485747}
   - component: {fileID: 3946141064025485756}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_EyeLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3076,7 +3076,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141064065686608}
   - component: {fileID: 3946141064065686609}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Headwear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3260,7 +3260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141064081160547}
   - component: {fileID: 3946141064081160556}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Teeth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3601,7 +3601,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141064199521181}
   - component: {fileID: 3946141064199521182}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_EyeRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3900,7 +3900,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3946141064262592563}
   - component: {fileID: 3946141064262592572}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer_Facewear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
