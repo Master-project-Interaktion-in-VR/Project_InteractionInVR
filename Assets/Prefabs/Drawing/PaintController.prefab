@@ -56,7 +56,7 @@ MonoBehaviour:
     color: {r: 1, g: 1, b: 1, a: 1}
     sourceTexture: {fileID: 0}
     renderTexture: {fileID: 0}
-    size: 0.24
+    size: 0.02
     renderAngle: 0
     hardness: 1
     preview: 0

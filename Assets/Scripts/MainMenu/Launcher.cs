@@ -191,7 +191,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
         else
         {
-            PhotonNetwork.LoadLevel("GameScene");
+            PhotonNetwork.LoadLevel("EnvironmentGameScene");
         }
     }
 
@@ -215,7 +215,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         else
         {
             // load game scene for VR
-            PhotonNetwork.LoadLevel("GameScene");
+            PhotonNetwork.LoadLevel("EnvironmentGameScene");
         }
     }
 
