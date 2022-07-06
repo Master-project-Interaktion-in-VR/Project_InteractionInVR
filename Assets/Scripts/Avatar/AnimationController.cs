@@ -64,7 +64,6 @@ public class AnimationController : MonoBehaviour
         }
         else
         {
-            Debug.Log("STOP");
             _animator.SetBool("isWalking", false);
             _animator.SetFloat("animationSpeed", 0);
         }
