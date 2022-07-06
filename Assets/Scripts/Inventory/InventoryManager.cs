@@ -15,6 +15,8 @@ public class InventoryManager : MonoBehaviour
     
     [SerializeField] private InputActionReference leftUIActivationReference;
     [SerializeField] private InputActionReference rightUIActivationReference;
+    [SerializeField] private InputActionReference takeStickfromInventoryReference;
+    [SerializeField] private InputActionReference takeDetectorfromInventoryReference;
 
     [SerializeField] private int antennaPartsPickedUp;
     [SerializeField] private int maxAntennaParts;
@@ -34,6 +36,8 @@ public class InventoryManager : MonoBehaviour
     {
         leftUIActivationReference.action.performed += OpenCloseLeftInventory;
         rightUIActivationReference.action.performed += OpenCloseRightInventory;
+        takeStickfromInventoryReference.action.performed += PutStickInHand;
+        takeDetectorfromInventoryReference.action.performed += PutDetectorInHand;
     }
 
     private void Update()
@@ -44,10 +48,12 @@ public class InventoryManager : MonoBehaviour
             var eulerAngles = leftAnchor.transform.eulerAngles;
             inventory.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+
+        
+       /* if (Input.GetKeyDown(KeyCode.DownArrow))  FOR DEVICE SIMULATOR
         {
             OpenCloseLeftInventory(new InputAction.CallbackContext());
-        }
+        }*/
 
     }
 
@@ -80,17 +86,18 @@ public class InventoryManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void PutStickInHand()
+    public void PutStickInHand(InputAction.CallbackContext obj)
      {
          for (int i = 0; i < inventoryItems.Count; i++)
          {
-             if (inventoryItems[i].name == "Magnifying Glass")
+             if (inventoryItems[i].name == "Magnifying Glass" && inventory.activeInHierarchy)
              {
                  Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
-                 Destroy(GameObject.Find("MetalDetector(Clone)"));
+                 Destroy(GameObject.Find("Metal Detector(Clone)"));
                  rightHandModel.GetComponent<MeshRenderer>().enabled = false;
                  stickButton.interactable = false;
                  detectorButton.interactable = true;
+                 inventory.SetActive(false);
                 //stickButton.gameObject.SetActive(false);
             }
              /*else if (inventoryItems[i].name == "MetalDetector")
@@ -102,7 +109,7 @@ public class InventoryManager : MonoBehaviour
          }
      }
 
-    public void PutDetectorInHand()
+    public void PutDetectorInHand(InputAction.CallbackContext obj)
     {
         for (int i = 0; i < inventoryItems.Count; i++)
         {
@@ -113,6 +120,7 @@ public class InventoryManager : MonoBehaviour
                 rightHandModel.GetComponent<MeshRenderer>().enabled = false;
                 stickButton.interactable = true;
                 detectorButton.interactable = false;
+                inventory.SetActive(false);
                 //stickButton.gameObject.SetActive(false);
             }
         }
