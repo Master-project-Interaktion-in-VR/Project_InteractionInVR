@@ -570,7 +570,7 @@ MonoBehaviour:
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
   m_ModelPrefab: {fileID: 6747445354426439517, guid: 5dc2afa312c477443a7cae83927087d2, type: 3}
-  m_ModelParent: {fileID: 0}
+  m_ModelParent: {fileID: 7415667655500004782}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
   m_ModelSelectTransition: 
@@ -766,7 +766,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_SelectActionTrigger: 0
-  m_HideControllerOnSelect: 1
+  m_HideControllerOnSelect: 0
   m_AllowHoveredActivate: 0
   m_PlayAudioClipOnSelectEntered: 1
   m_AudioClipForOnSelectEntered: {fileID: 8300000, guid: 365d12af68730e249a6ce8d64dafc35f, type: 3}
@@ -1250,7 +1250,7 @@ MonoBehaviour:
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
   m_ModelPrefab: {fileID: 7876324220297749465, guid: be8be49dc2c70cb4db7aa2227d3026dd, type: 3}
-  m_ModelParent: {fileID: 0}
+  m_ModelParent: {fileID: 7266168827730960383}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
   m_ModelSelectTransition: 
@@ -1446,7 +1446,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_SelectActionTrigger: 0
-  m_HideControllerOnSelect: 1
+  m_HideControllerOnSelect: 0
   m_AllowHoveredActivate: 0
   m_PlayAudioClipOnSelectEntered: 1
   m_AudioClipForOnSelectEntered: {fileID: 8300000, guid: 365d12af68730e249a6ce8d64dafc35f, type: 3}
