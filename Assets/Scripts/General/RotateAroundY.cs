@@ -24,8 +24,6 @@ public class RotateAroundY : MonoBehaviour
 		if (headY < 0)
 			headY += 360;
 
-		Debug.Log(headY);
-
 		float difference = Mathf.Abs(headY - transform.rotation.eulerAngles.y);
 		if (difference > 360 * 0.5f)
 		{

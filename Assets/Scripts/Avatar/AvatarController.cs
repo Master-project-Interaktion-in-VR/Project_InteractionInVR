@@ -41,10 +41,22 @@ public class AvatarController : MonoBehaviour
     [SerializeField]
     private Vector3 headBodyOffset;
 
+    [SerializeField]
+    private float minHeadFloorDistance;
+
 
     private void LateUpdate()
     {
-        transform.position = ikHead.position + headBodyOffset;
+        Physics.Raycast(ikHead.position, Vector3.down, out RaycastHit hitFloor, 10, 1 << LayerMask.NameToLayer("Drawable"));
+        if (hitFloor.distance < minHeadFloorDistance)
+        {
+            transform.position = ikHead.position + headBodyOffset + new Vector3(0, minHeadFloorDistance - hitFloor.distance, 0);
+        }
+        else
+        {
+            transform.position = ikHead.position + headBodyOffset;
+        }
+
 
         transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized, Time.deltaTime * turnSmoothness);
 

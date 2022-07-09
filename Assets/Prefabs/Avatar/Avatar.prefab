@@ -2157,6 +2157,7 @@ MonoBehaviour:
   turnSmoothness: 0
   ikHead: {fileID: 3946141064242568263}
   headBodyOffset: {x: 0, y: -1.615, z: 0}
+  minHeadFloorDistance: 0.78
 --- !u!114 &3946141063664924089
 MonoBehaviour:
   m_ObjectHideFlags: 0
