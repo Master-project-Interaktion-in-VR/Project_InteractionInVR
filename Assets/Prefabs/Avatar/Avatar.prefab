@@ -2175,8 +2175,8 @@ MonoBehaviour:
   leftFootRotationWeight: 0.78
   rightFootRotationWeight: 0.78
   footOffset: {x: 0, y: 0.16, z: 0}
-  raycastLeftOffset: {x: 0, y: 1.11, z: 0}
-  raycastRightOffset: {x: 0, y: 1.11, z: 0}
+  raycastLeftOffset: {x: 0.04, y: 1.11, z: 0}
+  raycastRightOffset: {x: -0.04, y: 1.11, z: 0}
 --- !u!114 &3946141063664924088
 MonoBehaviour:
   m_ObjectHideFlags: 0

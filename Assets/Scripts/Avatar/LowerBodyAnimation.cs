@@ -43,8 +43,8 @@ public class LowerBodyAnimation : MonoBehaviour
         RaycastHit hitLeftFoot;
         RaycastHit hitRightFoot;
 
-        bool isLeftFootDown = Physics.Raycast(leftFootPosition + raycastLeftOffset, Vector3.down, out hitLeftFoot);
-        bool isRightFootDown = Physics.Raycast(rightFootPosition + raycastRightOffset, Vector3.down, out hitRightFoot);
+        bool isLeftFootDown = Physics.Raycast(leftFootPosition + raycastLeftOffset, Vector3.down, out hitLeftFoot, LayerMask.NameToLayer("Drawable"));
+        bool isRightFootDown = Physics.Raycast(rightFootPosition + raycastRightOffset, Vector3.down, out hitRightFoot, LayerMask.NameToLayer("Drawable"));
 
         CalculateFoot(AvatarIKGoal.LeftFoot, isLeftFootDown, hitLeftFoot, leftFootPositionWeight, leftFootRotationWeight);
 
