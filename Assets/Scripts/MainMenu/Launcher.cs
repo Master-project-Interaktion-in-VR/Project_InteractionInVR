@@ -1,4 +1,4 @@
-#define VR_IN_EDITOR
+//#define VR_IN_EDITOR
 #define SKIP_INTRO
 
 using Photon.Pun;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -15,11 +16,25 @@ public class GameSceneManager : MonoBehaviour
 
     void Start()
     {
-#if !UNITY_EDITOR
+//#if !UNITY_EDITOR
         // do VR in Editor
         if (!Application.isMobilePlatform)
         {
             // is assistant
+            GameObject cameraWrapper = GameObject.Find("Main Camera");
+            //Destroy(cameraWrapper.GetComponent<Camera>()); // TODO does EXCEPTION in paint matter for drawing???????????
+            //cameraWrapper.GetComponent<Camera>()
+            Destroy(cameraWrapper.GetComponent<AudioListener>());
+            Destroy(cameraWrapper.GetComponent<TrackedPoseDriver>());
+
+            //GameObject left = GameObject.Find("LeftHand Controller");
+            //Destroy(left.GetComponent<XRController>()); // TODO CANNOT DISABLE XRCONTROLLER!!!!!!!!!!! SHOULD NOT MATTER??
+            //left.transform.DetachChildren();
+            //Destroy(cameraWrapper.transform.GetChild(0).gameObject);
+
+            GameObject vrEmulator = new GameObject("VREmulator");
+            cameraWrapper.transform.SetParent(vrEmulator.transform);
+
             foreach (GameObject obj in deactivateObjects)
             {
                 obj.SetActive(false);
@@ -29,7 +44,7 @@ public class GameSceneManager : MonoBehaviour
             //playspaceTransform = GameObject.Find("DefaultGazeCursor");
             //playerTransform = GameObject.Find("MixedRealityPlayspace");
         }
-#endif
+//#endif
     }
 
     // Update is called once per frame
