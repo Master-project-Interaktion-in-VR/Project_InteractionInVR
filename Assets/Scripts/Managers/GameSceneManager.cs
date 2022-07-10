@@ -1,9 +1,11 @@
-using System.Collections;
+#define START_PHOTON
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
-public class GameSceneManager : MonoBehaviour
+public class GameSceneManager : MonoBehaviourPunCallbacks
 {
     [Header("PC Configuration")]
 
@@ -11,45 +13,52 @@ public class GameSceneManager : MonoBehaviour
     private List<GameObject> deactivateObjects;
 
     [SerializeField]
+    private GameObject vrCamera;
+
+    [SerializeField]
     private Camera assistantCamera;
 
 
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinOrCreateRoom("TEST", new RoomOptions(), TypedLobby.Default);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        Debug.Log("Joined Test room");
+    }
+
     void Start()
     {
-#if !UNITY_EDITOR
-        // do VR in Editor
+#if START_PHOTON
+
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
+#endif
+
+        //#if !UNITY_EDITOR
+
         if (!Application.isMobilePlatform)
         {
             // is assistant
-            GameObject cameraWrapper = GameObject.Find("Main Camera");
-            //Destroy(cameraWrapper.GetComponent<Camera>()); // TODO does EXCEPTION in paint matter for drawing???????????
-            //cameraWrapper.GetComponent<Camera>()
-            Destroy(cameraWrapper.GetComponent<AudioListener>());
-            Destroy(cameraWrapper.GetComponent<TrackedPoseDriver>());
+            Destroy(vrCamera.GetComponent<TrackedPoseDriver>());
+            Destroy(vrCamera.GetComponent<AudioListener>());
+            // destroying camera causes paint exception, should we disable VR painting configurations for pc?
+            vrCamera.GetComponent<Camera>().cullingMask = 0; // necessary?
 
-            //GameObject left = GameObject.Find("LeftHand Controller");
-            //Destroy(left.GetComponent<XRController>()); // TODO CANNOT DISABLE XRCONTROLLER!!!!!!!!!!! SHOULD NOT MATTER??
-            //left.transform.DetachChildren();
-            //Destroy(cameraWrapper.transform.GetChild(0).gameObject);
+            // leave all VR components, do we need to remove them?
 
-            GameObject vrEmulator = new GameObject("VREmulator");
-            cameraWrapper.transform.SetParent(vrEmulator.transform);
-
-            //foreach (GameObject obj in deactivateObjects)
-            //{
-            //    obj.SetActive(false);
-            //}
+            // deactivate hand models
+            foreach (GameObject obj in deactivateObjects)
+            {
+                obj.SetActive(false);
+            }
             assistantCamera.gameObject.SetActive(true);
-
-            //playspaceTransform = GameObject.Find("DefaultGazeCursor");
-            //playerTransform = GameObject.Find("MixedRealityPlayspace");
         }
-#endif
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+//#endif
     }
 }
