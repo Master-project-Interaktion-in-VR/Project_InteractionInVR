@@ -47,7 +47,9 @@ public class Calibration : MonoBehaviour
 
                     foreach (GameObject buildObj_prefab in build_objects_Prefab)
                     {
-                        GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, buildObj_prefab.transform.position, buildObj_prefab.transform.rotation);
+                        Vector3 pos = buildObj_prefab.transform.position;
+                        pos.y += 1;
+                        GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.rotation);
                         obj.transform.parent = antennaPieces.transform;
                         BuildManager.build_objects.Add(obj);
                     }
