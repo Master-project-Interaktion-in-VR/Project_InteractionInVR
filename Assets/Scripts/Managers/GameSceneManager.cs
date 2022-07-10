@@ -16,7 +16,7 @@ public class GameSceneManager : MonoBehaviour
 
     void Start()
     {
-//#if !UNITY_EDITOR
+#if !UNITY_EDITOR
         // do VR in Editor
         if (!Application.isMobilePlatform)
         {
@@ -35,16 +35,16 @@ public class GameSceneManager : MonoBehaviour
             GameObject vrEmulator = new GameObject("VREmulator");
             cameraWrapper.transform.SetParent(vrEmulator.transform);
 
-            foreach (GameObject obj in deactivateObjects)
-            {
-                obj.SetActive(false);
-            }
+            //foreach (GameObject obj in deactivateObjects)
+            //{
+            //    obj.SetActive(false);
+            //}
             assistantCamera.gameObject.SetActive(true);
 
             //playspaceTransform = GameObject.Find("DefaultGazeCursor");
             //playerTransform = GameObject.Find("MixedRealityPlayspace");
         }
-//#endif
+#endif
     }
 
     // Update is called once per frame

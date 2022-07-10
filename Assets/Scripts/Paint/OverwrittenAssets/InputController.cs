@@ -133,6 +133,7 @@ namespace XDPaint.Controllers
                 {
                     Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
 					_lastScreenPoint = screenPoint;
+					//Debug.LogError("p: " + screenPoint);
 
 					if (down)
 					{
@@ -160,6 +161,7 @@ namespace XDPaint.Controllers
 				}
 				else
 				{
+					//Debug.LogError("up: " + _lastScreenPoint);
 					if (OnMouseUp != null)
 					{
 						OnMouseUp(_lastScreenPoint);
