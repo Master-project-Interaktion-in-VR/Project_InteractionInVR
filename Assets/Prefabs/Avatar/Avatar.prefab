@@ -2157,6 +2157,7 @@ MonoBehaviour:
   turnSmoothness: 0
   ikHead: {fileID: 3946141064242568263}
   headBodyOffset: {x: 0, y: -1.615, z: 0}
+  tallHeadBodyOffset: {x: 0, y: -1.765, z: 0}
   minHeadFloorDistance: 0.78
 --- !u!114 &3946141063664924089
 MonoBehaviour:
@@ -2205,6 +2206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b1c69010eccdb748b10794f76470ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  head: {fileID: 0}
 --- !u!1 &3946141063670555229
 GameObject:
   m_ObjectHideFlags: 0
