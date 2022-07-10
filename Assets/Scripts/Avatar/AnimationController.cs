@@ -5,7 +5,8 @@ using UnityEngine.XR;
 
 public class AnimationController : MonoBehaviour
 {
-    private InputDevice _head;
+    [SerializeField]
+    private GameObject head;
 
 
     private Animator _animator;
@@ -17,29 +18,9 @@ public class AnimationController : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    void TryInitialize()
-    {
-        List<InputDevice> allDevices = new List<InputDevice>();
-        InputDevices.GetDevices(allDevices);
-        foreach (InputDevice device in allDevices)
-        {
-            if (device.name.Contains("Quest"))
-            {
-                _head = device;
-            }
-        }
-    }
-
     private void Update()
     {
-        if (!_head.isValid)
-        {
-            // devices are not instantly available
-            TryInitialize();
-            return;
-        }
-
-        _head.TryGetFeatureValue(CommonUsages.centerEyePosition, out Vector3 headPosition);
+        Vector3 headPosition = head.transform.position;
         Quaternion localCoordinateSystem = transform.rotation; // use the rotation of the avatar
 
         Vector3 walkingDirection = _previousHeadPosition - headPosition;
