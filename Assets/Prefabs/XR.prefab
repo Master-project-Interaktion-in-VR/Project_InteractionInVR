@@ -2397,6 +2397,37 @@ MonoBehaviour:
   maxVelocity: 5
   increaseStep: 0.1
   increaseDelay: 0.02
+--- !u!1 &8255519150363187202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 6598815579406187037, guid: 9f5a24a380916d14db9775daab4fe333, type: 3}
+  m_PrefabInstance: {fileID: 3555497126094929239}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7693302662906693444}
+  m_Layer: 0
+  m_Name: 'XR Device Simulator (Missing Prefab with guid: 9f5a24a380916d14db9775daab4fe333)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7693302662906693444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 6598815579406187027, guid: 9f5a24a380916d14db9775daab4fe333, type: 3}
+  m_PrefabInstance: {fileID: 3555497126094929239}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8255519150363187202}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3555497125592886109}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1108289767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2543,11 +2574,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f5a24a380916d14db9775daab4fe333, type: 3}
---- !u!4 &7693302662906693444 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6598815579406187027, guid: 9f5a24a380916d14db9775daab4fe333, type: 3}
-  m_PrefabInstance: {fileID: 3555497126094929239}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6414076725760165906
 PrefabInstance:
   m_ObjectHideFlags: 0

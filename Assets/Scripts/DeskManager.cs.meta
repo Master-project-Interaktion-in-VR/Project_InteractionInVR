@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/DeskManager.cs.meta
 guid: b2abd32481e6b514a90b43c23c2963b3
+========
+guid: 1d25b2ab70e78734bac87a7f1ab1dc98
+>>>>>>>> 351d403 (Scene for building with objects in VR and calibration functionality):Assets/Scripts/BuildManager.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

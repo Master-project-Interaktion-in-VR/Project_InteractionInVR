@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/SceneSpanningData.cs.meta
 guid: d22e79ce7788a3047a19de156cfca6a2
+========
+guid: 644db5aed257e0746a9680af45db6372
+>>>>>>>> 351d403 (Scene for building with objects in VR and calibration functionality):Assets/Scripts/Calibration.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
