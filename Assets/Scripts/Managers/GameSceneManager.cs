@@ -1,4 +1,4 @@
-#define START_PHOTON
+//#define START_PHOTON
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
         }
 #endif
 
-        #if !UNITY_EDITOR
+#if !UNITY_EDITOR
 
         if (!Application.isMobilePlatform)
         {

@@ -24,6 +24,21 @@ namespace XDPaint.Controllers
         [Header("VR Settings")]
         public bool IsVRMode;
 
+		[SerializeField]
+		private Transform rightPenTransform;
+
+		[SerializeField]
+		private Transform leftPenTransform;
+		//[SerializeField]
+		//private Camera drawCamera;
+
+		[SerializeField]
+		private float rayLength;
+
+		[SerializeField]
+		private Vector3 rayOffset;
+
+
 		// need VR pen because controller position and rotation are local to the playspace
 		public Transform PenTransform
 		{
@@ -36,12 +51,7 @@ namespace XDPaint.Controllers
 			}
 		}
 
-        public Transform rightPenTransform;
-        public Transform leftPenTransform;
-        //[SerializeField]
-        //private Camera drawCamera;
-
-        public event OnInputUpdate OnUpdate;
+		public event OnInputUpdate OnUpdate;
 		public event OnInputPosition OnMouseHover;
 		public event OnInputPositionPressure OnMouseDown;
 		public event OnInputPositionPressure OnMouseButton;
@@ -76,8 +86,6 @@ namespace XDPaint.Controllers
 #endif
 		}
 
-        // TODO: draw on a transparent plane that is laid on top of the other
-
 
 		void Update()
 		{
@@ -89,13 +97,6 @@ namespace XDPaint.Controllers
 					TryInitialize();
 					return;
 				}
-
-
-				// Camera has fixed width and height on every screen solution
-				//float x = (100f - 100f / (Screen.width / 847)) / 100f;
-				//float y = (100f - 100f / (Screen.height / 861)) / 100f;
-				//Debug.LogError("xy: " + x + ", " + y);
-				//drawCamera.rect = new Rect(x, y, 1, 1);
 
 
 				// button up, down and press events
@@ -119,6 +120,7 @@ namespace XDPaint.Controllers
 					OnUpdate();
 				}
 
+				// can only draw left if right is not active
 				if (!upRight && !downRight && !buttonRight)
                 {
 					_isRightActive = false;
@@ -137,30 +139,16 @@ namespace XDPaint.Controllers
 
 					_leftTrigger = leftTriggerValue;
 
-
-					if (OnUpdate != null)
-					{
-						OnUpdate();
-					}
-
 					if (!upLeft && !downLeft && !buttonLeft)
 						return;
 
-					//rightHandedController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
-					//rightHandedController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion localCoordinateSystem);
-					// https://forum.unity.com/threads/get-local-direction-vector-with-no-transform.1105711/
-					// point forward direction of controller
-					// we only do this to enable "ray" painting (for research purposes maybe?)
-					// otherwise we could just use the world's Vector3.down
-					//Vector3 forward = localCoordinateSystem * Vector3.forward;
-					// for world (and not playspace) values, we have to use the VR pen
 					Vector3 forward = leftPenTransform.TransformDirection(Vector3.forward);
-					Debug.DrawRay(leftPenTransform.position, forward * 0.05f, Color.red);
+					Debug.DrawRay(leftPenTransform.position + forward * rayOffset.z, forward * rayLength, Color.red);
 
 					int layerMask = 1 << LayerMask.NameToLayer("Drawable");
 
 					RaycastHit hit;
-					if (Physics.Raycast(leftPenTransform.position, forward, out hit, 0.05f, layerMask))
+					if (Physics.Raycast(leftPenTransform.position + forward * rayOffset.z, forward, out hit, rayLength, layerMask))
 					{
 						Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
 						_leftLastScreenPoint = screenPoint;
@@ -211,12 +199,12 @@ namespace XDPaint.Controllers
 					//Vector3 forward = localCoordinateSystem * Vector3.forward;
 					// for world (and not playspace) values, we have to use the VR pen
 					Vector3 forward = rightPenTransform.TransformDirection(Vector3.forward);
-					Debug.DrawRay(rightPenTransform.position, forward * 0.05f, Color.red);
+					Debug.DrawRay(rightPenTransform.position + forward * rayOffset.z, forward * rayLength, Color.red);
 
 					int layerMask = 1 << LayerMask.NameToLayer("Drawable");
 
 					RaycastHit hit;
-					if (Physics.Raycast(rightPenTransform.position, forward, out hit, 0.05f, layerMask))
+					if (Physics.Raycast(rightPenTransform.position + forward * rayOffset.z, forward, out hit, rayLength, layerMask))
 					{
 						Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
 						_rightLastScreenPoint = screenPoint;
