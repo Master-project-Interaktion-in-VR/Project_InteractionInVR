@@ -71,7 +71,6 @@ public class AvatarController : MonoBehaviour
             Vector3 hbOffset = _isTall ? tallHeadBodyOffset : headBodyOffset;
             transform.position = ikHead.position + hbOffset;
         }
-        Debug.Log(hitFloor.distance);
 
 
         transform.forward = Vector3.Lerp(transform.forward, Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized, Time.deltaTime * turnSmoothness);

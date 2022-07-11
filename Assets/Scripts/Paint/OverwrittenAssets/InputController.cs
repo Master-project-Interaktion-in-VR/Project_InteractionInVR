@@ -25,7 +25,19 @@ namespace XDPaint.Controllers
         public bool IsVRMode;
 
 		// need VR pen because controller position and rotation are local to the playspace
-        public Transform PenTransform;
+		public Transform PenTransform
+		{
+			get
+			{
+				if (_isRightActive)
+					return rightPenTransform;
+				else
+					return leftPenTransform;
+			}
+		}
+
+        public Transform rightPenTransform;
+        public Transform leftPenTransform;
         //[SerializeField]
         //private Camera drawCamera;
 
@@ -42,10 +54,14 @@ namespace XDPaint.Controllers
 		private int fingerId = -1;
 
 #if VR_ENABLED
+		private bool _isRightActive;
 		private InputDevice rightHandedController;
+		private InputDevice leftHandedController;
 #endif
-		private bool _trigger;
-		private Vector3 _lastScreenPoint;
+		private bool _rightTrigger;
+		private Vector3 _rightLastScreenPoint;
+		private bool _leftTrigger;
+		private Vector3 _leftLastScreenPoint;
 		private bool initialized;
 #if UNITY_WEBGL
 		private bool isWebgl = true;
@@ -67,7 +83,7 @@ namespace XDPaint.Controllers
 		{
 			if (IsVRMode)
 			{
-				if (!rightHandedController.isValid)
+				if (!rightHandedController.isValid || !leftHandedController.isValid)
 				{
 					// controllers are not instantly available
 					TryInitialize();
@@ -83,18 +99,19 @@ namespace XDPaint.Controllers
 
 
 				// button up, down and press events
-				bool up = false;
-				bool down = false;
-				bool button = false;
+				bool upRight = false;
+				bool downRight = false;
+				bool buttonRight = false;
 
-				rightHandedController.TryGetFeatureValue(CommonUsages.triggerButton, out var triggerValue);
-				if (_trigger && !triggerValue)
-					up = true;
-				else if (!_trigger && triggerValue)
-					down = true;
-				button = triggerValue;
+				rightHandedController.TryGetFeatureValue(CommonUsages.triggerButton, out var rightTriggerValue);
+				//leftHandedController.TryGetFeatureValue(CommonUsages.triggerButton, out var triggerValue);
+				if (_rightTrigger && !rightTriggerValue)
+					upRight = true;
+				else if (!_rightTrigger && rightTriggerValue)
+					downRight = true;
+				buttonRight = rightTriggerValue;
 
-				_trigger = triggerValue;
+				_rightTrigger = rightTriggerValue;
 
 
 				if (OnUpdate != null)
@@ -102,71 +119,147 @@ namespace XDPaint.Controllers
 					OnUpdate();
 				}
 
-				if (!up && !down && !button)
-					return;
-
-				//var screenPoint = -Vector3.one;
-				//if (OnMouseHover != null)
-				//{
-				//	screenPoint = Camera.WorldToScreenPoint(PenTransform.position);
-				//	OnMouseHover(screenPoint);
-				//}
-
-#if VR_ENABLED
-
-                //rightHandedController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
-                //rightHandedController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion localCoordinateSystem);
-
-				// https://forum.unity.com/threads/get-local-direction-vector-with-no-transform.1105711/
-				// point forward direction of controller
-				// we only do this to enable "ray" painting (for research purposes maybe?)
-				// otherwise we could just use the world's Vector3.down
-				//Vector3 forward = localCoordinateSystem * Vector3.forward;
-				// for world (and not playspace) values, we have to use the VR pen
-				Vector3 forward = PenTransform.TransformDirection(Vector3.forward);
-                Debug.DrawRay(PenTransform.position, forward * 0.05f, Color.red);
-
-                int layerMask = 1 << LayerMask.NameToLayer("Drawable");
-
-				RaycastHit hit;
-				if (Physics.Raycast(PenTransform.position, forward, out hit, 0.05f, layerMask))
+				if (!upRight && !downRight && !buttonRight)
                 {
-                    Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
-					_lastScreenPoint = screenPoint;
-					//Debug.LogError("p: " + screenPoint);
+					_isRightActive = false;
+					// button up, down and press events
+					bool upLeft = false;
+					bool downLeft = false;
+					bool buttonLeft = false;
 
-					if (down)
+					leftHandedController.TryGetFeatureValue(CommonUsages.triggerButton, out var leftTriggerValue);
+					//leftHandedController.TryGetFeatureValue(CommonUsages.triggerButton, out var triggerValue);
+					if (_leftTrigger && !leftTriggerValue)
+						upLeft = true;
+					else if (!_leftTrigger && leftTriggerValue)
+						downLeft = true;
+					buttonLeft = leftTriggerValue;
+
+					_leftTrigger = leftTriggerValue;
+
+
+					if (OnUpdate != null)
 					{
-						if (OnMouseDown != null)
-						{
-							OnMouseDown(screenPoint);
-						}
+						OnUpdate();
 					}
 
-					if (button)
+					if (!upLeft && !downLeft && !buttonLeft)
+						return;
+
+					//rightHandedController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+					//rightHandedController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion localCoordinateSystem);
+					// https://forum.unity.com/threads/get-local-direction-vector-with-no-transform.1105711/
+					// point forward direction of controller
+					// we only do this to enable "ray" painting (for research purposes maybe?)
+					// otherwise we could just use the world's Vector3.down
+					//Vector3 forward = localCoordinateSystem * Vector3.forward;
+					// for world (and not playspace) values, we have to use the VR pen
+					Vector3 forward = leftPenTransform.TransformDirection(Vector3.forward);
+					Debug.DrawRay(leftPenTransform.position, forward * 0.05f, Color.red);
+
+					int layerMask = 1 << LayerMask.NameToLayer("Drawable");
+
+					RaycastHit hit;
+					if (Physics.Raycast(leftPenTransform.position, forward, out hit, 0.05f, layerMask))
 					{
-						if (OnMouseButton != null)
+						Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
+						_leftLastScreenPoint = screenPoint;
+						//Debug.LogError("p: " + screenPoint);
+
+						if (downLeft)
 						{
-							OnMouseButton(screenPoint);
+							if (OnMouseDown != null)
+							{
+								OnMouseDown(screenPoint);
+							}
+						}
+
+						if (buttonLeft)
+						{
+							if (OnMouseButton != null)
+							{
+								OnMouseButton(screenPoint);
+							}
+						}
+
+						if (upLeft)
+						{
+							if (OnMouseUp != null)
+							{
+								OnMouseUp(screenPoint);
+							}
 						}
 					}
-
-					if (up)
+					else
 					{
+						//Debug.LogError("up: " + _lastScreenPoint);
 						if (OnMouseUp != null)
 						{
-							OnMouseUp(screenPoint);
+							OnMouseUp(_leftLastScreenPoint);
 						}
 					}
 				}
 				else
-				{
-					//Debug.LogError("up: " + _lastScreenPoint);
-					if (OnMouseUp != null)
+                {
+					_isRightActive = true;
+					//rightHandedController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+					//rightHandedController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion localCoordinateSystem);
+					// https://forum.unity.com/threads/get-local-direction-vector-with-no-transform.1105711/
+					// point forward direction of controller
+					// we only do this to enable "ray" painting (for research purposes maybe?)
+					// otherwise we could just use the world's Vector3.down
+					//Vector3 forward = localCoordinateSystem * Vector3.forward;
+					// for world (and not playspace) values, we have to use the VR pen
+					Vector3 forward = rightPenTransform.TransformDirection(Vector3.forward);
+					Debug.DrawRay(rightPenTransform.position, forward * 0.05f, Color.red);
+
+					int layerMask = 1 << LayerMask.NameToLayer("Drawable");
+
+					RaycastHit hit;
+					if (Physics.Raycast(rightPenTransform.position, forward, out hit, 0.05f, layerMask))
 					{
-						OnMouseUp(_lastScreenPoint);
+						Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
+						_rightLastScreenPoint = screenPoint;
+						//Debug.LogError("p: " + screenPoint);
+
+						if (downRight)
+						{
+							if (OnMouseDown != null)
+							{
+								OnMouseDown(screenPoint);
+							}
+						}
+
+						if (buttonRight)
+						{
+							if (OnMouseButton != null)
+							{
+								OnMouseButton(screenPoint);
+							}
+						}
+
+						if (upRight)
+						{
+							if (OnMouseUp != null)
+							{
+								OnMouseUp(screenPoint);
+							}
+						}
+					}
+					else
+					{
+						//Debug.LogError("up: " + _lastScreenPoint);
+						if (OnMouseUp != null)
+						{
+							OnMouseUp(_rightLastScreenPoint);
+						}
 					}
 				}
+
+#if VR_ENABLED
+                
+
+                
 #endif
             }
 			else
@@ -267,6 +360,10 @@ namespace XDPaint.Controllers
 				{
 					rightHandedController = device;
 				}
+				else if (device.name.Contains("Left"))
+                {
+					leftHandedController = device;
+                }
 			}
 		}
     }
