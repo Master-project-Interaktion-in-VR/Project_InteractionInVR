@@ -1,5 +1,5 @@
 //#define VR_IN_EDITOR
-#define SKIP_INTRO
+//#define SKIP_INTRO
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -62,6 +62,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 
     private PhotonView _photonView;
+
+    public string GameScene_name;
 
 
     private void Awake()
@@ -191,7 +193,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
         else
         {
-            PhotonNetwork.LoadLevel("EnvironmentGameScene");
+            PhotonNetwork.LoadLevel(GameScene_name);
         }
     }
 
@@ -215,7 +217,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         else
         {
             // load game scene for VR
-            PhotonNetwork.LoadLevel("EnvironmentGameScene");
+            PhotonNetwork.LoadLevel(GameScene_name);
         }
     }
 

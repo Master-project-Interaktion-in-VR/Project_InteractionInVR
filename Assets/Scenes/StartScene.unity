@@ -1043,6 +1043,7 @@ MonoBehaviour:
   pcCamera: {fileID: 155614932}
   cylinderMenuCanvas: {fileID: 1393703105}
   menuCanvas: {fileID: 243184541}
+  GameScene_name: EnvironmentGameScene
 --- !u!114 &1363240333
 MonoBehaviour:
   m_ObjectHideFlags: 0
