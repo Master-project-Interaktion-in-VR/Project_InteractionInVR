@@ -11,11 +11,12 @@ GameObject:
   - component: {fileID: 6741439238904357662}
   - component: {fileID: 6741439238904357649}
   - component: {fileID: 6741439238904357648}
-  - component: {fileID: 6741439238904357652}
   - component: {fileID: 6741439238387705428}
   - component: {fileID: 6741439238387705429}
   - component: {fileID: 7894554093990427671}
   - component: {fileID: 6059769682656689136}
+  - component: {fileID: 1261618350582907595}
+  - component: {fileID: 2984726969637139910}
   m_Layer: 0
   m_Name: Halterungsstange 1
   m_TagString: Untagged
@@ -89,20 +90,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6741439238904357652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6741439238904357657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1881c9a8bcd7674f8070c9b6cc22f32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resetToOrigin: 1
-  resetDelayTime: 2
 --- !u!64 &6741439238387705428
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -177,10 +164,10 @@ MonoBehaviour:
   m_HoverEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6741439238904357652}
-        m_TargetAssemblyTypeName: AntennaPart, Assembly-CSharp
+      - m_Target: {fileID: 1261618350582907595}
+        m_TargetAssemblyTypeName: Item, Assembly-CSharp
         m_MethodName: HoverEnter
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -192,10 +179,10 @@ MonoBehaviour:
   m_HoverExited:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6741439238904357652}
-        m_TargetAssemblyTypeName: AntennaPart, Assembly-CSharp
+      - m_Target: {fileID: 1261618350582907595}
+        m_TargetAssemblyTypeName: Item, Assembly-CSharp
         m_MethodName: HoverExit
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -206,7 +193,19 @@ MonoBehaviour:
         m_CallState: 2
   m_FirstSelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1261618350582907595}
+        m_TargetAssemblyTypeName: Item, Assembly-CSharp
+        m_MethodName: RevealItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_LastSelectExited:
     m_PersistentCalls:
       m_Calls: []
@@ -298,6 +297,40 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!114 &1261618350582907595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6741439238904357657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b33320b47d47bcb4b94462e80fee0b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resetToOrigin: 1
+  resetDelayTime: 2
+--- !u!95 &2984726969637139910
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6741439238904357657}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c007c55f1effb4f4fb396a60ac5011e1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &9083878018282725792
 GameObject:
   m_ObjectHideFlags: 0
