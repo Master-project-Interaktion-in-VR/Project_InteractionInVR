@@ -45,8 +45,7 @@ public class PaintNetworker : MonoBehaviour
             //Debug.Log("not now");
             return;
         }
-        Debug.Log("send rpc");
-        if (Vector2.Distance(_previousPoint, Vector2.zero) != 0) // previous point is still empty
+        if (Vector2.Distance(_previousPoint, Vector2.zero) != 0) // previous point is not empty
             _photonView.RPC("DrawLineRpc", RpcTarget.Others, _previousPoint, paintPosition);
         _previousPoint = paintPosition;
         _startTime = Time.time;
@@ -55,7 +54,7 @@ public class PaintNetworker : MonoBehaviour
     private void OnMouseUp(BasePaintObject sender, bool inBounds)
     {
         // end line, don't know the current draw pos
-        //_photonView.RPC("DrawLineRpc", RpcTarget.Others, _previousPoint, paintPosition);
+        _photonView.RPC("DrawLineRpc", RpcTarget.Others, _previousPoint, _previousPoint);
         _previousPoint = Vector2.zero;
     }
 

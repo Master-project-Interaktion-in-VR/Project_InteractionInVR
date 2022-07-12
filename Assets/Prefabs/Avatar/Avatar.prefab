@@ -2157,6 +2157,8 @@ MonoBehaviour:
   turnSmoothness: 0
   ikHead: {fileID: 3946141064242568263}
   headBodyOffset: {x: 0, y: -1.615, z: 0}
+  tallHeadBodyOffset: {x: 0, y: -1.765, z: 0}
+  minHeadFloorDistance: 0.78
 --- !u!114 &3946141063664924089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2175,8 +2177,8 @@ MonoBehaviour:
   leftFootRotationWeight: 0.78
   rightFootRotationWeight: 0.78
   footOffset: {x: 0, y: 0.16, z: 0}
-  raycastLeftOffset: {x: 0, y: 1.11, z: 0}
-  raycastRightOffset: {x: 0, y: 1.11, z: 0}
+  raycastLeftOffset: {x: 0.04, y: 1.11, z: 0}
+  raycastRightOffset: {x: -0.04, y: 1.11, z: 0}
 --- !u!114 &3946141063664924088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2189,6 +2191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 580dccf5e6d81dc45b8024e1fa9a7079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetTransform: {fileID: 0}
+  toleranceDegrees: 80
+  slerpSeconds: 2
 --- !u!114 &3946141063664924095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2201,6 +2206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b1c69010eccdb748b10794f76470ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  head: {fileID: 0}
 --- !u!1 &3946141063670555229
 GameObject:
   m_ObjectHideFlags: 0
