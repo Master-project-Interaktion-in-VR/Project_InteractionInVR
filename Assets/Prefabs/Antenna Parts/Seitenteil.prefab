@@ -43,10 +43,11 @@ GameObject:
   - component: {fileID: 5027921833477864270}
   - component: {fileID: 5027921833477864271}
   - component: {fileID: 5027921833477864265}
+  - component: {fileID: 2375927238089532862}
   - component: {fileID: 5027921833477864269}
-  - component: {fileID: 5027921833477864267}
   - component: {fileID: 5027921832923921931}
   - component: {fileID: 5027921832923921930}
+  - component: {fileID: 2016477870574458573}
   m_Layer: 0
   m_Name: Seitenteil
   m_TagString: Untagged
@@ -150,10 +151,10 @@ MonoBehaviour:
   m_HoverEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5027921833477864267}
-        m_TargetAssemblyTypeName: AntennaPart, Assembly-CSharp
+      - m_Target: {fileID: 2375927238089532862}
+        m_TargetAssemblyTypeName: Item, Assembly-CSharp
         m_MethodName: HoverEnter
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -165,10 +166,10 @@ MonoBehaviour:
   m_HoverExited:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5027921833477864267}
-        m_TargetAssemblyTypeName: AntennaPart, Assembly-CSharp
+      - m_Target: {fileID: 2375927238089532862}
+        m_TargetAssemblyTypeName: Item, Assembly-CSharp
         m_MethodName: HoverExit
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -179,7 +180,19 @@ MonoBehaviour:
         m_CallState: 2
   m_FirstSelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2375927238089532862}
+        m_TargetAssemblyTypeName: Item, Assembly-CSharp
+        m_MethodName: RevealItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_LastSelectExited:
     m_PersistentCalls:
       m_Calls: []
@@ -271,6 +284,20 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!114 &2375927238089532862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5027921833477864262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b33320b47d47bcb4b94462e80fee0b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resetToOrigin: 1
+  resetDelayTime: 2
 --- !u!54 &5027921833477864269
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -287,20 +314,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &5027921833477864267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5027921833477864262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1881c9a8bcd7674f8070c9b6cc22f32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resetToOrigin: 1
-  resetDelayTime: 2
 --- !u!64 &5027921832923921931
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -329,3 +342,23 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2768094448502498328, guid: 87e66f5a03c17264b8a2bb5860b1d416, type: 3}
+--- !u!95 &2016477870574458573
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5027921833477864262}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1747e15601f3562459ea223dd60a7935, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

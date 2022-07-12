@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 7099664491167846999}
   - component: {fileID: 7099664491167846998}
   - component: {fileID: 7099664491167846992}
+  - component: {fileID: 8265352842799445454}
   - component: {fileID: 7099664491167846996}
-  - component: {fileID: 7099664491167846994}
   - component: {fileID: 7099664490685208338}
   - component: {fileID: 7099664490685208339}
+  - component: {fileID: 776921356995085261}
   m_Layer: 0
   m_Name: "Sch\xFCssel 1"
   m_TagString: Untagged
@@ -119,10 +120,10 @@ MonoBehaviour:
   m_HoverEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7099664491167846994}
-        m_TargetAssemblyTypeName: AntennaPart, Assembly-CSharp
+      - m_Target: {fileID: 8265352842799445454}
+        m_TargetAssemblyTypeName: Item, Assembly-CSharp
         m_MethodName: HoverEnter
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -134,10 +135,10 @@ MonoBehaviour:
   m_HoverExited:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7099664491167846994}
-        m_TargetAssemblyTypeName: AntennaPart, Assembly-CSharp
+      - m_Target: {fileID: 8265352842799445454}
+        m_TargetAssemblyTypeName: Item, Assembly-CSharp
         m_MethodName: HoverExit
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -148,7 +149,19 @@ MonoBehaviour:
         m_CallState: 2
   m_FirstSelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8265352842799445454}
+        m_TargetAssemblyTypeName: Item, Assembly-CSharp
+        m_MethodName: RevealItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_LastSelectExited:
     m_PersistentCalls:
       m_Calls: []
@@ -240,6 +253,20 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!114 &8265352842799445454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7099664491167847007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b33320b47d47bcb4b94462e80fee0b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resetToOrigin: 1
+  resetDelayTime: 2
 --- !u!54 &7099664491167846996
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -256,20 +283,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &7099664491167846994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7099664491167847007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1881c9a8bcd7674f8070c9b6cc22f32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resetToOrigin: 1
-  resetDelayTime: 2
 --- !u!64 &7099664490685208338
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -298,6 +311,26 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3948448490450904046, guid: 87dbc01a09c3167489c395b9ccddbab8, type: 3}
+--- !u!95 &776921356995085261
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7099664491167847007}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 352b27193768cbc4ea64c6a7a040bf6b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8848279618803705434
 GameObject:
   m_ObjectHideFlags: 0
