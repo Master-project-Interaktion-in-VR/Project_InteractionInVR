@@ -54,9 +54,11 @@ public class InventoryManager : MonoBehaviour
     public void PutItemInInventory(ActivateEventArgs args)
     {
         var item = args.interactableObject.transform.gameObject;
+        item.GetComponent<Animator>().SetBool("shrink", true);
         antennaPartsPickedUp++;
-        Destroy(item);
-
+        
+        Destroy(item, .9f);
+        
         if (antennaPartsPickedUp == maxAntennaParts)
         {
             NextLevel();
