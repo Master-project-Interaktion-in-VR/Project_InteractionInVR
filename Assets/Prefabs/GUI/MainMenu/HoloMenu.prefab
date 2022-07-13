@@ -448,7 +448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6494801973521168342
 Transform:
   m_ObjectHideFlags: 0
@@ -649,23 +649,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6611552312840540680, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6611552312840540680, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6611552312840540680, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 6611552313646582674, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6611552313646582674, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6611552313646582674, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: m_AnchorMin.y
@@ -773,7 +773,7 @@ PrefabInstance:
       objectReference: {fileID: 5771053229681177759}
     - target: {fileID: 6611552314639813672, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 12.51
       objectReference: {fileID: 0}
     - target: {fileID: 6611552314639813672, guid: c025bfe0d202759438c9cf52a89f3923, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1084,7 +1084,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8633238408306893223, guid: 0835bd1737f0fab44bc6088f2794feed, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8633238408306893223, guid: 0835bd1737f0fab44bc6088f2794feed, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode

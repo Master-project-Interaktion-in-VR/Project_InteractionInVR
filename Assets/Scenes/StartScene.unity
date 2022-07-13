@@ -2369,30 +2369,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1363240332}
-    - target: {fileID: 6494801971960759834, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1363240332}
     - target: {fileID: 6494801972107160097, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
       propertyPath: messageAudio
       value: 
       objectReference: {fileID: 1512737520}
-    - target: {fileID: 6494801972107160106, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 12.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801972107160106, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 84.99995
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801972214862487, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801972650676355, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6494801972650676355, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2413,58 +2393,6 @@ PrefabInstance:
       propertyPath: _whenUnselectedHovered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 954389596}
-    - target: {fileID: 6494801973206581580, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973206581583, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973206581583, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973206581583, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973206581583, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973206581583, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973234216336, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973234216336, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973234216336, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973361103392, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 50.17
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973503947786, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973503947786, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973503947786, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -17
-      objectReference: {fileID: 0}
     - target: {fileID: 6494801973521168337, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
       propertyPath: centerEyeAnchor
       value: 
@@ -2472,10 +2400,6 @@ PrefabInstance:
     - target: {fileID: 6494801973521168341, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
       propertyPath: m_Name
       value: HoloMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973521168341, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6494801973521168342, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
       propertyPath: m_RootOrder
@@ -2525,30 +2449,6 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1989673516}
-    - target: {fileID: 6494801973638793610, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973638793610, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973638793610, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 110.29
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973638793610, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 55.145
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973638793610, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -31.085
-      objectReference: {fileID: 0}
-    - target: {fileID: 6494801973638793611, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
 --- !u!1 &6494801972305471454 stripped
