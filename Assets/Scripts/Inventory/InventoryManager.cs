@@ -16,6 +16,8 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject rightAnchor;
     [SerializeField] private GameObject leftArrows;
     [SerializeField] private GameObject rightArrows;
+    [SerializeField] private GameObject detector;
+    [SerializeField] private GameObject glass;
 
     [SerializeField] private Image detectorImage;
 
@@ -60,11 +62,11 @@ public class InventoryManager : MonoBehaviour
 
         leftHandAction.FindAction("Primary Action").performed += OpenCloseLeftInventory;
         rightHandAction.FindAction("Primary Action").performed += OpenCloseRightInventory;
-        leftHandAction.FindAction("Secondary Action").performed += PutStickInHand;
-        rightHandAction.FindAction("Secondary Action").performed += PutDetectorInHand;
+        leftHandAction.FindAction("Secondary Action").performed += PutGlassToHand;
+        rightHandAction.FindAction("Secondary Action").performed += PutDetectorToHand;
 
-        leftHandLocomotion.FindAction("Turn").performed += SwitchItem;
-        rightHandLocomotion.FindAction("Turn").performed += SwitchItem;
+       // leftHandLocomotion.FindAction("Turn").performed += SwitchItem;
+        //rightHandLocomotion.FindAction("Turn").performed += SwitchItem;
     }
 
     private void Update()
@@ -84,31 +86,38 @@ public class InventoryManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            SwitchItem(new InputAction.CallbackContext());
+            SwitchItem(false);
             detectorImage.transform.DOScale(1.6f, 1.5f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
             //animation.Play("ItemPopUp");            
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            SwitchItem(new InputAction.CallbackContext());
+            SwitchItem(true);
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
-            PutDetectorInHand(new InputAction.CallbackContext());
+            if (inventory.activeInHierarchy && leftArrows.activeInHierarchy)
+            {
+                PutDetectorToHand(new InputAction.CallbackContext());
+            }
+            else if (inventory.activeInHierarchy && rightArrows.activeInHierarchy)
+            {
+                PutGlassToHand(new InputAction.CallbackContext());
+            }
+            
         }
     }
 
-    private GameObject SetInventoryAnchor(GameObject anchor)
+    private void SetInventoryAnchor(GameObject anchor)
     {
         inventory.transform.position = anchor.transform.position;
         var eulerAngles = anchor.transform.eulerAngles;
         inventory.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
-        return anchor;
     }
 
-    private void SwitchItem(InputAction.CallbackContext obj)
+    private void SwitchItem(bool right)
     {
-        _isRightSelected = _isRight;
+        _isRightSelected = right;
 
         if (_isRightSelected)
         {
@@ -169,13 +178,13 @@ public class InventoryManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void PutStickInHand(InputAction.CallbackContext obj)
+    public void PutGlassToHand(InputAction.CallbackContext obj)
     {
         for (int i = 0; i < inventoryItems.Count; i++)
         {
-            if (inventoryItems[i].name == "Magnifying Glass" && inventory.activeInHierarchy)
+            if (inventoryItems[i].name == "Magnifying Glass" && inventory.activeInHierarchy && rightArrows.activeInHierarchy)
             {
-                Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
+                Instantiate(inventoryItems[i], inventory.transform.position, inventory.transform.rotation);
                 Destroy(GameObject.Find("Metal Detector(Clone)"));
                 rightHandModel.GetComponent<MeshRenderer>().enabled = false;
                 stickButton.interactable = false;
@@ -185,14 +194,14 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void PutDetectorInHand(InputAction.CallbackContext obj)
+    public void PutDetectorToHand(InputAction.CallbackContext obj)
     {
         for (int i = 0; i < inventoryItems.Count; i++)
         {
             if (inventoryItems[i].name == "Metal Detector" && inventory.activeInHierarchy && leftArrows.activeInHierarchy)
             {
                // var detectorObject = Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation); USE THIS LATER FOR CLEANER CODE
-                Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
+                Instantiate(inventoryItems[i], inventory.transform.position, inventory.transform.rotation);
                 Destroy(GameObject.Find("Magnifying Glass(Clone)"));
                 rightHandModel.GetComponent<MeshRenderer>().enabled = false;
                 stickButton.interactable = true;
@@ -202,7 +211,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void PutItemInHand(InputAction.CallbackContext obj)
+    private void PutItemToHand(InputAction.CallbackContext obj)
     {
         // aufpassen in die richtige hand
         // die oberen hier verfrachten
