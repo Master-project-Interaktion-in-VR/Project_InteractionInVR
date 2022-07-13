@@ -7,12 +7,19 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
-public class InventoryManager : MonoBehaviour, ISelectHandler
+public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject inventory;
     [SerializeField] private GameObject leftAnchor;
     [SerializeField] private GameObject rightAnchor;
+    [SerializeField] private GameObject leftArrows;
+    [SerializeField] private GameObject rightArrows;
+
+    [SerializeField] private Image detectorImage;
+
+    [SerializeField] private Animator animation;
 
     [SerializeField] private InputActionAsset actionAsset;
 
@@ -33,6 +40,9 @@ public class InventoryManager : MonoBehaviour, ISelectHandler
     private bool _isRight;
     private bool _isRightSelected;
 
+    private Vector3 _originalScale;
+    private Vector3 _scaleTo;
+
     private void Start()
     {
         //leftUIActivationReference.action.performed += OpenCloseLeftInventory; WITHOUT FINDING IN ACTION MAP
@@ -40,12 +50,21 @@ public class InventoryManager : MonoBehaviour, ISelectHandler
         //takeStickfromInventoryReference.action.performed += PutStickInHand;
         //takeDetectorfromInventoryReference.action.performed += PutDetectorInHand;
 
+        _originalScale = detectorImage.transform.localScale;
+        _scaleTo = _originalScale * 10;
+
         var leftHandAction = actionAsset.FindActionMap("XRI LeftHand Interaction");
         var rightHandAction = actionAsset.FindActionMap("XRI RightHand Interaction");
+        var leftHandLocomotion = actionAsset.FindActionMap("XRI LeftHand Locomotion");
+        var rightHandLocomotion = actionAsset.FindActionMap("XRI RightHand Locomotion");
+
         leftHandAction.FindAction("Primary Action").performed += OpenCloseLeftInventory;
         rightHandAction.FindAction("Primary Action").performed += OpenCloseRightInventory;
         leftHandAction.FindAction("Secondary Action").performed += PutStickInHand;
         rightHandAction.FindAction("Secondary Action").performed += PutDetectorInHand;
+
+        leftHandLocomotion.FindAction("Turn").performed += SwitchItem;
+        rightHandLocomotion.FindAction("Turn").performed += SwitchItem;
     }
 
     private void Update()
@@ -65,38 +84,44 @@ public class InventoryManager : MonoBehaviour, ISelectHandler
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            SwitchItem(false);
+            SwitchItem(new InputAction.CallbackContext());
+            detectorImage.transform.DOScale(1.6f, 1.5f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+            //animation.Play("ItemPopUp");            
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            SwitchItem(true);
+            SwitchItem(new InputAction.CallbackContext());
+        }
+        else if (Input.GetKeyDown(KeyCode.Return))
+        {
+            PutDetectorInHand(new InputAction.CallbackContext());
         }
     }
 
-    private void SetInventoryAnchor(GameObject anchor)
+    private GameObject SetInventoryAnchor(GameObject anchor)
     {
         inventory.transform.position = anchor.transform.position;
         var eulerAngles = anchor.transform.eulerAngles;
         inventory.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
+        return anchor;
     }
 
-    private void SwitchItem(bool right)
+    private void SwitchItem(InputAction.CallbackContext obj)
     {
-        _isRightSelected = right;
+        _isRightSelected = _isRight;
 
         if (_isRightSelected)
         {
-            // rechte Pfeile aktivieren, linke Pfeile deaktivieren
+            rightArrows.SetActive(true);
+            leftArrows.SetActive(false);
+            //animation.Play("ItemPopUp");
         }
         else
         {
-            // linke Pfeile aktivieren, rechte Pfeile deaktivieren
+            leftArrows.SetActive(true);
+            rightArrows.SetActive(false);
+            //animation.Play("ItemPopUp");
         }
-    }
-
-    public void OnSelect(BaseEventData eventData)
-    {
-        Debug.Log(stickButton + " was selected");
     }
 
     public void PutItemInInventory(ActivateEventArgs args)
@@ -119,6 +144,8 @@ public class InventoryManager : MonoBehaviour, ISelectHandler
         {
             _isRight = true;
             SetInventoryAnchor(rightAnchor);
+            leftArrows.SetActive(false);
+            rightArrows.SetActive(false);
             inventory.SetActive(!inventory.activeInHierarchy);
             snapTurnScript.enabled = !inventory.activeInHierarchy;
         }
@@ -130,6 +157,8 @@ public class InventoryManager : MonoBehaviour, ISelectHandler
         {
             _isRight = false;
             SetInventoryAnchor(leftAnchor);
+            leftArrows.SetActive(false);
+            rightArrows.SetActive(false);
             inventory.SetActive(!inventory.activeInHierarchy);
             snapTurnScript.enabled = !inventory.activeInHierarchy;
         }  
@@ -152,14 +181,7 @@ public class InventoryManager : MonoBehaviour, ISelectHandler
                 stickButton.interactable = false;
                 detectorButton.interactable = true;
                 inventory.SetActive(false);
-                //stickButton.gameObject.SetActive(false);
             }
-            /*else if (inventoryItems[i].name == "MetalDetector")
-            {
-                Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
-                detectorButton.interactable = false;
-                stickButton.interactable = true;
-           }*/
         }
     }
 
@@ -167,15 +189,15 @@ public class InventoryManager : MonoBehaviour, ISelectHandler
     {
         for (int i = 0; i < inventoryItems.Count; i++)
         {
-            if (inventoryItems[i].name == "Metal Detector")
+            if (inventoryItems[i].name == "Metal Detector" && inventory.activeInHierarchy && leftArrows.activeInHierarchy)
             {
-                var detectorObject = Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
+               // var detectorObject = Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation); USE THIS LATER FOR CLEANER CODE
+                Instantiate(inventoryItems[i], handSpawn.position, handSpawn.rotation);
                 Destroy(GameObject.Find("Magnifying Glass(Clone)"));
                 rightHandModel.GetComponent<MeshRenderer>().enabled = false;
                 stickButton.interactable = true;
                 detectorButton.interactable = false;
                 inventory.SetActive(false);
-                //stickButton.gameObject.SetActive(false);
             }
         }
     }
