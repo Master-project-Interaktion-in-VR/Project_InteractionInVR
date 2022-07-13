@@ -1100,7 +1100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &427605312
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1891,6 +1891,8 @@ MonoBehaviour:
   rightAnchor: {fileID: 2026550981}
   leftArrows: {fileID: 1712018109}
   rightArrows: {fileID: 427605311}
+  detector: {fileID: 8554375558425841428, guid: fb62ba2b11dd12f4b85f8d1801178f08, type: 3}
+  glass: {fileID: 5155770622844295137, guid: 20cff4d953ab6224f86bcb135ff5084d, type: 3}
   detectorImage: {fileID: 1948044865}
   animation: {fileID: 887756103}
   actionAsset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
@@ -3709,7 +3711,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1712018110
 RectTransform:
   m_ObjectHideFlags: 0
