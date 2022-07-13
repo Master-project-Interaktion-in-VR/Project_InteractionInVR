@@ -12,15 +12,48 @@ public class IngameMenuController : MonoBehaviour
     [SerializeField]
     private GameObject holoMenu;
 
+    [SerializeField]
+    private List<GameObject> buttons;
+
     private bool _isMenuVisible;
+
 
     private void OnEnable()
     {
         menuTriggerActionReference.action.performed += OnMenuToggle;
+        CloseToUICollision.OnEnterUIArea += Enter;
+        CloseToUICollision.OnExitUIArea += Exit;
     }
+
     private void OnDisable()
     {
         menuTriggerActionReference.action.performed -= OnMenuToggle;
+        CloseToUICollision.OnEnterUIArea -= Enter;
+        CloseToUICollision.OnExitUIArea -= Exit;
+    }
+
+    private void Enter(GameObject triggered)
+    {
+        foreach (GameObject button in buttons)
+        {
+            if (button.Equals(triggered))
+            {
+                Debug.Log(button.transform.parent.name);
+                button.GetComponent<ButtonVis>().OnDown();
+            }
+        }
+    }
+
+    private void Exit(GameObject triggered)
+    {
+        foreach (GameObject button in buttons)
+        {
+            if (button.Equals(triggered))
+            {
+                Debug.Log(button.transform.parent.name);
+                button.GetComponent<ButtonVis>().OnUp();
+            }
+        }
     }
 
     private void OnMenuToggle(InputAction.CallbackContext callback)

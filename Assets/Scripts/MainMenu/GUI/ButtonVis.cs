@@ -57,7 +57,18 @@ public class ButtonVis : MonoBehaviour
         gameObject.GetComponent<Image>().color = pressed;
         gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = pressed;
     }
+    public void OnDown()
+    {
+        gameObject.GetComponent<Image>().color = pressed;
+        gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = pressed;
+    }
+
     public void OnUp(PointerEventData data)
+    {
+        gameObject.GetComponent<Image>().color = normal;
+        gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = normal;
+    }
+    public void OnUp()
     {
         gameObject.GetComponent<Image>().color = normal;
         gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = normal;
