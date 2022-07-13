@@ -17,6 +17,12 @@ public class IngameMenuController : MonoBehaviour
     private GameObject holoMenu;
 
     [SerializeField]
+    private GameObject pauseMenuContainer;
+
+    [SerializeField]
+    private GameObject confirmMenuContainer;
+
+    [SerializeField]
     private List<GameObject> buttons;
 
     [SerializeField]
@@ -27,6 +33,7 @@ public class IngameMenuController : MonoBehaviour
 
 
     private bool _isMenuVisible;
+    private bool _quitting;
 
 
     private void OnEnable()
@@ -83,19 +90,42 @@ public class IngameMenuController : MonoBehaviour
 
     public void OnClickedMenuButton()
     {
-        if (PhotonNetwork.InRoom)
-        {
-            PhotonNetwork.LeaveRoom();
-            PhotonNetwork.LeaveLobby();
-            PhotonNetwork.Disconnect();
-        }
-        SceneSpanningData.isComingFromGame = true;
-        SceneManager.LoadScene(GUIConstants.MENU_SCENE);
+        pauseMenuContainer.SetActive(false);
+        confirmMenuContainer.SetActive(true);
     }
 
     public void OnClickedQuitButton()
     {
-        Application.Quit();
+        _quitting = true;
+        pauseMenuContainer.SetActive(false);
+        confirmMenuContainer.SetActive(true);
+    }
+
+    public void OnConfirm()
+    {
+        if (_quitting)
+        {
+            Application.Quit();
+        }
+        else
+        {
+            // to menu
+            if (PhotonNetwork.InRoom)
+            {
+                PhotonNetwork.LeaveRoom();
+                PhotonNetwork.LeaveLobby();
+                PhotonNetwork.Disconnect();
+            }
+            SceneSpanningData.isComingFromGame = true;
+            SceneManager.LoadScene(GUIConstants.MENU_SCENE);
+        }
+    }
+
+    public void OnAbort()
+    {
+        _quitting = false;
+        pauseMenuContainer.SetActive(true);
+        confirmMenuContainer.SetActive(false);
     }
 
     private void OnApplicationQuit()
