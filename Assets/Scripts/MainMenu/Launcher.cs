@@ -1,4 +1,4 @@
-#define VR_IN_EDITOR
+////#define VR_IN_EDITOR
 //#define SKIP_INTRO
 
 using Photon.Pun;
@@ -97,24 +97,36 @@ public class Launcher : MonoBehaviourPunCallbacks
 #endif
 #else
 
-        if (!SceneSpanningData.isComingFromGame)
+        //if (!SceneSpanningData.isComingFromGame)
+        //{
+        //    // just make sure, menu is disabled and cutscene is enabled and played
+        //    menu.SetActive(false);
+        //    GameObjectExtensions.FindObject("MenuCorridor").SetActive(true);
+        //    StartCoroutine(Intro());
+        //}
+        //else
+        //{
+        if (!Application.isMobilePlatform)
         {
-            // just make sure, menu is disabled and cutscene is enabled and played
-            menu.SetActive(false);
-            GameObjectExtensions.FindObject("MenuCorridor").SetActive(true);
-            StartCoroutine(Intro());
+            menuCanvas.gameObject.SetActive(true);
         }
         else
         {
             menu.SetActive(true);
-            ConnectToPhoton();
         }
+        ConnectToPhoton();
+        //}
 #endif
     }
 
 
     void Update()
     {
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
+
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
