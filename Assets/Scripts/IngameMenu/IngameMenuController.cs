@@ -1,8 +1,12 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class IngameMenuController : MonoBehaviour
 {
@@ -14,6 +18,13 @@ public class IngameMenuController : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> buttons;
+
+    [SerializeField]
+    private UnityEvent onButtonDown;
+
+    [SerializeField]
+    private UnityEvent onButtonUp;
+
 
     private bool _isMenuVisible;
 
@@ -38,7 +49,7 @@ public class IngameMenuController : MonoBehaviour
         {
             if (button.Equals(triggered))
             {
-                Debug.Log(button.transform.parent.name);
+                onButtonDown.Invoke();
                 button.GetComponent<ButtonVis>().OnDown();
             }
         }
@@ -50,14 +61,16 @@ public class IngameMenuController : MonoBehaviour
         {
             if (button.Equals(triggered))
             {
-                Debug.Log(button.transform.parent.name);
+                onButtonUp.Invoke();
                 button.GetComponent<ButtonVis>().OnUp();
+                button.GetComponent<Button>().onClick.Invoke();
             }
         }
     }
 
     private void OnMenuToggle(InputAction.CallbackContext callback)
     {
+        onButtonUp.Invoke();
         holoMenu.SetActive(!_isMenuVisible);
         _isMenuVisible = !_isMenuVisible;
     }
@@ -70,11 +83,26 @@ public class IngameMenuController : MonoBehaviour
 
     public void OnClickedMenuButton()
     {
-
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LeaveLobby();
+            PhotonNetwork.Disconnect();
+        }
+        SceneSpanningData.isComingFromGame = true;
+        SceneManager.LoadScene(GUIConstants.MENU_SCENE);
     }
 
     public void OnClickedQuitButton()
     {
         Application.Quit();
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
     }
 }

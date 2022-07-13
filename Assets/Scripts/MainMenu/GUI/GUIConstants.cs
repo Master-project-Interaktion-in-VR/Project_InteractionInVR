@@ -33,4 +33,5 @@ public static class GUIConstants
 
     public static string PLATFORM_PC = "PC";
     public static string PLATFORM_VR = "VR";
+    public static string MENU_SCENE = "StartScene";
 }
