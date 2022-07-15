@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Teleporting:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3862708697123929635}
         m_TargetAssemblyTypeName: TeleportationAction, Assembly-CSharp
         m_MethodName: Teleport
         m_Mode: 0
