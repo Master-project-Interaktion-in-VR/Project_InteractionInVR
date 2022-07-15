@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 
+/// <summary>
+/// https://forum.unity.com/threads/what-is-recovery-gameobject.1005352/
+/// </summary>
 public class NullComponentAndMissingPrefabSearchTool
 {
     [MenuItem("Tools/Log Missing Prefabs And Components")]
