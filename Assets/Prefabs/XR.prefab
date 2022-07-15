@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 133603889246405087}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Inventory Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 133603890068266757}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Inventory Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 133603890517834399}
   - component: {fileID: 1344715759114954461}
   - component: {fileID: 4436466393726621042}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: LeftHand Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,8 +355,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.08
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.06
+  m_Center: {x: 0.015, y: 0, z: 0}
 --- !u!114 &1344715759114954461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,7 +693,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2147487735
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 0
   m_HoverToSelect: 0
@@ -923,7 +923,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7281254117908896960}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: ModelParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -954,7 +954,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7436312108830736017}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: ModelParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1317,7 +1317,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2147487735
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 0
   m_HoverToSelect: 0
@@ -1881,7 +1881,7 @@ GameObject:
   - component: {fileID: 3498454459859731377}
   - component: {fileID: 8100520232535975080}
   - component: {fileID: 6351307234637954610}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RightHand Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2161,8 +2161,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.08
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.06
+  m_Center: {x: -0.015, y: 0, z: 0}
 --- !u!114 &8100520232535975080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2269,7 +2269,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2147485175
+    m_Bits: 2147491319
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2637,6 +2637,10 @@ PrefabInstance:
     - target: {fileID: 6414076727507394378, guid: fbbb6e46eab0bcc488c52ccb0b9b203d, type: 3}
       propertyPath: m_Name
       value: DebugConsole
+      objectReference: {fileID: 0}
+    - target: {fileID: 6414076727507394378, guid: fbbb6e46eab0bcc488c52ccb0b9b203d, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6414076727507394379, guid: fbbb6e46eab0bcc488c52ccb0b9b203d, type: 3}
       propertyPath: m_Pivot.x
