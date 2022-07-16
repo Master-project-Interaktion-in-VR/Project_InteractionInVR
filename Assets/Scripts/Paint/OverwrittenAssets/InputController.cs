@@ -8,6 +8,7 @@ using UnityEngine;
 using XDPaint.Tools;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.UI;
 
 namespace XDPaint.Controllers
 {
@@ -17,9 +18,13 @@ namespace XDPaint.Controllers
 		public delegate void OnInputPosition(Vector3 position);
 		public delegate void OnInputPositionPressure(Vector3 position, float pressure = 1.0f);
 
+
 		[Header("Ignore Raycasts Settings")]
-		[SerializeField] private Canvas canvas;
-		[SerializeField] private GameObject[] ignoreForRaycasts;
+		[SerializeField] 
+		private Canvas canvas;
+
+		[SerializeField] 
+		private GameObject[] ignoreForRaycasts;
 
         [Header("VR Settings")]
         public bool IsVRMode;
@@ -37,6 +42,9 @@ namespace XDPaint.Controllers
 
 		[SerializeField]
 		private Vector3 rayOffset;
+
+		[SerializeField]
+		private bool fingerDrawing;
 
 
 		// need VR pen because controller position and rotation are local to the playspace
@@ -89,8 +97,13 @@ namespace XDPaint.Controllers
 
 		void Update()
 		{
+
 			if (IsVRMode)
 			{
+				if (fingerDrawing)
+					return;
+
+
 				if (!rightHandedController.isValid || !leftHandedController.isValid)
 				{
 					// controllers are not instantly available
@@ -122,7 +135,7 @@ namespace XDPaint.Controllers
 
 				// can only draw left if right is not active
 				if (!upRight && !downRight && !buttonRight)
-                {
+				{
 					_isRightActive = false;
 					// button up, down and press events
 					bool upLeft = false;
@@ -188,7 +201,7 @@ namespace XDPaint.Controllers
 					}
 				}
 				else
-                {
+				{
 					_isRightActive = true;
 					//rightHandedController.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
 					//rightHandedController.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion localCoordinateSystem);
@@ -243,12 +256,6 @@ namespace XDPaint.Controllers
 						}
 					}
 				}
-
-#if VR_ENABLED
-                
-
-                
-#endif
             }
 			else
 			{
@@ -337,8 +344,7 @@ namespace XDPaint.Controllers
 			}
 		}
 
-
-		void TryInitialize()
+		private void TryInitialize()
 		{
 			List<InputDevice> allDevices = new List<InputDevice>();
 			InputDevices.GetDevices(allDevices);
@@ -354,5 +360,11 @@ namespace XDPaint.Controllers
                 }
 			}
 		}
+
+		public void OnFingerDraw(Vector2 eventData)
+        {
+            Debug.Log(eventData);
+
+        }
     }
 }
