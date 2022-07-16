@@ -32,8 +32,9 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private int maxAntennaParts;
 
     private bool _isRight;
-    private bool _isRightSelected;
 
+    public GameObject itemInLeftHand;
+    public GameObject itemInRightHand;
     private GameObject itemObject;
 
     private void Start()
@@ -103,41 +104,73 @@ public class InventoryManager : MonoBehaviour
         var item = args.interactableObject.transform.gameObject;
         item.GetComponent<Animator>().SetBool("shrink", true);
         antennaPartsPickedUp++;
-        
-        Destroy(item, .9f);
-        
+
+        if (item == itemInLeftHand)
+            itemInLeftHand = null;
+        else if (item == itemInRightHand)
+            itemInRightHand = null;
+
+        Destroy(item);
+
         if (antennaPartsPickedUp == maxAntennaParts)
-        {
             NextLevel();
-        }
+    }
+
+    public void PutItemInLeftHand(SelectEnterEventArgs args)
+    {
+        itemInLeftHand = args.interactableObject.transform.gameObject;
+
+        // if an object is grabbed
+        if (inventory.activeInHierarchy && itemInLeftHand != null)
+            ResetInventoryProperties();
+    }
+
+    public void PutItemInRightHand(SelectEnterEventArgs args)
+    {
+        itemInRightHand = args.interactableObject.transform.gameObject;
+
+        // if an object is grabbed
+        if (inventory.activeInHierarchy && itemInRightHand != null)
+            ResetInventoryProperties();
+    }
+
+    public void DropItemFromLeftHand(SelectExitEventArgs args)
+    {
+        itemInLeftHand = null;
+    }
+
+    public void DropItemFromRightHand(SelectExitEventArgs args)
+    {
+        itemInRightHand = null;
     }
 
     private void OpenCloseRightInventory(InputAction.CallbackContext obj)
     {
-        if (inventory.activeInHierarchy && _isRight || !inventory.activeInHierarchy)
+        if (inventory.activeInHierarchy && _isRight || !inventory.activeInHierarchy && itemInRightHand == null)
         {
             _isRight = true;
             SetInventoryAnchor(rightAnchor);
-            leftArrows.SetActive(true);
-            rightArrows.SetActive(false);
-            inventory.SetActive(!inventory.activeInHierarchy);
-            animator.SetBool("scale", true);
-            snapTurnScript.enabled = !inventory.activeInHierarchy;
+            ResetInventoryProperties();
         }
     }
 
     private void OpenCloseLeftInventory(InputAction.CallbackContext obj)
     {
-        if (inventory.activeInHierarchy && !_isRight || !inventory.activeInHierarchy)
-        {
+        if (inventory.activeInHierarchy && !_isRight || !inventory.activeInHierarchy && itemInLeftHand == null)
+        {       
             _isRight = false;
             SetInventoryAnchor(leftAnchor);
-            leftArrows.SetActive(true);
-            rightArrows.SetActive(false);
-            inventory.SetActive(!inventory.activeInHierarchy);
-            animator.SetBool("scale", true);
-            snapTurnScript.enabled = !inventory.activeInHierarchy;
+            ResetInventoryProperties();
         }
+    }
+
+    private void ResetInventoryProperties()
+    {
+        leftArrows.SetActive(true);
+        rightArrows.SetActive(false);
+        inventory.SetActive(!inventory.activeInHierarchy);
+        animator.SetBool("scale", true);
+        snapTurnScript.enabled = !inventory.activeInHierarchy;
     }
 
     private void NextLevel()
@@ -149,10 +182,15 @@ public class InventoryManager : MonoBehaviour
     {
         if (inventory.activeInHierarchy)
         {
+            if (itemObject == itemInLeftHand)
+                itemInLeftHand = null;
+            else if (itemObject == itemInRightHand)
+                itemInRightHand = null;
+
             if (itemObject != null)
                 Destroy(itemObject);
 
-            GameObject prefab; 
+            GameObject prefab;
 
             if (rightArrows.activeInHierarchy)           
                 prefab = glass;           
