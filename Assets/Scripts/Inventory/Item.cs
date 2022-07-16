@@ -11,16 +11,20 @@ public class Item : MonoBehaviour
     private Renderer _renderer;
     private XRGrabInteractable _grabInteractable;
     private Rigidbody _rigidbody;
+    private InventoryManager _inventoryManager;
+    
     private Vector3 _originPos;
     private Quaternion _originRotation;
+    
     private bool _colliderTriggered;
     private bool _selected;
     
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
-        _grabInteractable = GetComponent<XRGrabInteractable>();
+        _grabInteractable = GetComponentInParent<XRGrabInteractable>();
         _rigidbody = GetComponent<Rigidbody>();
+        _inventoryManager = GameObject.FindGameObjectWithTag("Inventory Manager").GetComponent<InventoryManager>();
         _originPos = transform.position;
         _originRotation = transform.rotation;
     }
@@ -69,18 +73,32 @@ public class Item : MonoBehaviour
 
     public void HoverEnter(HoverEnterEventArgs arg0)
     {
-        if(!_selected)
-            _renderer.material.EnableKeyword("_EMISSION");
+        if (!_selected)
+        {
+            foreach (var material in _renderer.materials)
+            {
+                material.EnableKeyword("_EMISSION");
+            }
+        }
     }
     
     public void HoverExit(HoverExitEventArgs arg0)
     {
-        _renderer.material.DisableKeyword("_EMISSION");
+        foreach (var material in _renderer.materials)
+        {
+            material.DisableKeyword("_EMISSION");
+        }
     }
 
     public void RevealItem(SelectEnterEventArgs arg0)
     {
         gameObject.layer = 0;
+    }
+    
+    public void ActivateEnter(ActivateEventArgs arg0)
+    {
+        if(_inventoryManager != null)
+            _inventoryManager.PutItemInInventory(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -7,35 +7,33 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.EventSystems;
-using DG.Tweening;
 
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject inventory;
-    [SerializeField] private GameObject itemAnchor;
-    [SerializeField] private GameObject leftAnchor;
-    [SerializeField] private GameObject rightAnchor;
     [SerializeField] private GameObject leftArrows;
     [SerializeField] private GameObject rightArrows;
     [SerializeField] private GameObject detector;
     [SerializeField] private GameObject glass;
 
-    [SerializeField] private Image detectorImage;
-
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator detectorAnimator;
+    [SerializeField] private Animator glassAnimator;
 
     [SerializeField] private InputActionAsset actionAsset;
-
-    [SerializeField] private ActionBasedSnapTurnProvider snapTurnScript;
-
+    
     [SerializeField] private int antennaPartsPickedUp;
     [SerializeField] private int maxAntennaParts;
 
     private bool _isRight;
 
-    public GameObject itemInLeftHand;
-    public GameObject itemInRightHand;
+    private GameObject itemAnchor;
+    private GameObject leftAnchor;
+    private GameObject rightAnchor;
+    private GameObject itemInLeftHand;
+    private GameObject itemInRightHand;
     private GameObject itemObject;
+    
+    private ActionBasedSnapTurnProvider snapTurnScript;
 
     private void Start()
     {
@@ -49,8 +47,13 @@ public class InventoryManager : MonoBehaviour
         leftHandAction.FindAction("Secondary Action").performed += SpawnItem;
         rightHandAction.FindAction("Secondary Action").performed += SpawnItem;
 
-       // leftHandLocomotion.FindAction("Turn").performed += SwitchItem;
-       // rightHandLocomotion.FindAction("Turn").performed += SwitchItem;
+        leftHandLocomotion.FindAction("Turn").performed += SwitchItem;
+        rightHandLocomotion.FindAction("Turn").performed += SwitchItem;
+
+        itemAnchor = GameObject.FindGameObjectWithTag("Item Anchor");
+        leftAnchor = GameObject.FindGameObjectWithTag("Left Inventory Anchor");
+        rightAnchor = GameObject.FindGameObjectWithTag("Right Inventory Anchor");
+        snapTurnScript = GameObject.FindGameObjectWithTag("Player").GetComponent<ActionBasedSnapTurnProvider>();
     }
 
     private void Update()
@@ -70,11 +73,11 @@ public class InventoryManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            SwitchItem(false);
+            //SwitchItem(false);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            SwitchItem(true);
+            //SwitchItem(true);
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
@@ -88,23 +91,11 @@ public class InventoryManager : MonoBehaviour
         var eulerAngles = anchor.transform.eulerAngles;
         inventory.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
     }
-
-    private void SwitchItem(bool right)
+    
+    public void PutItemInInventory(GameObject item)
     {
-        if (inventory.activeInHierarchy)
-        {
-            rightArrows.SetActive(right);
-            leftArrows.SetActive(!right);
-            animator.SetBool("scale", !right);
-        }   
-    }
-
-    public void PutItemInInventory(ActivateEventArgs args)
-    {
-        var item = args.interactableObject.transform.gameObject;
         item.GetComponent<Animator>().SetBool("shrink", true);
         antennaPartsPickedUp++;
-        item.GetComponent<Animator>().SetBool("shrink", true);
         Destroy(item, 0.9f);
 
         if (item == itemInLeftHand)
@@ -144,6 +135,20 @@ public class InventoryManager : MonoBehaviour
         itemInRightHand = null;
     }
 
+    private void SwitchItem(InputAction.CallbackContext obj)
+    {
+        var dir = obj.ReadValue<Vector2>();
+        
+        if (inventory.activeInHierarchy && dir.x != .5f)
+        {
+            var right = dir.x > .5f;
+            rightArrows.SetActive(right);
+            leftArrows.SetActive(!right);
+            detectorAnimator.SetBool("scale", !right);
+            glassAnimator.SetBool("scale", right);
+        }   
+    }
+    
     private void OpenCloseRightInventory(InputAction.CallbackContext obj)
     {
         if (inventory.activeInHierarchy && _isRight || !inventory.activeInHierarchy && itemInRightHand == null)
@@ -169,7 +174,8 @@ public class InventoryManager : MonoBehaviour
         leftArrows.SetActive(true);
         rightArrows.SetActive(false);
         inventory.SetActive(!inventory.activeInHierarchy);
-        animator.SetBool("scale", true);
+        detectorAnimator.SetBool("scale", true);
+        glassAnimator.SetBool("scale", false);
         snapTurnScript.enabled = !inventory.activeInHierarchy;
     }
 
