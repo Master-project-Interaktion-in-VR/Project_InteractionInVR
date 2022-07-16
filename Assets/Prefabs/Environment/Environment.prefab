@@ -2899,5 +2899,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
+  fadeScreen: {fileID: 0}
+  fadeDuration: 0.1
   hapticIntensity: 0.5
-  duration: 0.2
+  hapticDuration: 0.1
