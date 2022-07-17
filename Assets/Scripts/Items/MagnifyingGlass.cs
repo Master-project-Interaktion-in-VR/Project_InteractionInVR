@@ -24,12 +24,12 @@ public class MagnifyingGlass : MonoBehaviour
         Vector3 lensForward = lensCamera.TransformDirection(forward);
         Vector3 vrForward = _vrCamera.TransformDirection(Vector3.forward);
 
-        Debug.DrawRay(_vrCamera.position, vrForward);
-        Debug.DrawRay(lensCamera.position, lensForward);
+        //Debug.DrawRay(_vrCamera.position, vrForward);
+        //Debug.DrawRay(lensCamera.position, lensForward);
 
         float facing = Vector3.Dot(vrForward.normalized, lensForward.normalized);
 
-        Debug.Log(facing);
+        //Debug.Log(facing);
 
         if (!_isBackwards && facing < 0)
         {
