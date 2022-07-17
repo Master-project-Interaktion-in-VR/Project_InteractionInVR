@@ -230,7 +230,7 @@ public class CustomHandInteractionPanZoom :
             }
 
             UpdateIdle();
-            UpdateUVMapping();
+            //UpdateUVMapping();
 
             if (!TouchActive && affordancesVisible)
             {
@@ -383,51 +383,6 @@ public class CustomHandInteractionPanZoom :
                 //RaisePanning(0);
             }
         }
-    }
-
-    private void UpdateUVMapping()
-    {
-        mesh.GetUVs(0, uvs);
-        uvsOrig.Clear();
-        uvsOrig.AddRange(uvs);
-
-        Vector2 offsetUVDelta = new Vector2(-totalUVOffset.x, totalUVOffset.y);
-
-        // Scale
-        if (ScaleActive)
-        {
-            var scaleUVCentroid = GetDisplayedUVCentroid(uvs);
-            var currentContactRatio = GetUVScaleFromTouches();
-            var scaleUVDelta = currentContactRatio / previousContactRatio;
-            previousContactRatio = currentContactRatio;
-
-            currentScale = totalUVScale.x / scaleUVDelta;
-
-            // Test for scale limits
-            if (currentScale > minScale && currentScale < maxScale)
-            {
-                uvDeltas.Clear();
-                for (int i = 0; i < uvs.Count; i++)
-                {
-                    Vector2 adjustedScaleUVDelta = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid - uvs[i];
-                    uvDeltas.Add(adjustedScaleUVDelta + offsetUVDelta);
-                }
-                UpdateUV(uvs, uvDeltas);
-
-                Vector2 upperLeft = uvs[UpperLeftQuadIndex];
-                Vector2 upperRight = uvs[UpperRightQuadIndex];
-                Vector2 lowerLeft = uvs[LowerLeftQuadIndex];
-                totalUVScale.x = upperRight.x - upperLeft.x;
-                totalUVScale.y = upperLeft.y - lowerLeft.y;
-            }
-        }
-        else
-        {
-            // Scroll
-            UpdateUVWithScroll(uvs, offsetUVDelta);
-        }
-
-        mesh.SetUVs(0, uvs);
     }
 
     private void UpdateUVWithScroll(List<Vector2> uvs, Vector2 uvDelta)
@@ -829,7 +784,7 @@ public class CustomHandInteractionPanZoom :
     private void StartTouch(uint sourceId)
     {
         UpdateTouchUVOffset(sourceId);
-        RaisePanStarted(sourceId);
+        RaiseDrawStarted(sourceId);
     }
 
     private void EndTouch(uint sourceId)
@@ -837,7 +792,7 @@ public class CustomHandInteractionPanZoom :
         if (handDataMap.ContainsKey(sourceId))
         {
             handDataMap.Remove(sourceId);
-            RaisePanEnded(0);
+            RaiseDrawEnded(0);
         }
     }
 
@@ -846,33 +801,33 @@ public class CustomHandInteractionPanZoom :
         if (handDataMap.Count > 0)
         {
             handDataMap.Clear();
-            RaisePanEnded(0);
+            RaiseDrawEnded(0);
         }
     }
 
     private void MoveTouch(uint sourceId)
     {
         UpdateTouchUVOffset(sourceId);
-        RaisePanning(sourceId);
+        RaiseDrawing(sourceId);
     }
 
     #endregion Internal State Handlers
 
     #region Fire Events to Listening Objects
 
-    private void RaisePanStarted(uint sourceId)
+    private void RaiseDrawStarted(uint sourceId)
     {
         Vector2 eventData = GetUv();
         DrawStarted?.Invoke(eventData);
     }
 
-    private void RaisePanEnded(uint sourceId)
+    private void RaiseDrawEnded(uint sourceId)
     {
         Vector2 eventData = Vector2.zero;
         DrawStopped?.Invoke(eventData);
     }
 
-    private void RaisePanning(uint sourceId)
+    private void RaiseDrawing(uint sourceId)
     {
         Vector2 eventData = GetUv();
         DrawUpdated?.Invoke(eventData);

@@ -5490,17 +5490,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 494195388}
   m_Mesh: {fileID: 4300000, guid: 40bb9772594a93140a43a9a4f5cf9356, type: 3}
---- !u!114 &498507178 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6355842455672300159, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-  m_PrefabInstance: {fileID: 2026457703}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1905f5509d22414194ddc94466bb218, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &498507181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4386831151853825179, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
@@ -19924,10 +19913,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 283397061}
     m_Modifications:
-    - target: {fileID: 858150575, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
-      propertyPath: DrawUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+    - target: {fileID: 858150573, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.51710504
+      objectReference: {fileID: 0}
+    - target: {fileID: 858150573, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35393003
+      objectReference: {fileID: 0}
+    - target: {fileID: 858150573, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.03163603
+      objectReference: {fileID: 0}
+    - target: {fileID: 858150573, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1708
+      objectReference: {fileID: 0}
+    - target: {fileID: 858150577, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 498507178}
+      objectReference: {fileID: 2100000, guid: 8749536e18950d54e862ef432fe2e8ca, type: 2}
+    - target: {fileID: 1563673056259844922, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4939866303544938945, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -19979,6 +19988,14 @@ PrefabInstance:
     - target: {fileID: 6924095442166170149, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
       propertyPath: sceneViewId
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925329685812923449, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
+      propertyPath: sourceTextureDimensions.x
+      value: 1660
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925329685812923449, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
+      propertyPath: sourceTextureDimensions.y
+      value: 1200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
@@ -29390,26 +29407,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 283397061}
     m_Modifications:
-    - target: {fileID: 69839255944002451, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-      propertyPath: brush.size
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 69839255944002451, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-      propertyPath: brush.color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 69839255944002451, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-      propertyPath: brush.color.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 69839255944002451, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-      propertyPath: brush.color.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 69839255944002451, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-      propertyPath: brush.preview
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2639519925789878253, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
       propertyPath: m_Name
       value: PaintController
@@ -29457,10 +29454,6 @@ PrefabInstance:
     - target: {fileID: 4386831151853825179, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6355842455672300159, guid: 0022ef5a711b237488ee130aa500492c, type: 3}
-      propertyPath: PenTransform
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0022ef5a711b237488ee130aa500492c, type: 3}

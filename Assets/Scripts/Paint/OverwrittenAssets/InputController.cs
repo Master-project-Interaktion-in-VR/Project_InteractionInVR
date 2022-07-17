@@ -360,11 +360,5 @@ namespace XDPaint.Controllers
                 }
 			}
 		}
-
-		public void OnFingerDraw(Vector2 eventData)
-        {
-            Debug.Log(eventData);
-
-        }
     }
 }
