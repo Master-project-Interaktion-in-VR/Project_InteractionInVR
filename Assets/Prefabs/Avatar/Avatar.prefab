@@ -2152,7 +2152,7 @@ MonoBehaviour:
   rightHand:
     vrTarget: {fileID: 0}
     ikTarget: {fileID: 3946141063580089254}
-    trackingPositionOffset: {x: -0.04, y: -0.03, z: -0.13}
+    trackingPositionOffset: {x: 0.02, y: -0.03, z: -0.13}
     trackingRotationOffset: {x: 2.1, y: -88.5, z: -93.08}
   turnSmoothness: 0
   ikHead: {fileID: 3946141064242568263}
