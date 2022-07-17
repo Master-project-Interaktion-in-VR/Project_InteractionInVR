@@ -13,6 +13,9 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     private GameObject antennaParent;
 
+    [SerializeField]
+    private GameObject originPrefab;
+
 
     private void Awake()
     {
@@ -28,8 +31,7 @@ public class Spawner : MonoBehaviour
     private void SpawnAll(List<Vector3> spawnPoints)
     {
         List<GameObject> temp = new List<GameObject>(toSpawn);
-        GameObject spawned = Instantiate(temp[0], saveSpawnPoint.position, Quaternion.identity);
-        spawned.transform.SetParent(antennaParent.transform);
+        SpawnItem(temp[0], saveSpawnPoint.position);
         temp.Remove(temp[0]);
         bool succ = spawnPoints.Remove(saveSpawnPoint.position);
         Debug.Log("deleted: " + succ);
@@ -37,9 +39,19 @@ public class Spawner : MonoBehaviour
         foreach (GameObject item in temp)
         {
             int random = Random.Range(0, spawnPoints.Count);
-            spawned = Instantiate(item, spawnPoints[random], Quaternion.identity);
-            spawned.transform.SetParent(antennaParent.transform);
+            SpawnItem(item, spawnPoints[random]);
             spawnPoints.Remove(spawnPoints[random]);
         }
+    }
+
+    private void SpawnItem(GameObject item, Vector3 position)
+    {
+        GameObject spawned = Instantiate(item, position, Quaternion.identity);
+        spawned.transform.SetParent(antennaParent.transform);
+
+        // origin
+        Physics.Raycast(position, Vector3.down, out RaycastHit hit, 5, 1 << LayerMask.NameToLayer("Drawable"));
+        GameObject origin = Instantiate(originPrefab, hit.point + new Vector3(0, 0.05f, 0), Quaternion.identity);
+        origin.transform.SetParent(antennaParent.transform);
     }
 }
