@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 1439265838912159475}
   - component: {fileID: -5921433889251924250}
   - component: {fileID: -5752183307477826199}
+  - component: {fileID: 2437159257346030289}
   m_Layer: 10
   m_Name: Halterungsstange
   m_TagString: Untagged
@@ -383,7 +384,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 0}
   - {fileID: -5752183307477826199}
   sceneViewId: 0
   InstantiationId: 0
@@ -404,3 +404,15 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &2437159257346030289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6584729588074971016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5467664e1573e7c4ab6ef59914adf735, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

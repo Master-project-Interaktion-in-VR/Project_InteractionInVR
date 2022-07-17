@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 460052252}
   - component: {fileID: 460052251}
   - component: {fileID: 648893764266991209}
+  - component: {fileID: -2413275437430313609}
   m_Layer: 0
   m_Name: Magnifying Glass
   m_TagString: Untagged
@@ -236,6 +237,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lensCamera: {fileID: 8994035683771338485}
+--- !u!114 &-2413275437430313609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655195902271712480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5467664e1573e7c4ab6ef59914adf735, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4836905180846140411
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 776921356995085261}
   - component: {fileID: -6999329248545727070}
   - component: {fileID: 5727628490399757675}
+  - component: {fileID: -1967921881100095542}
   m_Layer: 10
   m_Name: "Sch\xFCssel"
   m_TagString: Untagged
@@ -372,6 +373,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-1967921881100095542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7099664491167847007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5467664e1573e7c4ab6ef59914adf735, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8848279618803705434
 GameObject:
   m_ObjectHideFlags: 0
