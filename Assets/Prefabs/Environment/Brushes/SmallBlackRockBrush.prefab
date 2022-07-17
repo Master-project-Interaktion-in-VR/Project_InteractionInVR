@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9063244466739937767}
-  - component: {fileID: 9063244466739937760}
+  - component: {fileID: 5311230712234249508}
   m_Layer: 0
   m_Name: SmallBlackRockBrush
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9063244466739937760
+--- !u!114 &5311230712234249508
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,22 +41,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 9063244466739937761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 853f86897d7204f40bd9c7c85c1c44ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 1eea138bdba12cb459ca97294da746b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 135572, guid: 4f9eb78926c668f4cb77ae240ebc4e7b, type: 3}
   - {fileID: 100138, guid: 9a26fda765c5ec84cb8f61c1fd583113, type: 3}
   - {fileID: 150586, guid: 3f78c2fb6bcbd9a4181e8bf0f559176c, type: 3}
-  - {fileID: 152702, guid: 867378ef976c9c546b471bb2987b7c37, type: 3}
-  - {fileID: 177906, guid: 16bbcd0ddb74fd24eb3187d81ecb0108, type: 3}
-  - {fileID: 185610, guid: df547bf229800194aa6279cf8a2430f6, type: 3}
-  parentNaming: SmallRockGroup
+  parentNaming: RockGroup
+  floorLayerName: Drawable
+  objectLayerName: Default
   scaleXZ:
-    min: 0.11
-    max: 0.36
+    min: 0.1
+    max: 0.2
   scaleY:
-    min: 0.13
-    max: 0.33
+    min: 0.1
+    max: 0.2
+  onlyAddScale: 0
   justScaleY: 0
   isTree: 0
