@@ -5,6 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Origin
+  - DisassembleButton
+  - InitialObject
+  - BuildObject
+  - Inventory Manager
+  - Item Anchor
+  - Left Inventory Anchor
+  - Right Inventory Anchor
   layers:
   - Default
   - TransparentFX
@@ -18,6 +25,8 @@ TagManager:
   - Invisible
   - InteractiveUI
   - 
+  - VrHands
+  - Hidden
   - 
   - 
   - 
@@ -36,8 +45,6 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - Spatial Awareness
   m_SortingLayers:
   - name: Default
     uniqueID: 0
