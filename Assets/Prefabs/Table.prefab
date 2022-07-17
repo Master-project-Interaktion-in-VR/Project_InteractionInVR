@@ -231,6 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sourceTextureDimensions: {x: 1660, y: 1200}
+  networkSendDelay: 0.03
 --- !u!114 &6227431889137207928
 MonoBehaviour:
   m_ObjectHideFlags: 0

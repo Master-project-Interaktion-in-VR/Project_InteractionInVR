@@ -9,6 +9,9 @@ public class FingerDraw : MonoBehaviour
     [SerializeField]
     private Vector2 sourceTextureDimensions;
 
+    [SerializeField]
+    private float networkSendDelay;
+
 
     private PaintManager _paintManager;
     private Vector2 _previousPoint;
@@ -23,6 +26,9 @@ public class FingerDraw : MonoBehaviour
     {
         _paintManager = GetComponent<PaintManager>();
         _paintManager.OnInitialized += OnPaintManagerInitialized;
+
+
+        _photonView = GetComponent<PhotonView>();
     }
 
     private void OnPaintManagerInitialized(PaintManager paintManager)
@@ -38,7 +44,14 @@ public class FingerDraw : MonoBehaviour
         Vector2 paintPosition = new Vector2(paintUv.x * sourceTextureDimensions.x, (1 - paintUv.y) * sourceTextureDimensions.y);
 
         if (Vector2.Distance(_previousPoint, Vector2.zero) != 0) // previous point is not empty
+        {
             DrawLine(_previousPoint, paintPosition);
+
+            if (Time.time - _startTime > networkSendDelay)
+            {
+                _photonView.RPC("DrawLine", RpcTarget.Others, _previousPoint, paintPosition);
+            }
+        }
         _previousPoint = paintPosition;
     }
 
@@ -51,6 +64,7 @@ public class FingerDraw : MonoBehaviour
         _previousPoint = Vector2.zero;
     }
 
+    [PunRPC]
     private void DrawLine(Vector2 lineStartPosition, Vector2 lineEndPosition)
     {
         _paintManager.PaintObject.DrawLine(lineStartPosition, lineEndPosition);
