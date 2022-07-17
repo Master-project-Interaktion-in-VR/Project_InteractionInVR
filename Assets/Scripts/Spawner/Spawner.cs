@@ -51,7 +51,7 @@ public class Spawner : MonoBehaviour
 
         // origin
         Physics.Raycast(position, Vector3.down, out RaycastHit hit, 5, 1 << LayerMask.NameToLayer("Drawable"));
-        GameObject origin = Instantiate(originPrefab, hit.point + new Vector3(0, 0.05f, 0), Quaternion.identity);
+        GameObject origin = Instantiate(originPrefab, hit.point + new Vector3(0, 0.5f, 0), Quaternion.identity);
         origin.transform.SetParent(antennaParent.transform);
     }
 }
