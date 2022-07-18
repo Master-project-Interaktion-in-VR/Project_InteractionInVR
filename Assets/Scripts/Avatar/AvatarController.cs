@@ -24,6 +24,9 @@ public class MapTransforms
 
 public class AvatarController : MonoBehaviour
 {
+    [SerializeField, Tooltip("If using MRTK, VR Targets are automatically found")]
+    private bool useMRTK;
+
     [SerializeField]
     private MapTransforms head;
 
@@ -51,6 +54,17 @@ public class AvatarController : MonoBehaviour
 
 
     private bool _isTall;
+
+
+    private void OnEnable()
+    {
+        if (useMRTK)
+        {
+            head.vrTarget = GameObject.Find("CenterEyeAnchor").transform;
+            rightHand.vrTarget = GameObject.Find("RightHandAnchor").transform;
+            leftHand.vrTarget = GameObject.Find("LeftHandAnchor").transform;
+        }
+    }
 
 
     private void LateUpdate()
