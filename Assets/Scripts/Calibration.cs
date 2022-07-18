@@ -45,7 +45,7 @@ public class Calibration : MonoBehaviour
                     if (antennaPieces == null)
                     {
                         antennaPieces = PhotonNetwork.Instantiate("AntennaPieces", new Vector3(0, 0.8f, 0), Quaternion.identity);
-                        antennaPieces.GetComponent<AntennaPiece>().SetParent(table.transform);
+                        antennaPieces.GetComponent<NetworkHelper>().SetParent(table.transform);
                     }
 
                     foreach (GameObject buildObj_prefab in build_objects_Prefab)
@@ -53,7 +53,7 @@ public class Calibration : MonoBehaviour
                         Vector3 pos = buildObj_prefab.transform.position;
                         pos.y += 1;
                         GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.rotation);
-                        obj.GetComponent<AntennaPiece>().SetParent(antennaPieces.transform);
+                        obj.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
                         BuildManager.build_objects.Add(obj);
                     }
 

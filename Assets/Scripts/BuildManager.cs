@@ -132,6 +132,8 @@ public class BuildManager : MonoBehaviour
             // make snapPoint parent of holdingObject
             snapPoint.transform.parent = null;
             snap_HoldingObject.transform.parent = snapPoint.transform;
+            ////snapPoint.GetComponent<AntennaPiece>().SetParentRoot(); TODO
+            //snap_HoldingObject.GetComponent<AntennaPiece>().SetParent(snapPoint.transform);
 
             // snap objects together
             snapPoint.transform.position = otherPoint.transform.position;
@@ -170,25 +172,25 @@ public class BuildManager : MonoBehaviour
         snapPoint.transform.parent = buildModel1.transform;
 
         // remove components 
-        buildModel1.GetComponent<AntennaPiece>().RemoveComponents();
-        buildModel2.GetComponent<AntennaPiece>().RemoveComponents();
+        buildModel1.GetComponent<NetworkHelper>().RemoveComponents();
+        buildModel2.GetComponent<NetworkHelper>().RemoveComponents();
 
         // create new object with rigidbody and objectManipulator 
         if (holdingObjects_List.Count == 0)
         {
             GameObject holdingObject = PhotonNetwork.Instantiate("HoldingBody", Vector3.zero, Quaternion.identity);
-            holdingObject.GetComponent<AntennaPiece>().InitHoldingBody();
+            holdingObject.GetComponent<NetworkHelper>().InitHoldingBody();
             holdingObjects_List.Add(holdingObject);
         }
 
         if (newHoldingBody)
         {
             GameObject newHoldingObject = PhotonNetwork.Instantiate("HoldingBody", Vector3.zero, Quaternion.identity);
-            newHoldingObject.GetComponent<AntennaPiece>().InitHoldingBody();
+            newHoldingObject.GetComponent<NetworkHelper>().InitHoldingBody();
 
             // make two objects children of new object
-            buildModel1.GetComponent<AntennaPiece>().SetParent(newHoldingObject.transform);
-            buildModel2.GetComponent<AntennaPiece>().SetParent(newHoldingObject.transform);
+            buildModel1.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
+            buildModel2.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
             holdingObjects_List.Add(newHoldingObject);
 
             CheckAssembly();
@@ -197,8 +199,8 @@ public class BuildManager : MonoBehaviour
         }
 
         // make two objects children of new object
-        buildModel1.GetComponent<AntennaPiece>().SetParent(holdingObjects_List[0].transform);
-        buildModel2.GetComponent<AntennaPiece>().SetParent(holdingObjects_List[0].transform);
+        buildModel1.GetComponent<NetworkHelper>().SetParent(holdingObjects_List[0].transform);
+        buildModel2.GetComponent<NetworkHelper>().SetParent(holdingObjects_List[0].transform);
 
         CheckAssembly();
     }
@@ -210,11 +212,11 @@ public class BuildManager : MonoBehaviour
     {
         foreach (GameObject buildObj in build_objects)
         {
-            Destroy(buildObj);
+            PhotonNetwork.Destroy(buildObj); // TODO what are these? these are only added in the Disassemble and Respawn method
         }
         foreach (GameObject holdingObject in holdingObjects_List)
         {
-            Destroy(holdingObject);
+            PhotonNetwork.Destroy(holdingObject);
         }
 
         collisions = new Queue<CollisionEvent>();
@@ -226,7 +228,7 @@ public class BuildManager : MonoBehaviour
         foreach (GameObject buildObj_prefab in build_objects_Prefab)
         {
             GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, antennaPieces.transform.position, Quaternion.identity);
-            obj.GetComponent<AntennaPiece>().SetParent(antennaPieces.transform);
+            obj.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
 
             build_objects.Add(obj);
         }
@@ -289,11 +291,11 @@ public class BuildManager : MonoBehaviour
     {
         foreach (GameObject buildObj in build_objects)
         {
-            Destroy(buildObj);
+            PhotonNetwork.Destroy(buildObj);
         }
         foreach (GameObject holdingObject in holdingObjects_List)
         {
-            Destroy(holdingObject);
+            PhotonNetwork.Destroy(holdingObject);
         }
         PhotonNetwork.Instantiate(assembledAntenna_Prefab.name, assembledAntenna_Prefab.transform.position, Quaternion.identity);
         Destroy(dialog);
@@ -305,7 +307,7 @@ public class BuildManager : MonoBehaviour
     /// <param name="objectName">The object name.</param>
     public void Respawn_object(string objectName)
     {
-        GameObject old_object = build_objects.Find(x => x.name == objectName);
+        GameObject old_object = build_objects.Find(x => x.name == objectName); // TODO build_objects should be empty?
         GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
 
         Transform parent = old_object.transform.parent;
@@ -329,8 +331,8 @@ public class BuildManager : MonoBehaviour
                 if (child.name != objectName)
                 {
                     // move child to the antennaPieces
-                    child.GetComponent<AntennaPiece>().SetParent(antennaPieces.transform);
-                    child.GetComponent<AntennaPiece>().AddComponents();
+                    child.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
+                    child.GetComponent<NetworkHelper>().AddComponents();
                 }
             }
 
@@ -343,7 +345,7 @@ public class BuildManager : MonoBehaviour
         string prefabName = objectName.Replace("(Clone)", "");
 
         GameObject new_object = PhotonNetwork.Instantiate(prefabName, antennaPieces.transform.position, Quaternion.identity);
-        new_object.GetComponent<AntennaPiece>().SetParent(antennaPieces.transform);
+        new_object.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
         //build_objects_Prefab.Find(x => x.name == prefabName)
         build_objects.Add(new_object);
     }
