@@ -57,14 +57,13 @@ public class AvatarController : MonoBehaviour
     {
     }
 
-
     private void LateUpdate()
     {
         Physics.Raycast(ikHead.position, Vector3.down, out RaycastHit hitFloor, 10, 1 << LayerMask.NameToLayer("Drawable"));
 
         if (hitFloor.distance < minHeadFloorDistance)
         {
-            transform.position = ikHead.position + headBodyOffset + new Vector3(0, minHeadFloorDistance - hitFloor.distance, 0);
+            transform.position = ikHead.position + transform.TransformDirection(headBodyOffset) + new Vector3(0, minHeadFloorDistance - hitFloor.distance, 0);
         }
         else if (!_isTall && hitFloor.distance > Math.Abs(headBodyOffset.y))
         {
@@ -74,7 +73,8 @@ public class AvatarController : MonoBehaviour
         else
         {
             Vector3 hbOffset = _isTall ? tallHeadBodyOffset : headBodyOffset;
-            transform.position = ikHead.position + hbOffset;
+            Vector3 worldOffset = transform.TransformDirection(hbOffset);
+            transform.position = ikHead.position + worldOffset;
         }
 
 

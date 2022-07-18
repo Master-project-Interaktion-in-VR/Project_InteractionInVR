@@ -15,8 +15,11 @@ public class HandPoseTracker : MonoBehaviour
 
     private void Awake()
     {
-        if (!Application.isMobilePlatform)
+#if !UNITY_EDITOR
+        if (!Application.isMobilePlatform) // only track hands with VR glasses
             return;
+#endif
+
         if (handedness == Handedness.Left)
             _hand = GameObject.Find("LeftHandAnchor").transform;
         else
@@ -25,8 +28,10 @@ public class HandPoseTracker : MonoBehaviour
 
     private void Update()
     {
+#if !UNITY_EDITOR
         if (!Application.isMobilePlatform)
             return;
+#endif
         transform.position = _hand.position;
         transform.rotation = _hand.rotation;
     }
