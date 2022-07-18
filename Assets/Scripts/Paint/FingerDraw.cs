@@ -12,6 +12,9 @@ public class FingerDraw : MonoBehaviour
     [SerializeField]
     private float networkSendDelay;
 
+    [SerializeField]
+    private Material screenOnMaterial;
+
 
     private PaintManager _paintManager;
     private Vector2 _previousPoint;
@@ -20,6 +23,7 @@ public class FingerDraw : MonoBehaviour
 
     private PhotonView _photonView;
     private float _startTime;
+    private CustomHandInteractionPanZoom _customHandInteractionPanZoom;
 
 
     void Awake()
@@ -29,11 +33,22 @@ public class FingerDraw : MonoBehaviour
 
 
         _photonView = GetComponent<PhotonView>();
+        _customHandInteractionPanZoom = GetComponent<CustomHandInteractionPanZoom>();
+        _customHandInteractionPanZoom.Enabled = false;
     }
 
     private void OnPaintManagerInitialized(PaintManager paintManager)
     {
         _paintManagerReady = true;
+    }
+
+    [PunRPC]
+    public void OnAssemblySuccess(bool success)
+    {
+        _photonView.RPC("OnAssemblySuccess", RpcTarget.Others, success);
+        _customHandInteractionPanZoom.Enabled = true;
+        GetComponent<MeshRenderer>().material = screenOnMaterial;
+        _paintManager.enabled = true;
     }
 
 

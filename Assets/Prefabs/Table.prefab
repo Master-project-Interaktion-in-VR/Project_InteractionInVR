@@ -66,8 +66,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 858150572}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.0269, z: 0.181}
-  m_LocalScale: {x: 0.3988632, y: 0.3988632, z: 0.10991328}
+  m_LocalPosition: {x: 0, y: 0.0269, z: 0.1708}
+  m_LocalScale: {x: 0.51710504, y: 0.35393003, z: 0.03163603}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4939866303544938945}
@@ -101,7 +101,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 8749536e18950d54e862ef432fe2e8ca, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -232,6 +232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourceTextureDimensions: {x: 1660, y: 1200}
   networkSendDelay: 0.03
+  screenOnMaterial: {fileID: 2100000, guid: 5b4ae6ba95ff04c408dcdc61bd2bc482, type: 2}
 --- !u!114 &6227431889137207928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +240,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 858150572}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ef3ab0404d6c40319cedaf900bc0847, type: 3}
   m_Name: 
@@ -249,7 +250,7 @@ MonoBehaviour:
     shaderTextureName: _MainTex
     defaultTextureWidth: 1024
     defaultTextureHeight: 1024
-    SourceMaterial: {fileID: 2100000, guid: c866f34357a7c7a47bb1f12f10236ca8, type: 2}
+    SourceMaterial: {fileID: 2100000, guid: 5b4ae6ba95ff04c408dcdc61bd2bc482, type: 2}
   ShouldOverrideCamera: 0
   CopySourceTextureToPaintTexture: 1
   paintModeType: 0
@@ -5811,6 +5812,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4939866303544938945}
+  - component: {fileID: 4363993687896510746}
+  - component: {fileID: 4604832665685886107}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -5842,6 +5845,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4363993687896510746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4939866303544938946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &4604832665685886107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4939866303544938946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 4363993687896510746}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4939866303567529967
 GameObject:
   m_ObjectHideFlags: 0

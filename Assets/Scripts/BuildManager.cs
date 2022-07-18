@@ -1,14 +1,22 @@
 using Microsoft.MixedReality.Toolkit.UI;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class BuildManager : MonoBehaviour
 {
+    [Serializable]
+    public class AssemblySuccessUnityEvent : UnityEvent<bool>
+    {
+        public AssemblySuccessUnityEvent() {}
+    }
+
     public class CollisionEvent
     {
         public GameObject object1;
@@ -40,6 +48,8 @@ public class BuildManager : MonoBehaviour
     public GameObject infoCanvas_Prefab;
     public GameObject dialog_Prefab;
     static GameObject dialog;
+
+    public AssemblySuccessUnityEvent AssemblySuccess = new AssemblySuccessUnityEvent();
 
     static int buildTries = 2;
     const int maxTries = 3;
@@ -217,7 +227,8 @@ public class BuildManager : MonoBehaviour
         GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
         foreach (GameObject buildObj_prefab in build_objects_Prefab)
         {
-            GameObject obj = Instantiate(buildObj_prefab, antennaPieces.transform);
+            GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, antennaPieces.transform.position, Quaternion.identity);
+            obj.transform.SetParent(antennaPieces.transform);
             build_objects.Add(obj);
         }
     }
@@ -269,6 +280,7 @@ public class BuildManager : MonoBehaviour
         string winText = "WHOOO you have build the Antenna!";
         Debug.Log(winText);
         ShowTextForSeconds(winText, 5);
+        AssemblySuccess.Invoke(true);
     }
 
     /// <summary>
@@ -332,7 +344,7 @@ public class BuildManager : MonoBehaviour
         {
             Destroy(holdingObject);
         }
-        Instantiate(assembledAntenna_Prefab);
+        Instantiate(assembledAntenna_Prefab); // TODO
         Destroy(dialog);
     }
 
@@ -348,7 +360,7 @@ public class BuildManager : MonoBehaviour
         Transform parent = old_object.transform.parent;
 
         // reset position of the object
-        Destroy(old_object);
+        PhotonNetwork.Destroy(old_object);
         build_objects.Remove(old_object);
 
         // if the object is attached to one other object in a holdingBody
@@ -372,14 +384,16 @@ public class BuildManager : MonoBehaviour
             }
 
             // destroy holding body
-            Destroy(parent.gameObject);
+            PhotonNetwork.Destroy(parent.gameObject);
             holdingObjects_List.Remove(parent.gameObject);
         }
 
         // crete prefab name from objectname without "(Clone)"
         string prefabName = objectName.Replace("(Clone)", "");
 
-        GameObject new_object = Instantiate(build_objects_Prefab.Find(x => x.name == prefabName), antennaPieces.transform);
+        GameObject new_object = PhotonNetwork.Instantiate(prefabName, antennaPieces.transform.position, Quaternion.identity);
+        new_object.transform.SetParent(antennaPieces.transform);
+        //build_objects_Prefab.Find(x => x.name == prefabName)
         build_objects.Add(new_object);
     }
 
