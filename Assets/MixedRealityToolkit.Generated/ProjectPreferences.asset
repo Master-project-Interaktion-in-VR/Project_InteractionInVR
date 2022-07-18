@@ -16,7 +16,12 @@ MonoBehaviour:
     keys:
     - MixedRealityToolkit_Editor_RunOptimalConfig
     - _MixedRealityToolkit_Editor_IgnoreSettingsPrompts
+<<<<<<< Updated upstream
     values: 0100
+=======
+    - MixedRealityToolkit_Editor_RunOptimalConfig
+    values: 0101
+>>>>>>> Stashed changes
   intPreferences:
     keys:
     - _MixedRealityToolkit_Editor_ConfiguratorState
