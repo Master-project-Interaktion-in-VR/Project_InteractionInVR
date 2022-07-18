@@ -57,17 +57,25 @@ public class Calibration : MonoBehaviour
                     AddDisassembleListeners();
                 }
 
+                Vector3 position = SceneInformationManager.CrossSceneInformation_position;
+                Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
+                if (position == null && rotation == null)
+                {
+                    position = handMarker.position;
+                    rotation = handMarker.rotation;
+                }
+
                 fixedMarker = GameObject.Find("fixedMarker").transform;
-                Vector3 posOffset = fixedMarker.position - handMarker.position; //calculate the difference in positions
+                //Vector3 posOffset = fixedMarker.position - handMarker.position; //calculate the difference in positions
                 //CameraRig.transform.position += posOffset; //offset the position of the cameraRig to realign the controllers
 
                 fixedMarker.transform.parent = null;
                 table.transform.parent = fixedMarker.transform;
 
-                fixedMarker.transform.position = handMarker.position;
+                fixedMarker.transform.position = position;
 
-                Vector3 rotOffset = fixedMarker.eulerAngles - handMarker.eulerAngles; //calculate the difference in rotations
-                fixedMarker.transform.rotation = handMarker.rotation;
+                //Vector3 rotOffset = fixedMarker.eulerAngles - handMarker.eulerAngles; //calculate the difference in rotations
+                fixedMarker.transform.rotation = rotation;
                 //CameraRig.transform.RotateAround(handMarker.position, Vector3.up, rotOffset.y); //using the hand as a pivot, rotate around Y
 
                 table.transform.parent = null;
