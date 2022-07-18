@@ -344,7 +344,7 @@ public class BuildManager : MonoBehaviour
         {
             Destroy(holdingObject);
         }
-        Instantiate(assembledAntenna_Prefab); // TODO
+        PhotonNetwork.Instantiate(assembledAntenna_Prefab.name, assembledAntenna_Prefab.transform.position, Quaternion.identity);
         Destroy(dialog);
     }
 
