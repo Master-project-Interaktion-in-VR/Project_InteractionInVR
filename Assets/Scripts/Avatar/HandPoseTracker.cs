@@ -15,7 +15,7 @@ public class HandPoseTracker : MonoBehaviour
 
     private void Awake()
     {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR || !ABC
         if (!Application.isMobilePlatform) // only track hands with VR glasses
             return;
 #endif
@@ -28,7 +28,7 @@ public class HandPoseTracker : MonoBehaviour
 
     private void Update()
     {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR || !ABC
         if (!Application.isMobilePlatform)
             return;
 #endif

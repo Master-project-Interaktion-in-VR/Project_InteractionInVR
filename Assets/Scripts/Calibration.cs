@@ -27,6 +27,10 @@ public class Calibration : MonoBehaviour
 
     void Update()
     {
+        // fix for starting assembly scene directly with photon
+        if (!PhotonNetwork.InRoom)
+            return;
+
         if (OVRInput.GetActiveController() == OVRInput.Controller.Touch)
         {
             if (OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch)) //detect is button 'A' has been pressed
@@ -40,9 +44,8 @@ public class Calibration : MonoBehaviour
                 {
                     if (antennaPieces == null)
                     {
-                        antennaPieces = new GameObject("AntennaPieces");
-                        antennaPieces.transform.position = new Vector3(0, 0.8f, 0);
-                        antennaPieces.transform.parent = table.transform;
+                        antennaPieces = PhotonNetwork.Instantiate("AntennaPieces", new Vector3(0, 0.8f, 0), Quaternion.identity);
+                        antennaPieces.GetComponent<AntennaPiece>().SetParent(table.transform);
                     }
 
                     foreach (GameObject buildObj_prefab in build_objects_Prefab)
@@ -50,7 +53,7 @@ public class Calibration : MonoBehaviour
                         Vector3 pos = buildObj_prefab.transform.position;
                         pos.y += 1;
                         GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.rotation);
-                        obj.transform.parent = antennaPieces.transform;
+                        obj.GetComponent<AntennaPiece>().SetParent(antennaPieces.transform);
                         BuildManager.build_objects.Add(obj);
                     }
 

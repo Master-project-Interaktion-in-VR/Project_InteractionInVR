@@ -170,27 +170,25 @@ public class BuildManager : MonoBehaviour
         snapPoint.transform.parent = buildModel1.transform;
 
         // remove components 
-        buildModel1 = RemoveComponents(buildModel1);
-        buildModel2 = RemoveComponents(buildModel2);
+        buildModel1.GetComponent<AntennaPiece>().RemoveComponents();
+        buildModel2.GetComponent<AntennaPiece>().RemoveComponents();
 
         // create new object with rigidbody and objectManipulator 
         if (holdingObjects_List.Count == 0)
         {
-            GameObject holdingObject = new GameObject();
-            holdingObject.name = "holdingBody";
-            holdingObject = AddComponents(holdingObject);
+            GameObject holdingObject = PhotonNetwork.Instantiate("HoldingBody", Vector3.zero, Quaternion.identity);
+            holdingObject.GetComponent<AntennaPiece>().InitHoldingBody();
             holdingObjects_List.Add(holdingObject);
         }
 
         if (newHoldingBody)
         {
-            GameObject newHoldingObject = new GameObject();
-            newHoldingObject.name = "holdingBody";
-            newHoldingObject = AddComponents(newHoldingObject);
+            GameObject newHoldingObject = PhotonNetwork.Instantiate("HoldingBody", Vector3.zero, Quaternion.identity);
+            newHoldingObject.GetComponent<AntennaPiece>().InitHoldingBody();
 
             // make two objects children of new object
-            buildModel1.transform.parent = newHoldingObject.transform;
-            buildModel2.transform.parent = newHoldingObject.transform;
+            buildModel1.GetComponent<AntennaPiece>().SetParent(newHoldingObject.transform);
+            buildModel2.GetComponent<AntennaPiece>().SetParent(newHoldingObject.transform);
             holdingObjects_List.Add(newHoldingObject);
 
             CheckAssembly();
@@ -199,8 +197,8 @@ public class BuildManager : MonoBehaviour
         }
 
         // make two objects children of new object
-        buildModel1.transform.parent = holdingObjects_List[0].transform;
-        buildModel2.transform.parent = holdingObjects_List[0].transform;
+        buildModel1.GetComponent<AntennaPiece>().SetParent(holdingObjects_List[0].transform);
+        buildModel2.GetComponent<AntennaPiece>().SetParent(holdingObjects_List[0].transform);
 
         CheckAssembly();
     }
@@ -228,7 +226,8 @@ public class BuildManager : MonoBehaviour
         foreach (GameObject buildObj_prefab in build_objects_Prefab)
         {
             GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, antennaPieces.transform.position, Quaternion.identity);
-            obj.transform.SetParent(antennaPieces.transform);
+            obj.GetComponent<AntennaPiece>().SetParent(antennaPieces.transform);
+
             build_objects.Add(obj);
         }
     }
@@ -284,54 +283,6 @@ public class BuildManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Removes the components of the single object which is now assembled in a holdingBody
-    /// </summary>
-    /// <param name="obj">The build object</param>
-    /// <returns>same GameObject with les components</returns>
-    public GameObject RemoveComponents(GameObject obj)
-    {
-        try
-        {
-            // remove RigidBody of object
-            Destroy(obj.GetComponent<Rigidbody>());
-            // remove ObjectManipulator of object
-            Destroy(obj.GetComponent<Microsoft.MixedReality.Toolkit.UI.CursorContextObjectManipulator>());
-            Destroy(obj.GetComponent<Microsoft.MixedReality.Toolkit.UI.ObjectManipulator>());
-            // remove Collision Manager
-            //Destroy(obj.GetComponent<CollisionManager>());
-            // remove tag
-            //obj.tag = "InitialObject";
-        }
-        catch (Exception ex)
-        {
-            Debug.LogWarning(ex);
-        }
-
-        return obj;
-    }
-
-    /// <summary>
-    /// Adds the components to the assembled object
-    /// </summary>
-    /// <param name="obj">The object</param>
-    /// <returns> same GameObject with added components</returns>
-    public GameObject AddComponents(GameObject obj)
-    {
-        // add rigidBody to Object
-        obj.AddComponent<Rigidbody>();
-        // add ObjectManipulator to object
-        Microsoft.MixedReality.Toolkit.UI.ObjectManipulator om = obj.AddComponent<Microsoft.MixedReality.Toolkit.UI.ObjectManipulator>();
-        om.TwoHandedManipulationType = Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Move | Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Rotate;
-        om.AllowFarManipulation = false;
-        // add Collision Manager
-        //obj.AddComponent<CollisionManager>();
-        // add Build tag
-        //obj.tag = "BuildObject";
-
-        return obj;
-    }
-
-    /// <summary>
     /// Spawns the assembled antenna and destroyes every build object and holding object
     /// </summary>
     public void SpawnAssembledAntenna()
@@ -378,8 +329,8 @@ public class BuildManager : MonoBehaviour
                 if (child.name != objectName)
                 {
                     // move child to the antennaPieces
-                    child.transform.parent = antennaPieces.transform;
-                    AddComponents(child);
+                    child.GetComponent<AntennaPiece>().SetParent(antennaPieces.transform);
+                    child.GetComponent<AntennaPiece>().AddComponents();
                 }
             }
 
@@ -392,7 +343,7 @@ public class BuildManager : MonoBehaviour
         string prefabName = objectName.Replace("(Clone)", "");
 
         GameObject new_object = PhotonNetwork.Instantiate(prefabName, antennaPieces.transform.position, Quaternion.identity);
-        new_object.transform.SetParent(antennaPieces.transform);
+        new_object.GetComponent<AntennaPiece>().SetParent(antennaPieces.transform);
         //build_objects_Prefab.Find(x => x.name == prefabName)
         build_objects.Add(new_object);
     }

@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 2789056718562380709}
   - component: {fileID: 7556334343765959745}
   - component: {fileID: 1926340231277836450}
+  - component: {fileID: -296171295028851116}
+  - component: {fileID: -6785865117825087156}
   m_Layer: 0
   m_Name: seitenteil
   m_TagString: InitialObject
@@ -230,6 +232,30 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-296171295028851116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655701546970240147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c111e49189bfc409fbb0b748f28d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-6785865117825087156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655701546970240147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf33139898fa4a4bb0b78da01739cf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9133086078224984815
 GameObject:
   m_ObjectHideFlags: 0

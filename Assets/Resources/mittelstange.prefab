@@ -526,6 +526,8 @@ GameObject:
   - component: {fileID: 6325852784966026487}
   - component: {fileID: -5223654140986438349}
   - component: {fileID: 2061014903954128170}
+  - component: {fileID: -5761556929117948773}
+  - component: {fileID: -7730185863228569705}
   m_Layer: 0
   m_Name: mittelstange
   m_TagString: InitialObject
@@ -690,7 +692,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 5287015508668187932, guid: a752a5f05dc1bfc4db2fd9d29819aa68, type: 3}
+  constraintsManager: {fileID: 4547309237547835682}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -743,6 +745,30 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-5761556929117948773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739234678731576920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c111e49189bfc409fbb0b748f28d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7730185863228569705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739234678731576920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf33139898fa4a4bb0b78da01739cf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6890823219051291110
 GameObject:
   m_ObjectHideFlags: 0

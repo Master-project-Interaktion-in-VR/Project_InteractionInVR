@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 1798861050958069238}
   - component: {fileID: 8247602920457906034}
   - component: {fileID: -2780702356368343019}
+  - component: {fileID: -4168005398701825696}
+  - component: {fileID: 8706440577825828563}
   m_Layer: 0
   m_Name: halterungsstange_2
   m_TagString: InitialObject
@@ -179,7 +181,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 5287015508668187932, guid: a752a5f05dc1bfc4db2fd9d29819aa68, type: 3}
+  constraintsManager: {fileID: 7867589703431675238}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -211,7 +213,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -2780702356368343019}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -231,6 +234,30 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-4168005398701825696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2850823335105782782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c111e49189bfc409fbb0b748f28d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8706440577825828563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2850823335105782782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf33139898fa4a4bb0b78da01739cf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4115029686849257350
 GameObject:
   m_ObjectHideFlags: 0
