@@ -6,9 +6,6 @@ using UnityEngine;
 public class RotateAroundY : MonoBehaviour
 {
 	[SerializeField]
-	private bool useMRTK;
-
-	[SerializeField]
 	private Transform targetTransform;
 
 	[SerializeField]
@@ -23,10 +20,6 @@ public class RotateAroundY : MonoBehaviour
 
     private void Awake()
     {
-        if (useMRTK)
-        {
-			targetTransform = GameObject.Find("CenterEyeAnchor").transform;
-        }
     }
 
     void Update()

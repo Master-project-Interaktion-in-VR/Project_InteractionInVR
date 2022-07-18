@@ -6,9 +6,6 @@ using UnityEngine.XR;
 public class AnimationController : MonoBehaviour
 {
     [SerializeField]
-    private bool useMRTK;
-
-    [SerializeField]
     private GameObject head;
 
 
@@ -19,11 +16,6 @@ public class AnimationController : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-
-        if (useMRTK)
-        {
-            head = GameObject.Find("CenterEyeAnchor");
-        }
     }
 
     private void Update()
