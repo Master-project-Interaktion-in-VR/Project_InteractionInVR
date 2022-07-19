@@ -18,6 +18,10 @@ public class RotateAroundY : MonoBehaviour
 	private bool _slerping;
 	private float _startTime;
 
+    private void Awake()
+    {
+    }
+
     void Update()
 	{
 		float headY = targetTransform.rotation.eulerAngles.y;
