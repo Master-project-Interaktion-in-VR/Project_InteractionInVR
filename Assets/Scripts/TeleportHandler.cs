@@ -1,53 +1,46 @@
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Teleport;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
-public class TeleportHandler : MonoBehaviour, IMixedRealityTeleportHandler
+public class TeleportHandler : MonoBehaviour
 {
-    GameObject saveWall;
+    public static GameObject saveWall;
+    public static bool teleported = false;
 
     void Start()
     {
         saveWall = this.gameObject;
+        GameObject.Find("Environment/Terrain/PlayArea/PaintTerrain").GetComponent<TeleportationArea>().teleporting.AddListener(ActivateTeleport);
+        saveWall.GetComponent<MeshRenderer>().enabled = false;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("--- Collided with saveWall!");
-        saveWall.GetComponent<MeshRenderer>().enabled = true;
+        if (other.tag == "SaveWallTrigger" && teleported)
+        {
+            Debug.Log("--- Collided with saveWall! " + other.gameObject.name);
+            saveWall.GetComponent<MeshRenderer>().enabled = true;
+            saveWall.transform.Find("Table_Surface_SaveWall").GetComponent<MeshRenderer>().enabled = true;
+            StartCoroutine(DisableWall());
+        }
     }
 
-    public void OnTeleportCanceled(TeleportEventData eventData)
-    {
-        Debug.Log("Teleport Cancelled");
-    }
-
-    public void OnTeleportCompleted(TeleportEventData eventData)
-    {
-        Debug.Log("Teleport Completed");
-    }
-
-    public void OnTeleportRequest(TeleportEventData eventData)
-    {
-        Debug.Log("Teleport Request");
-    }
-
-    public void OnTeleportStarted(TeleportEventData eventData)
+    public void ActivateTeleport(TeleportingEventArgs args)
     {
         Debug.Log("Teleport Started");
-        saveWall.GetComponent<MeshRenderer>().enabled = true;
-        Transform ovrCameraRig = GameObject.Find("MRTK-Quest_OVRCameraRig(Clone)").transform;
-        saveWall.transform.parent = ovrCameraRig;
-        foreach (GameObject holdingObject in BuildManager.holdingObjects_List)
-        {
-            Destroy(holdingObject);
-        }
-        Destroy(Calibration.table);
+        teleported = true;
+        saveWall.GetComponent<MeshRenderer>().enabled = false;
+        Transform camRig = GameObject.Find("XR Origin").transform;
+        saveWall.transform.parent = camRig;
     }
 
-    void OnEnable()
+    IEnumerator DisableWall()
     {
-        CoreServices.TeleportSystem.RegisterHandler<IMixedRealityTeleportHandler>(this);
+        yield return new WaitForSeconds(3);
+        saveWall.GetComponent<MeshRenderer>().enabled = false;
+        saveWall.transform.Find("Table_Surface_SaveWall").GetComponent<MeshRenderer>().enabled = false;
     }
-
 }

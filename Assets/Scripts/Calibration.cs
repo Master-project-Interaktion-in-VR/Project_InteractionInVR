@@ -23,6 +23,7 @@ public class Calibration : MonoBehaviour
         CameraRig = GameObject.Find("MRTK-Quest_OVRCameraRig(Clone)").transform;
         handMarker = CameraRig.FindChildRecursive("RightControllerAnchor").transform;
         table = GameObject.Find("Table");
+        Calibrate();
     }
 
     void Update()
@@ -36,52 +37,58 @@ public class Calibration : MonoBehaviour
                 //    table = Instantiate(table_Prefab);
                 //}
 
-                if (BuildManager.build_objects.Count == 0)
-                {
-                    if (antennaPieces == null)
-                    {
-                        antennaPieces = new GameObject("AntennaPieces");
-                        antennaPieces.transform.position = new Vector3(0, 0.8f, 0);
-                        antennaPieces.transform.parent = table.transform;
-                    }
-
-                    foreach (GameObject buildObj_prefab in build_objects_Prefab)
-                    {
-                        Vector3 pos = buildObj_prefab.transform.position;
-                        pos.y += 1;
-                        GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.rotation);
-                        obj.transform.parent = antennaPieces.transform;
-                        BuildManager.build_objects.Add(obj);
-                    }
-
-                    AddDisassembleListeners();
-                }
-
-                Vector3 position = SceneInformationManager.CrossSceneInformation_position;
-                Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
-                if (position == null && rotation == null)
-                {
-                    position = handMarker.position;
-                    rotation = handMarker.rotation;
-                }
-
-                fixedMarker = GameObject.Find("fixedMarker").transform;
-                //Vector3 posOffset = fixedMarker.position - handMarker.position; //calculate the difference in positions
-                //CameraRig.transform.position += posOffset; //offset the position of the cameraRig to realign the controllers
-
-                fixedMarker.transform.parent = null;
-                table.transform.parent = fixedMarker.transform;
-
-                fixedMarker.transform.position = position;
-
-                //Vector3 rotOffset = fixedMarker.eulerAngles - handMarker.eulerAngles; //calculate the difference in rotations
-                fixedMarker.transform.rotation = rotation;
-                //CameraRig.transform.RotateAround(handMarker.position, Vector3.up, rotOffset.y); //using the hand as a pivot, rotate around Y
-
-                table.transform.parent = null;
-                fixedMarker.transform.parent = table.transform.parent;
+                Calibrate();
             }
         }
+    }
+
+    public void Calibrate()
+    {
+        if (BuildManager.build_objects.Count == 0)
+        {
+            if (antennaPieces == null)
+            {
+                antennaPieces = new GameObject("AntennaPieces");
+                antennaPieces.transform.position = new Vector3(0, 0.8f, 0);
+                antennaPieces.transform.parent = table.transform;
+            }
+
+            foreach (GameObject buildObj_prefab in build_objects_Prefab)
+            {
+                Vector3 pos = buildObj_prefab.transform.position;
+                pos.y += 1;
+                GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.rotation);
+                obj.transform.parent = antennaPieces.transform;
+                BuildManager.build_objects.Add(obj);
+            }
+
+            AddDisassembleListeners();
+        }
+
+        Vector3 position = SceneInformationManager.CrossSceneInformation_position;
+        Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
+        Debug.Log($"pos: {position}, rot: {rotation}");
+        if (position == null && rotation == null)
+        {
+            position = handMarker.position;
+            rotation = handMarker.rotation;
+        }
+
+        fixedMarker = GameObject.Find("fixedMarker").transform;
+        //Vector3 posOffset = fixedMarker.position - handMarker.position; //calculate the difference in positions
+        //CameraRig.transform.position += posOffset; //offset the position of the cameraRig to realign the controllers
+
+        fixedMarker.transform.parent = null;
+        table.transform.parent = fixedMarker.transform;
+
+        fixedMarker.transform.position = position;
+
+        //Vector3 rotOffset = fixedMarker.eulerAngles - handMarker.eulerAngles; //calculate the difference in rotations
+        fixedMarker.transform.rotation = rotation;
+        //CameraRig.transform.RotateAround(handMarker.position, Vector3.up, rotOffset.y); //using the hand as a pivot, rotate around Y
+
+        table.transform.parent = null;
+        fixedMarker.transform.parent = table.transform.parent;
     }
 
     /// <summary>
