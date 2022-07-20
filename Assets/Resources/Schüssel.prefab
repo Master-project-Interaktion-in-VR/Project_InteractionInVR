@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 2879014962998082861}
   - component: {fileID: 832666863793302929}
   - component: {fileID: 6218803412994175141}
+  - component: {fileID: -714443908232236141}
   m_Layer: 0
   m_Name: "Sch\xFCssel"
   m_TagString: Untagged
@@ -294,7 +295,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 8097482782090592798}
+  constraintsManager: {fileID: 3746416918111891155, guid: 52fdf64fd5984da44ab84ff8495a0700, type: 3}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -383,6 +384,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5467664e1573e7c4ab6ef59914adf735, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-714443908232236141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7099664491167847007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c111e49189bfc409fbb0b748f28d0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8848279618803705434

@@ -179,8 +179,9 @@ GameObject:
   - component: {fileID: 2453994397599325670}
   - component: {fileID: 559457210833948684}
   - component: {fileID: 5421647155055496128}
+  - component: {fileID: 5803748621703279323}
   m_Layer: 0
-  m_Name: Mittelstange
+  m_Name: mittelstange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -380,7 +381,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 6587404800603205237}
+  constraintsManager: {fileID: 3746416918111891155, guid: 52fdf64fd5984da44ab84ff8495a0700, type: 3}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -434,6 +435,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
   IsBoundsHandles: 0
+--- !u!114 &5803748621703279323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4993325403161982641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c111e49189bfc409fbb0b748f28d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6263417987516779713
 GameObject:
   m_ObjectHideFlags: 0

@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 1952062229396193266}
   - component: {fileID: 6439955362579739595}
   - component: {fileID: 5828516010094363940}
+  - component: {fileID: 1682545145309276293}
   m_Layer: 0
   m_Name: Halterungsstange
   m_TagString: Untagged
@@ -403,7 +404,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 6439955362579739595}
+  constraintsManager: {fileID: 3746416918111891155, guid: 52fdf64fd5984da44ab84ff8495a0700, type: 3}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -417,6 +418,18 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1682545145309276293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6584729588074971016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c111e49189bfc409fbb0b748f28d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7434196456587987112
 GameObject:
   m_ObjectHideFlags: 0
