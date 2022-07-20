@@ -14,7 +14,7 @@ public class BuildManager : MonoBehaviour
     [Serializable]
     public class AssemblySuccessUnityEvent : UnityEvent<bool>
     {
-        public AssemblySuccessUnityEvent() {}
+        public AssemblySuccessUnityEvent() { }
     }
 
     public class CollisionEvent
@@ -55,7 +55,7 @@ public class BuildManager : MonoBehaviour
     const int maxTries = 3;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         collisions = new Queue<CollisionEvent>();
         build_objects = new List<GameObject>();
@@ -245,7 +245,7 @@ public class BuildManager : MonoBehaviour
         Debug.Log("--- " + newest_assembledBuildPoint.buildPoint1.name + " + " + newest_assembledBuildPoint.buildPoint2.name + (newest_correctAssembling == true ? " CORRECT ASSEMBLED!" : " NOT CORECT ASSEMBLED. Try again..."));
 
         // if not all objects are assembled do nothing
-        if (holdingObjects_List[0].transform.childCount < 8)
+        if (holdingObjects_List[0].transform.childCount < 6)
             return;
 
         Debug.Log("--- you have assembled all objects - checking if assmbled correctly");

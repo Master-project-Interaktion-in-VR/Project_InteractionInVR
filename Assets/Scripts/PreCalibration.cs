@@ -23,12 +23,6 @@ public class PreCalibration : MonoBehaviour
         rightHandAction.FindAction("Secondary Action").performed += Calibrate;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void Calibrate(InputAction.CallbackContext obj)
     {
         if (!inventory.activeInHierarchy && !TeleportHandler.teleported)

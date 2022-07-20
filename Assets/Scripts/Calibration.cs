@@ -23,60 +23,67 @@ public class Calibration : MonoBehaviour
         CameraRig = GameObject.Find("MRTK-Quest_OVRCameraRig(Clone)").transform;
         handMarker = CameraRig.FindChildRecursive("RightControllerAnchor").transform;
         table = GameObject.Find("Table");
+        Vector3 position = SceneInformationManager.CrossSceneInformation_position;
+        Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
+        if (position != null && rotation != null)
+        {
+            //Calibrate(position, rotation);
+        }
     }
 
     void Update()
     {
         // fix for starting assembly scene directly with photon
-        if (!PhotonNetwork.InRoom)
-            return;
+        //if (!PhotonNetwork.InRoom)
+        //    return;
 
         if (OVRInput.GetActiveController() == OVRInput.Controller.Touch)
         {
             if (OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch)) //detect is button 'A' has been pressed
             {
-                //if(table == null)
-                //{
-                //    table = Instantiate(table_Prefab);
-                //}
-
-                if (BuildManager.build_objects.Count == 0)
-                {
-                    if (antennaPieces == null)
-                    {
-                        antennaPieces = PhotonNetwork.Instantiate("AntennaPieces", new Vector3(0, 0.8f, 0), Quaternion.identity);
-                        antennaPieces.GetComponent<NetworkHelper>().SetParent(table.transform);
-                    }
-
-                    foreach (GameObject buildObj_prefab in build_objects_Prefab)
-                    {
-                        Vector3 pos = buildObj_prefab.transform.position;
-                        pos.y += 1;
-                        GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.rotation);
-                        obj.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
-                        BuildManager.build_objects.Add(obj);
-                    }
-
-                    AddDisassembleListeners();
-                }
-
-                fixedMarker = GameObject.Find("fixedMarker").transform;
-                Vector3 posOffset = fixedMarker.position - handMarker.position; //calculate the difference in positions
-                //CameraRig.transform.position += posOffset; //offset the position of the cameraRig to realign the controllers
-
-                fixedMarker.transform.parent = null;
-                table.transform.parent = fixedMarker.transform;
-
-                fixedMarker.transform.position = handMarker.position;
-
-                Vector3 rotOffset = fixedMarker.eulerAngles - handMarker.eulerAngles; //calculate the difference in rotations
-                fixedMarker.transform.rotation = handMarker.rotation;
-                //CameraRig.transform.RotateAround(handMarker.position, Vector3.up, rotOffset.y); //using the hand as a pivot, rotate around Y
-
-                table.transform.parent = null;
-                fixedMarker.transform.parent = table.transform.parent;
+                Calibrate(handMarker.position, handMarker.rotation);
             }
         }
+    }
+
+    public void Calibrate(Vector3 position, Quaternion rotation)
+    {
+        //if(table == null)
+        //{
+        //    table = Instantiate(table_Prefab);
+        //}
+
+        if (BuildManager.build_objects.Count == 0)
+        {
+            if (antennaPieces == null)
+            {
+                antennaPieces = PhotonNetwork.Instantiate("AntennaPieces", new Vector3(0, 0.8f, 0), Quaternion.identity);
+                antennaPieces.GetComponent<NetworkHelper>().SetParent(table.transform);
+            }
+
+            foreach (GameObject buildObj_prefab in build_objects_Prefab)
+            {
+                Vector3 pos = buildObj_prefab.transform.position;
+                pos.y += 1;
+                GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.rotation);
+                obj.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
+                BuildManager.build_objects.Add(obj);
+            }
+
+            AddDisassembleListeners();
+        }
+
+        fixedMarker = GameObject.Find("fixedMarker").transform;
+
+        fixedMarker.transform.parent = null;
+        table.transform.parent = fixedMarker.transform;
+
+        fixedMarker.transform.position = position;
+
+        fixedMarker.transform.rotation = rotation;
+
+        table.transform.parent = null;
+        fixedMarker.transform.parent = table.transform.parent;
     }
 
     /// <summary>
