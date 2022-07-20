@@ -116,7 +116,7 @@ public class BuildManager : MonoBehaviour
 
         bool newHoldingBody = false;
         // if there are already assembled objects in a holding body, make a new one
-        if (buildModel1.transform.parent.name == "AntennaPieces" && buildModel2.transform.parent.name == "AntennaPieces" && GameObject.Find("holdingBody") != null)
+        if (buildModel1.transform.parent.name == "AntennaPieces(Clone)" && buildModel2.transform.parent.name == "AntennaPieces(Clone)" && GameObject.Find("holdingBody") != null)
             newHoldingBody = true;
 
         // if both objects of the collision are already in a collection of assembled objects, put all in one holdingObject

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private Animator glassAnimator;
 
     [SerializeField] private InputActionAsset actionAsset;
-    
+
     [SerializeField] private int antennaPartsPickedUp;
     [SerializeField] private int maxAntennaParts;
 
@@ -32,7 +33,7 @@ public class InventoryManager : MonoBehaviour
     private GameObject itemInLeftHand;
     private GameObject itemInRightHand;
     private GameObject itemObject;
-    
+
     private ActionBasedSnapTurnProvider snapTurnScript;
 
     private void Start()
@@ -64,11 +65,11 @@ public class InventoryManager : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))  //FOR DEVICE SIMULATOR
-        {           
+        {
             OpenCloseRightInventory(new InputAction.CallbackContext());
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {            
+        {
             OpenCloseLeftInventory(new InputAction.CallbackContext());
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -91,7 +92,7 @@ public class InventoryManager : MonoBehaviour
         var eulerAngles = anchor.transform.eulerAngles;
         inventory.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
     }
-    
+
     public void PutItemInInventory(GameObject item)
     {
         item.GetComponent<Animator>().SetBool("shrink", true);
@@ -101,7 +102,7 @@ public class InventoryManager : MonoBehaviour
         if (item == itemInLeftHand)
             itemInLeftHand = null;
         else if (item == itemInRightHand)
-            itemInRightHand = null;  
+            itemInRightHand = null;
 
         if (antennaPartsPickedUp == maxAntennaParts)
             NextLevel();
@@ -138,7 +139,7 @@ public class InventoryManager : MonoBehaviour
     private void SwitchItem(InputAction.CallbackContext obj)
     {
         var dir = obj.ReadValue<Vector2>();
-        
+
         if (inventory.activeInHierarchy && dir.x != .5f)
         {
             var right = dir.x > .5f;
@@ -146,9 +147,9 @@ public class InventoryManager : MonoBehaviour
             leftArrows.SetActive(!right);
             detectorAnimator.SetBool("scale", !right);
             glassAnimator.SetBool("scale", right);
-        }   
+        }
     }
-    
+
     private void OpenCloseRightInventory(InputAction.CallbackContext obj)
     {
         if (inventory.activeInHierarchy && _isRight || !inventory.activeInHierarchy && itemInRightHand == null)
@@ -162,7 +163,7 @@ public class InventoryManager : MonoBehaviour
     private void OpenCloseLeftInventory(InputAction.CallbackContext obj)
     {
         if (inventory.activeInHierarchy && !_isRight || !inventory.activeInHierarchy && itemInLeftHand == null)
-        {       
+        {
             _isRight = false;
             SetInventoryAnchor(leftAnchor);
             ResetInventoryProperties();
@@ -181,7 +182,7 @@ public class InventoryManager : MonoBehaviour
 
     private void NextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void SpawnItem(InputAction.CallbackContext obj)
@@ -198,8 +199,8 @@ public class InventoryManager : MonoBehaviour
 
             GameObject prefab;
 
-            if (rightArrows.activeInHierarchy)           
-                prefab = glass;           
+            if (rightArrows.activeInHierarchy)
+                prefab = glass;
             else
                 prefab = detector;
 
