@@ -102,7 +102,8 @@ public class InventoryManager : MonoBehaviour
     {
         item.GetComponent<Animator>().SetBool("shrink", true);
         antennaPartsPickedUp++;
-        Destroy(item, 0.9f);
+        // ADD DELAY 0.9
+        PhotonNetwork.Destroy(item);
 
         if (item == itemInLeftHand)
             itemInLeftHand = null;
@@ -212,7 +213,7 @@ public class InventoryManager : MonoBehaviour
                 itemInRightHand = null;
 
             if (itemObject != null)
-                Destroy(itemObject);
+                PhotonNetwork.Destroy(itemObject);
 
             GameObject prefab;
 
@@ -221,7 +222,7 @@ public class InventoryManager : MonoBehaviour
             else
                 prefab = detector;
 
-            itemObject = Instantiate(prefab, itemAnchor.transform.position, Quaternion.identity);
+            itemObject = PhotonNetwork.Instantiate("Items/" + prefab.name, itemAnchor.transform.position, Quaternion.identity);
             inventory.SetActive(false);
             snapTurnScript.enabled = true;
         }
