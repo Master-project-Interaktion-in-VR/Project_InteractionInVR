@@ -61,7 +61,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         // filter rooms that have a free slot for my platform
         _joinableRooms = roomList.Where(room => !room.RemovedFromList)
-            .Where(room => room.CustomProperties["n"].ToString().Equals(_platformMobile ? GUIConstants.PLATFORM_VR : GUIConstants.PLATFORM_PC)) // _platformMobile ? GUIConstants.PLATFORM_VR : GUIConstants.PLATFORM_PC
+            //.Where(room => room.CustomProperties["n"].ToString().Equals(_platformMobile ? GUIConstants.PLATFORM_VR : GUIConstants.PLATFORM_PC)) // _platformMobile ? GUIConstants.PLATFORM_VR : GUIConstants.PLATFORM_PC
             .Select(room => room.Name)
             .ToList();
         // filter closed rooms if this update closed a room
