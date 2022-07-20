@@ -111,9 +111,6 @@ public class BuildManager : MonoBehaviour
         GameObject buildModel1 = snapPoint.transform.parent.gameObject;
         GameObject buildModel2 = otherPoint.transform.parent.gameObject;
 
-        NetworkHelper buildModel1NetworkHelper = buildModel1.GetComponent<NetworkHelper>();
-        NetworkHelper buildModel2NetworkHelper = buildModel2.GetComponent<NetworkHelper>();
-
         // turn snapPoint
         snapPoint.transform.localEulerAngles = new Vector3(snapPoint.transform.localEulerAngles.x, snapPoint.transform.localEulerAngles.y, snapPoint.transform.localEulerAngles.z + 180);
 
@@ -157,8 +154,8 @@ public class BuildManager : MonoBehaviour
 
             Destroy(snap_HoldingObject);
 
-            buildModel1NetworkHelper.SetPositionOthers(buildModel1.transform);
-            buildModel2NetworkHelper.SetPositionOthers(buildModel2.transform);
+            buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
+            buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
 
             CheckAssembly();
 
@@ -178,8 +175,8 @@ public class BuildManager : MonoBehaviour
         snapPoint.transform.parent = buildModel1.transform;
 
         // remove components 
-        buildModel1NetworkHelper.RemoveComponents();
-        buildModel2NetworkHelper.RemoveComponents();
+        buildModel1.GetComponent<NetworkHelper>().RemoveComponents();
+        buildModel2.GetComponent<NetworkHelper>().RemoveComponents();
 
         // create new object with rigidbody and objectManipulator 
         if (holdingObjects_List.Count == 0)
@@ -195,12 +192,12 @@ public class BuildManager : MonoBehaviour
             newHoldingObject.GetComponent<NetworkHelper>().InitHoldingBody();
 
             // make two objects children of new object
-            buildModel1NetworkHelper.SetParent(newHoldingObject.transform);
-            buildModel2NetworkHelper.SetParent(newHoldingObject.transform);
+            buildModel1.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
+            buildModel2.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
             holdingObjects_List.Add(newHoldingObject);
 
-            buildModel1NetworkHelper.SetPositionOthers(buildModel1.transform);
-            buildModel2NetworkHelper.SetPositionOthers(buildModel2.transform);
+            buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
+            buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
 
             CheckAssembly();
 
@@ -208,11 +205,11 @@ public class BuildManager : MonoBehaviour
         }
 
         // make two objects children of new object
-        buildModel1NetworkHelper.SetParent(holdingObjects_List[0].transform);
-        buildModel2NetworkHelper.SetParent(holdingObjects_List[0].transform);
+        buildModel1.GetComponent<NetworkHelper>().SetParent(holdingObjects_List[0].transform);
+        buildModel2.GetComponent<NetworkHelper>().SetParent(holdingObjects_List[0].transform);
 
-        buildModel1NetworkHelper.SetPositionOthers(buildModel1.transform);
-        buildModel2NetworkHelper.SetPositionOthers(buildModel2.transform);
+        buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
+        buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
 
         CheckAssembly();
     }

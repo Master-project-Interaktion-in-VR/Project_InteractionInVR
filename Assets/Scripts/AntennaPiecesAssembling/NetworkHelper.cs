@@ -109,19 +109,9 @@ public class NetworkHelper : MonoBehaviour
         }
     }
 
-    public void SetPositionOthers(Transform transform)
+    public void SetPosition(Transform transform)
     {
         _photonView.RPC("SetPositionRpc", RpcTarget.Others, transform.position, transform.rotation.eulerAngles);
-    }
-
-    public void SetPositionAll(Vector3 position, Vector3 rotation)
-    {
-        _photonView.RPC("SetPositionRpc", RpcTarget.All, position, rotation);
-    }
-
-    public void SetRigidbodyVelocity(Vector3 velocity)
-    {
-        _photonView.RPC("SetRigidbodyVelocityRpc", RpcTarget.All, velocity);
     }
 
     [PunRPC]
@@ -129,11 +119,5 @@ public class NetworkHelper : MonoBehaviour
     {
         transform.position = position;
         transform.rotation = Quaternion.Euler(rotation);
-    }
-
-    [PunRPC]
-    private void SetRigidbodyVelocityRpc(Vector3 velocity)
-    {
-        GetComponent<Rigidbody>().velocity = velocity;
     }
 }

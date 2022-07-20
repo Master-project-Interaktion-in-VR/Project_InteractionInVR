@@ -1,4 +1,3 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,9 +19,6 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
-        if (!PhotonNetwork.IsMasterClient) // only spawn items once, no matter on which client
-            return;
-
         List<Vector3> spawnPoints = new List<Vector3>();
         foreach (Transform child in transform)
         {
@@ -50,12 +46,12 @@ public class Spawner : MonoBehaviour
 
     private void SpawnItem(GameObject item, Vector3 position)
     {
-        GameObject spawned = PhotonNetwork.Instantiate("EnvironmentAntennaPieces/" + item.name, position, Quaternion.identity);
-        spawned.GetComponent<NetworkHelper>().SetParent(antennaParent.transform);
+        GameObject spawned = Instantiate(item, position, Quaternion.identity);
+        spawned.transform.SetParent(antennaParent.transform);
 
         // origin
         Physics.Raycast(position, Vector3.down, out RaycastHit hit, 5, 1 << LayerMask.NameToLayer("Drawable"));
-        GameObject origin = PhotonNetwork.Instantiate(originPrefab.name, hit.point + new Vector3(0, 0.5f, 0), Quaternion.identity);
-        origin.GetComponent<NetworkHelper>().SetParent(antennaParent.transform);
+        GameObject origin = Instantiate(originPrefab, hit.point + new Vector3(0, 0.5f, 0), Quaternion.identity);
+        origin.transform.SetParent(antennaParent.transform);
     }
 }
