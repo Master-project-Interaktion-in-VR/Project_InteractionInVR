@@ -35,10 +35,14 @@ public class InventoryManager : MonoBehaviour
     private GameObject itemObject;
 
     private ActionBasedSnapTurnProvider snapTurnScript;
-    public string GameScene_name;
+    public string assemblySceneName;
+
+    private PhotonView _photonView;
 
     private void Start()
     {
+        _photonView = GetComponent<PhotonView>();
+
         var leftHandAction = actionAsset.FindActionMap("XRI LeftHand Interaction");
         var rightHandAction = actionAsset.FindActionMap("XRI RightHand Interaction");
         var leftHandLocomotion = actionAsset.FindActionMap("XRI LeftHand Locomotion");
@@ -183,7 +187,19 @@ public class InventoryManager : MonoBehaviour
 
     private void NextLevel()
     {
-        PhotonNetwork.LoadLevel(GameScene_name);
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel(assemblySceneName);
+        else
+        {
+            // only master client can load level
+            _photonView.RPC("RequestNextLevel", RpcTarget.Others);
+        }
+    }
+
+    [PunRPC]
+    public void RequestNextLevel()
+    {
+        PhotonNetwork.LoadLevel(assemblySceneName);
     }
 
     public void SpawnItem(InputAction.CallbackContext obj)

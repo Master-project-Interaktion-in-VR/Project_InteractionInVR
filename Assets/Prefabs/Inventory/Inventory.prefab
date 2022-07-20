@@ -1513,6 +1513,7 @@ MonoBehaviour:
   actionAsset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   antennaPartsPickedUp: 0
   maxAntennaParts: 6
+  assemblySceneName: AssemblyScene
 --- !u!1 &8808705144147868868
 GameObject:
   m_ObjectHideFlags: 0
