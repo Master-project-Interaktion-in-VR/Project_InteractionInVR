@@ -108,4 +108,16 @@ public class NetworkHelper : MonoBehaviour
             Debug.LogWarning(ex);
         }
     }
+
+    public void SetPosition(Transform transform)
+    {
+        _photonView.RPC("SetPositionRpc", RpcTarget.Others, transform.position, transform.rotation.eulerAngles);
+    }
+
+    [PunRPC]
+    private void SetPositionRpc(Vector3 position, Vector3 rotation)
+    {
+        transform.position = position;
+        transform.rotation = Quaternion.Euler(rotation);
+    }
 }

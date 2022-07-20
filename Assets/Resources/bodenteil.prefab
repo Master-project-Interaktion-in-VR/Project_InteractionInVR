@@ -19,8 +19,9 @@ GameObject:
   - component: {fileID: 6431161952249534144}
   - component: {fileID: -4426691556896809526}
   - component: {fileID: 2301183233427327743}
+  - component: {fileID: 6236556988033787320}
   m_Layer: 0
-  m_Name: Bodenteil
+  m_Name: bodenteil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,6 +242,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: acf33139898fa4a4bb0b78da01739cf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6236556988033787320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6310099699761181848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c111e49189bfc409fbb0b748f28d0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7070696126368326557

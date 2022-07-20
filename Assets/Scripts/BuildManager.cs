@@ -132,7 +132,7 @@ public class BuildManager : MonoBehaviour
             // make snapPoint parent of holdingObject
             snapPoint.transform.parent = null;
             snap_HoldingObject.transform.parent = snapPoint.transform;
-            ////snapPoint.GetComponent<AntennaPiece>().SetParentRoot(); TODO
+            ////snapPoint.GetComponent<AntennaPiece>().SetParentRoot();
             //snap_HoldingObject.GetComponent<AntennaPiece>().SetParent(snapPoint.transform);
 
             // snap objects together
@@ -153,6 +153,9 @@ public class BuildManager : MonoBehaviour
                 child.parent = other_HoldingObject.transform;
 
             Destroy(snap_HoldingObject);
+
+            buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
+            buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
 
             CheckAssembly();
 
@@ -193,6 +196,9 @@ public class BuildManager : MonoBehaviour
             buildModel2.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
             holdingObjects_List.Add(newHoldingObject);
 
+            buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
+            buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
+
             CheckAssembly();
 
             return;
@@ -201,6 +207,9 @@ public class BuildManager : MonoBehaviour
         // make two objects children of new object
         buildModel1.GetComponent<NetworkHelper>().SetParent(holdingObjects_List[0].transform);
         buildModel2.GetComponent<NetworkHelper>().SetParent(holdingObjects_List[0].transform);
+
+        buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
+        buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
 
         CheckAssembly();
     }
@@ -212,7 +221,7 @@ public class BuildManager : MonoBehaviour
     {
         foreach (GameObject buildObj in build_objects)
         {
-            PhotonNetwork.Destroy(buildObj); // TODO what are these? these are only added in the Disassemble and Respawn method
+            PhotonNetwork.Destroy(buildObj);
         }
         foreach (GameObject holdingObject in holdingObjects_List)
         {
@@ -307,7 +316,7 @@ public class BuildManager : MonoBehaviour
     /// <param name="objectName">The object name.</param>
     public void Respawn_object(string objectName)
     {
-        GameObject old_object = build_objects.Find(x => x.name == objectName); // TODO build_objects should be empty?
+        GameObject old_object = build_objects.Find(x => x.name == objectName);
         GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
 
         Transform parent = old_object.transform.parent;
