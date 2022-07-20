@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 5828516010094363940}
   - component: {fileID: 1682545145309276293}
   m_Layer: 0
-  m_Name: Halterungsstange
+  m_Name: halterungsstange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -404,7 +404,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 3746416918111891155, guid: 52fdf64fd5984da44ab84ff8495a0700, type: 3}
+  constraintsManager: {fileID: 6439955362579739595}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:

@@ -233,12 +233,14 @@ public class BuildManager : MonoBehaviour
         holdingObjects_List = new List<GameObject>();
         build_objects = new List<GameObject>();
 
-        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
+        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces(Clone)").gameObject;
         foreach (GameObject buildObj_prefab in build_objects_Prefab)
         {
-            GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, antennaPieces.transform.position, Quaternion.identity);
+            Vector3 pos = buildObj_prefab.transform.localPosition;
+            pos.y += 0.5f;
+            pos += Calibration.table.transform.position;
+            GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.localRotation);
             obj.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
-
             build_objects.Add(obj);
         }
     }
@@ -317,7 +319,7 @@ public class BuildManager : MonoBehaviour
     public void Respawn_object(string objectName)
     {
         GameObject old_object = build_objects.Find(x => x.name == objectName);
-        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
+        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces(Clone)").gameObject;
 
         Transform parent = old_object.transform.parent;
 
@@ -353,7 +355,11 @@ public class BuildManager : MonoBehaviour
         // crete prefab name from objectname without "(Clone)"
         string prefabName = objectName.Replace("(Clone)", "");
 
-        GameObject new_object = PhotonNetwork.Instantiate(prefabName, antennaPieces.transform.position, Quaternion.identity);
+        GameObject prefab = build_objects_Prefab.Find(x => x.name.Contains(prefabName));
+        Vector3 pos = prefab.transform.localPosition;
+        pos.y += 0.5f;
+        pos += Calibration.table.transform.position;
+        GameObject new_object = PhotonNetwork.Instantiate(prefabName, pos, prefab.transform.rotation);
         new_object.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
         //build_objects_Prefab.Find(x => x.name == prefabName)
         build_objects.Add(new_object);

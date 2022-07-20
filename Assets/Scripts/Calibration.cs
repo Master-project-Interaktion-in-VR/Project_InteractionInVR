@@ -97,14 +97,12 @@ public class Calibration : MonoBehaviour
         disassembleButtons.Find(x => x.name == "Disassemble_Button").GetComponent<Interactable>().OnClick.AddListener(manager.DisassembleObjects);
 
         // add listener for each disassemble button
-        AddListener("Disassemble_halterungsstange1_Button", "halterungsstange_1(Clone)");
-        AddListener("Disassemble_halterungsstange2_Button", "halterungsstange_2(Clone)");
-        AddListener("Disassemble_schuessel1_Button", "schüssel_1(Clone)");
-        AddListener("Disassemble_schuessel2_Button", "schüssel_2(Clone)");
+        AddListener("Disassemble_halterungsstange_Button", "halterungsstange(Clone)");
+        AddListener("Disassemble_schuessel_Button", "schuessel(Clone)");
         AddListener("Disassemble_mittelstange_Button", "mittelstange(Clone)");
         AddListener("Disassemble_bodenteil_Button", "bodenteil(Clone)");
-        AddListener("Disassemble_seitenteil_Button", "seitenteil(Clone)");
-        AddListener("Disassemble_zwischenhalterung_Button", "zwischenhalterung(Clone)");
+        AddListener("Disassemble_seitenteil_unten_Button", "seitenteil_unten(Clone)");
+        AddListener("Disassemble_seitenteil_oben_Button", "seitenteil_oben(Clone)");
     }
 
     /// <summary>
