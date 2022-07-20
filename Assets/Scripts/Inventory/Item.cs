@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class Item : MonoBehaviour
     private XRGrabInteractable _grabInteractable;
     private Rigidbody _rigidbody;
     private InventoryManager _inventoryManager;
+    private PhotonView _photonView;
     
     private Vector3 _originPos;
     private Quaternion _originRotation;
@@ -25,8 +27,7 @@ public class Item : MonoBehaviour
         _grabInteractable = GetComponentInParent<XRGrabInteractable>();
         _rigidbody = GetComponent<Rigidbody>();
         _inventoryManager = GameObject.FindGameObjectWithTag("Inventory Manager").GetComponent<InventoryManager>();
-        _originPos = transform.position;
-        _originRotation = transform.rotation;
+        _photonView = GetComponent<PhotonView>();
     }
 
     private void OnEnable()
@@ -47,10 +48,25 @@ public class Item : MonoBehaviour
         }
     }
 
+    public void SetOrigin()
+    {
+        _photonView.RPC("SetOriginRpc", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void SetOriginRpc() // should not be necessary?
+    {
+        _originPos = transform.position;
+        _originRotation = transform.rotation;
+    }
+
     private void OnSelectEnter(SelectEnterEventArgs arg0)
     {
         CancelInvoke(nameof(ResetToOrigin));
         _selected = true;
+        //Debug.LogError("item pos: " + transform.position);
+        //Debug.LogError("parent: " + transform.parent.name);
+        //Debug.LogError("item pos: " + _originPos);
         _renderer.material.DisableKeyword("_EMISSION");
     }
 
@@ -63,7 +79,7 @@ public class Item : MonoBehaviour
 
     private void ResetToOrigin()
     {
-        if (resetToOrigin && !_colliderTriggered && !_selected)
+        if (resetToOrigin && !_colliderTriggered && !_selected && _photonView.IsMine) // only reset to origin if this is my photon view (VR)
         {
             //transform.rotation = _originRotation;
             //transform.position = _originPos;

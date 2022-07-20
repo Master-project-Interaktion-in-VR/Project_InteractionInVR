@@ -18,11 +18,12 @@ public class Spawner : MonoBehaviour
     private GameObject originPrefab;
 
 
-    private void Awake()
+    private void OnEnable()
     {
-        if (!PhotonNetwork.IsMasterClient) // only spawn items once, no matter on which client
+        if (!Application.isMobilePlatform) // only spawn items once, VR player must be owner in order to send position and destroy it
             return;
 
+        // spawn on VR platform
         List<Vector3> spawnPoints = new List<Vector3>();
         foreach (Transform child in transform)
         {
@@ -38,7 +39,7 @@ public class Spawner : MonoBehaviour
         SpawnItem(temp[0], saveSpawnPoint.position);
         temp.Remove(temp[0]);
         bool succ = spawnPoints.Remove(saveSpawnPoint.position);
-        Debug.Log("deleted: " + succ);
+        //Debug.Log("deleted: " + succ);
 
         foreach (GameObject item in temp)
         {
@@ -52,10 +53,11 @@ public class Spawner : MonoBehaviour
     {
         GameObject spawned = PhotonNetwork.Instantiate("EnvironmentAntennaPieces/" + item.name, position, Quaternion.identity);
         spawned.GetComponent<NetworkHelper>().SetParent(antennaParent.transform);
+        spawned.GetComponent<Item>().SetOrigin(); // set origin, after parent (and therefore absolute position) was changed
 
-        // origin
+        // origin collider
         Physics.Raycast(position, Vector3.down, out RaycastHit hit, 5, 1 << LayerMask.NameToLayer("Drawable"));
-        GameObject origin = PhotonNetwork.Instantiate(originPrefab.name, hit.point + new Vector3(0, 0.5f, 0), Quaternion.identity);
+        GameObject origin = PhotonNetwork.Instantiate("EnvironmentAntennaPieces/" + originPrefab.name, hit.point + new Vector3(0, 0.5f, 0), Quaternion.identity);
         origin.GetComponent<NetworkHelper>().SetParent(antennaParent.transform);
     }
 }

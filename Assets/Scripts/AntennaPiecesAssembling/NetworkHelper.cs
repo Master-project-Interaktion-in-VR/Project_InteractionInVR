@@ -15,6 +15,7 @@ public class NetworkHelper : MonoBehaviour
 
     public void SetParent(Transform parent)
     {
+        //Debug.LogError("set parent: " + parent.name);
         _photonView.RPC("SetParentRpc", RpcTarget.All, parent.name);
     }
     public void SetParentRoot()
@@ -25,7 +26,9 @@ public class NetworkHelper : MonoBehaviour
     [PunRPC]
     private void SetParentRpc(string parentName)
     {
+        //Debug.LogError("rpc: " + parentName);
         transform.SetParent(GameObject.Find(parentName).transform);
+        //Debug.LogError("rpc found name: " + GameObject.Find(parentName));
     }
 
     [PunRPC]

@@ -103,6 +103,7 @@ public class InventoryManager : MonoBehaviour
         item.GetComponent<Animator>().SetBool("shrink", true);
         antennaPartsPickedUp++;
         // ADD DELAY 0.9
+        //item.GetPhotonView().RequestOwnership()
         PhotonNetwork.Destroy(item);
 
         if (item == itemInLeftHand)
