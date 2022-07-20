@@ -65,12 +65,9 @@ public class Item : MonoBehaviour
     {
         if (resetToOrigin && !_colliderTriggered && !_selected)
         {
-            //transform.rotation = _originRotation;
-            //transform.position = _originPos;
-            //_rigidbody.velocity = Vector3.zero;
-            NetworkHelper networkHelper = GetComponent<NetworkHelper>();
-            networkHelper.SetPositionAll(_originPos, _originRotation.eulerAngles);
-            networkHelper.SetRigidbodyVelocity(Vector3.zero);
+            transform.rotation = _originRotation;
+            transform.position = _originPos;
+            _rigidbody.velocity = Vector3.zero;
         }
     }
 
