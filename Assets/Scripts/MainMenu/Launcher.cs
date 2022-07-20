@@ -1,5 +1,5 @@
 #define VR_IN_EDITOR
-//#define SKIP_INTRO
+#define SKIP_INTRO
 
 using Photon.Pun;
 using Photon.Realtime;
