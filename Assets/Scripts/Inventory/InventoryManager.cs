@@ -35,6 +35,7 @@ public class InventoryManager : MonoBehaviour
     private GameObject itemObject;
 
     private ActionBasedSnapTurnProvider snapTurnScript;
+    public string GameScene_name;
 
     private void Start()
     {
@@ -182,7 +183,7 @@ public class InventoryManager : MonoBehaviour
 
     private void NextLevel()
     {
-        PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+        PhotonNetwork.LoadLevel(GameScene_name);
     }
 
     public void SpawnItem(InputAction.CallbackContext obj)
