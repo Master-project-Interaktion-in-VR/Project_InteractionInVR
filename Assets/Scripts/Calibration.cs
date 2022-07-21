@@ -23,15 +23,8 @@ public class Calibration : MonoBehaviour
         CameraRig = GameObject.Find("MRTK-Quest_OVRCameraRig(Clone)").transform;
         handMarker = CameraRig.FindChildRecursive("RightControllerAnchor").transform;
         table = GameObject.Find("Table");
-        Vector3 position = SceneInformationManager.CrossSceneInformation_position;
-        Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
-        if (position != null && rotation != null)
-        {
-            //Calibrate(position, rotation);
-        }
 
         OVRPlugin.SystemHeadset headset = OVRPlugin.GetSystemHeadsetType();
-
         if (headset == OVRPlugin.SystemHeadset.Oculus_Link_Quest || headset == OVRPlugin.SystemHeadset.Oculus_Quest)
         {
             fixedMarker = GameObject.Find("fixedMarker_quest1").transform;
@@ -43,24 +36,30 @@ public class Calibration : MonoBehaviour
             GameObject.Find("fixedMarker_quest1").SetActive(false);
         }
 
+        Vector3 position = SceneInformationManager.CrossSceneInformation_position;
+        Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
+        if (position != null && rotation != null)
+        {
+            Calibrate(position, rotation, true);
+        }
     }
 
     void Update()
     {
         // fix for starting assembly scene directly with photon
-        //if (!PhotonNetwork.InRoom)
-        //    return;
+        if (!PhotonNetwork.InRoom)
+            return;
 
         if (OVRInput.GetActiveController() == OVRInput.Controller.Touch)
         {
             if (OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch)) //detect is button 'A' has been pressed
             {
-                Calibrate(handMarker.position, handMarker.rotation);
+                Calibrate(handMarker.position, handMarker.rotation, false);
             }
         }
     }
 
-    public void Calibrate(Vector3 position, Quaternion rotation)
+    public void Calibrate(Vector3 position, Quaternion rotation, bool moveTable)
     {
         //if(table == null)
         //{
@@ -86,15 +85,25 @@ public class Calibration : MonoBehaviour
 
             AddDisassembleListeners();
         }
-        fixedMarker.transform.parent = null;
-        table.transform.parent = fixedMarker.transform;
 
-        fixedMarker.transform.position = position;
+        if (moveTable)
+        {
+            table.transform.position = position;
+            table.transform.rotation = rotation;
+        }
+        else
+        {
+            fixedMarker.transform.parent = null;
+            table.transform.parent = fixedMarker.transform;
 
-        fixedMarker.transform.rotation = rotation;
+            fixedMarker.transform.position = position;
 
-        table.transform.parent = null;
-        fixedMarker.transform.parent = table.transform.parent;
+            fixedMarker.transform.rotation = rotation;
+
+            table.transform.parent = null;
+            fixedMarker.transform.parent = table.transform.parent;
+        }
+        Debug.Log("Calibrate with position " + position + " and rotation " + rotation + " moveTable: " + moveTable);
     }
 
     /// <summary>
