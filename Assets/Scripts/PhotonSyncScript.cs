@@ -30,19 +30,26 @@ public class PhotonSyncScript : MonoBehaviour
 				GlyphSprites[6] = Resources.Load<Sprite>("VRPuzzle/PuzzleButton07");
 				GlyphSprites[7] = Resources.Load<Sprite>("VRPuzzle/PuzzleButton08");
 				GlyphSprites[8] = Resources.Load<Sprite>("VRPuzzle/PuzzleButton09");
-
-				StartPuzzleVR();
+				
+				//StartPuzzleVR();
 
 		}
+
+	private bool _abc;
 
 		// Update is called once per frame
 		void Update()
 		{
-
-		}
+		if (_abc || !PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2)
+			return;
+		_abc = true;
+		if (PhotonNetwork.IsMasterClient)
+			StartPuzzleVR();
+	}
 
 		public void StartPuzzleVR()
 		{
+		Debug.LogError("PUZZLE");
 				// generate an array with 4 fields filled with random numbers between 0 and 8
 				int[] solution = new int[4];
 				for (int i = 0; i < solution.Length; i++)
@@ -54,14 +61,15 @@ public class PhotonSyncScript : MonoBehaviour
 
 				// send the solution to the other players
 				_photonView.RPC("StartPuzzle", RpcTarget.All, solution);
-				StartPuzzle(solution); // TODO: this is just here for testing purposes
+				//StartPuzzle(solution); // TODO: this is just here for testing purposes
 		}
 
 		[PunRPC]
 		public void StartPuzzle(int[] solution)
-		{
-				// if PC_GUI_Manager is not null
-				if (PC_GUI_Manager != null)
+	{
+		Debug.LogError("PUZZLE RPC");
+		// if PC_GUI_Manager is not null
+		if (PC_GUI_Manager != null)
 				{
 						StartCoroutine(PC_GUI_Manager.StartPuzzle(solution));
 				}
