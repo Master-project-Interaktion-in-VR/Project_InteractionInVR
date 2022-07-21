@@ -113,6 +113,8 @@ public class BuildManager : MonoBehaviour
         GameObject buildModel1 = snapPoint.transform.parent.gameObject;
         GameObject buildModel2 = otherPoint.transform.parent.gameObject;
 
+        Debug.Log("obj1: " + buildModel1 + " obj2: " + buildModel2);
+
         // turn snapPoint
         snapPoint.transform.localEulerAngles = new Vector3(snapPoint.transform.localEulerAngles.x, snapPoint.transform.localEulerAngles.y, snapPoint.transform.localEulerAngles.z + 180);
 
