@@ -100,7 +100,7 @@ public class InventoryManager : MonoBehaviour
 
     public IEnumerator PutItemInInventory(GameObject item)
     {
-        item.GetComponent<Animator>().SetBool("shrink", true);
+        item.GetComponent<Animator>().SetBool("shrink", true); // currently not as RPC
         antennaPartsPickedUp++;
         yield return new WaitForSeconds(0.9f);
         item.GetPhotonView().RequestOwnership(); // just to be sure
