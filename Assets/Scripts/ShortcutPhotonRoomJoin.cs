@@ -31,8 +31,8 @@ public class ShortcutPhotonRoomJoin : MonoBehaviourPunCallbacks
 
     private IEnumerator Cor()
     {
-        yield return new WaitForSeconds(20);
-        if (Application.isMobilePlatform)
+        yield return new WaitForSeconds(2);
+        //if (Application.isMobilePlatform)
             asue.Invoke(true);
     }
 }

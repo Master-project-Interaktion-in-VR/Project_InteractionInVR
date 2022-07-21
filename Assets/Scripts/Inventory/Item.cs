@@ -7,6 +7,8 @@ public class Item : MonoBehaviour
 {
     [SerializeField] private bool resetToOrigin;
     [SerializeField] private float resetDelayTime;
+    [SerializeField] private int itemIndex;
+    [SerializeField] private Inventory inventory;
     
     private Renderer _renderer;
     private XRGrabInteractable _grabInteractable;
@@ -97,8 +99,11 @@ public class Item : MonoBehaviour
     
     public void ActivateEnter(ActivateEventArgs arg0)
     {
-        if(_inventoryManager != null)
+        if (_inventoryManager != null)
+        {
+            inventory.collectedAntennaParts[itemIndex] = true;
             _inventoryManager.PutItemInInventory(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
