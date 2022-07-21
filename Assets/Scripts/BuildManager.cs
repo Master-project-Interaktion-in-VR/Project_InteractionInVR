@@ -24,6 +24,17 @@ public class BuildManager : MonoBehaviour
         public Vector3 position;
     }
 
+    public enum SnapID
+    {
+        NoneInHoldingBody = 0,
+        BothInHoldingBody = 1,
+        FirstInHoldingBody = 2,
+        SecondInHoldingBody = 3,
+        Default = 4,
+    }
+
+    public static SnapID snapID = SnapID.Default;
+
     struct AssembledBuildPoints
     {
         public GameObject buildPoint1 { get; set; }
@@ -51,8 +62,10 @@ public class BuildManager : MonoBehaviour
 
     public AssemblySuccessUnityEvent AssemblySuccess = new AssemblySuccessUnityEvent();
 
-    static int buildTries = 2;
+    static int buildTries = 0;
     const int maxTries = 3;
+
+    static bool assembledAntenna = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -105,113 +118,153 @@ public class BuildManager : MonoBehaviour
         }
     }
 
-    void SnapObjectsTogether(GameObject snapPoint, GameObject otherPoint)
+    void SnapObjectsTogether(GameObject snapPoint1, GameObject snapPoint2)
     {
         // get the parent of the Building Point (actual object)
-        GameObject buildModel1 = snapPoint.transform.parent.gameObject;
-        GameObject buildModel2 = otherPoint.transform.parent.gameObject;
+        GameObject buildModel1 = snapPoint1.transform.parent.gameObject;
+        GameObject buildModel2 = snapPoint2.transform.parent.gameObject;
+
+        Debug.Log("obj1: " + buildModel1 + " obj2: " + buildModel2);
 
         // turn snapPoint
-        snapPoint.transform.localEulerAngles = new Vector3(snapPoint.transform.localEulerAngles.x, snapPoint.transform.localEulerAngles.y, snapPoint.transform.localEulerAngles.z + 180);
+        snapPoint1.transform.localEulerAngles = new Vector3(snapPoint1.transform.localEulerAngles.x, snapPoint1.transform.localEulerAngles.y, snapPoint1.transform.localEulerAngles.z + 180);
 
-        bool newHoldingBody = false;
-        // if there are already assembled objects in a holding body, make a new one
-        if (buildModel1.transform.parent.name == "AntennaPieces(Clone)" && buildModel2.transform.parent.name == "AntennaPieces(Clone)" && GameObject.Find("holdingBody") != null)
-            newHoldingBody = true;
+        GameObject parent1 = buildModel1.transform.parent.gameObject;
+        GameObject parent2 = buildModel2.transform.parent.gameObject;
 
-        // if both objects of the collision are already in a collection of assembled objects, put all in one holdingObject
-        if (buildModel1.transform.parent.name == "holdingBody" && buildModel2.transform.parent.name == "holdingBody")
+        // check parents of the buildObjects for right snapping
+        switch (parent1.name.Substring(0, 11))
         {
-            // find the holdingObjects of buildModels and make it the main holdingObject
-            GameObject snap_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel1.name));
-            GameObject other_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel2.name));
-
-            // remove it from list
-            holdingObjects_List.Remove(snap_HoldingObject);
-
-            // make snapPoint parent of holdingObject
-            snapPoint.transform.parent = null;
-            snap_HoldingObject.transform.parent = snapPoint.transform;
-            ////snapPoint.GetComponent<AntennaPiece>().SetParentRoot();
-            //snap_HoldingObject.GetComponent<AntennaPiece>().SetParent(snapPoint.transform);
-
-            // snap objects together
-            snapPoint.transform.position = otherPoint.transform.position;
-            snapPoint.transform.rotation = otherPoint.transform.rotation;
-
-            // make snapPoint child of BuildModel1
-            snap_HoldingObject.transform.parent = null;
-            snapPoint.transform.parent = buildModel1.transform;
-
-            // make all children of the snap_HoldingObject to children of the other_HoldingObject
-            int childCount = snap_HoldingObject.transform.childCount;
-            List<Transform> children = new List<Transform>();
-            for (int i = 0; i < childCount; ++i)
-                children.Add(snap_HoldingObject.transform.GetChild(i));
-
-            foreach (Transform child in children)
-                child.parent = other_HoldingObject.transform;
-
-            Destroy(snap_HoldingObject);
-
-            buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
-            buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
-
-            CheckAssembly();
-
-            return;
+            case "AntennaPiec":
+                switch (parent2.name.Substring(0, 11))
+                {
+                    case "AntennaPiec":
+                        snapID = SnapID.NoneInHoldingBody;
+                        break;
+                    case "holdingBody":
+                        snapID = SnapID.SecondInHoldingBody;
+                        break;
+                }
+                break;
+            case "holdingBody":
+                switch (parent2.name.Substring(0, 11))
+                {
+                    case "AntennaPiec":
+                        snapID = SnapID.FirstInHoldingBody;
+                        break;
+                    case "holdingBody":
+                        snapID = SnapID.BothInHoldingBody;
+                        break;
+                }
+                break;
         }
 
-        // make buildPoint to Parent for moving object
-        snapPoint.transform.parent = null;
-        buildModel1.transform.parent = snapPoint.transform;
-
-        // snap objects together
-        snapPoint.transform.position = otherPoint.transform.position;
-        snapPoint.transform.rotation = otherPoint.transform.rotation;
-
-        // make buildPoint child of the object again
-        buildModel1.transform.parent = null;
-        snapPoint.transform.parent = buildModel1.transform;
-
-        // remove components 
-        buildModel1.GetComponent<NetworkHelper>().RemoveComponents();
-        buildModel2.GetComponent<NetworkHelper>().RemoveComponents();
-
-        // create new object with rigidbody and objectManipulator 
-        if (holdingObjects_List.Count == 0)
+        switch (snapID)
         {
-            GameObject holdingObject = PhotonNetwork.Instantiate("HoldingBody", Vector3.zero, Quaternion.identity);
-            holdingObject.GetComponent<NetworkHelper>().InitHoldingBody();
-            holdingObjects_List.Add(holdingObject);
+            case SnapID.NoneInHoldingBody:
+                GameObject newHoldingObject = PhotonNetwork.Instantiate("HoldingBody", Vector3.zero, Quaternion.identity);
+                newHoldingObject.GetComponent<NetworkHelper>().InitHoldingBody();
+                if (GameObject.Find("holdingBody") != null)
+                    newHoldingObject.name = $"holdingBody{holdingObjects_List.Count}";
+
+                holdingObjects_List.Add(newHoldingObject);
+
+                // do not snap the mittelstange, because its the bigger object 
+                if (buildModel1.name == "mittelstange(Clone)")
+                {
+                    Snap(snapPoint2, buildModel2, snapPoint1);
+                }
+                else
+                {
+                    Snap(snapPoint1, buildModel1, snapPoint2);
+                }
+
+                // remove components 
+                buildModel1.GetComponent<NetworkHelper>().RemoveComponents();
+                buildModel2.GetComponent<NetworkHelper>().RemoveComponents();
+
+                // make two objects children of new object
+                buildModel1.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
+                buildModel2.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
+                break;
+            case SnapID.BothInHoldingBody:
+                // find the holdingObjects of buildModels and make it the main holdingObject
+                GameObject snap_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel1.name));
+                GameObject other_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel2.name));
+
+                // do not snap the mittelstange, because its the bigger object 
+                if (buildModel1.name == "mittelstange(Clone)")
+                {
+                    // find the holdingObjects of buildModels and make it the main holdingObject
+                    snap_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel2.name));
+                    other_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel1.name));
+
+                    Snap(snapPoint2, snap_HoldingObject, snapPoint1);
+
+                    buildModel2.GetComponent<NetworkHelper>().SetParent(other_HoldingObject.transform);
+                    snapPoint2.transform.parent = buildModel2.transform;
+                }
+                else
+                {
+                    Snap(snapPoint1, snap_HoldingObject, snapPoint2);
+                    buildModel1.GetComponent<NetworkHelper>().SetParent(other_HoldingObject.transform);
+                    snapPoint1.transform.parent = buildModel1.transform;
+                }
+                // make all children of the snap_HoldingObject to children of the other_HoldingObject
+                int childCount = snap_HoldingObject.transform.childCount;
+                List<Transform> children = new List<Transform>();
+                for (int i = 0; i < childCount; ++i)
+                    children.Add(snap_HoldingObject.transform.GetChild(i));
+
+                foreach (Transform child in children)
+                    child.parent = other_HoldingObject.transform;
+
+                // remove it from list
+                holdingObjects_List.Remove(snap_HoldingObject);
+
+                Destroy(snap_HoldingObject);
+                break;
+            case SnapID.FirstInHoldingBody:
+                Snap(snapPoint2, buildModel2, snapPoint1);
+                buildModel2.GetComponent<NetworkHelper>().SetParent(buildModel1.transform.parent);
+                buildModel2.GetComponent<NetworkHelper>().RemoveComponents();
+                break;
+            case SnapID.SecondInHoldingBody:
+                Snap(snapPoint1, buildModel1, snapPoint2);
+                buildModel1.GetComponent<NetworkHelper>().SetParent(buildModel2.transform.parent);
+                buildModel1.GetComponent<NetworkHelper>().RemoveComponents();
+                break;
+            case SnapID.Default:
+                // do nothing
+                break;
         }
-
-        if (newHoldingBody)
-        {
-            GameObject newHoldingObject = PhotonNetwork.Instantiate("HoldingBody", Vector3.zero, Quaternion.identity);
-            newHoldingObject.GetComponent<NetworkHelper>().InitHoldingBody();
-
-            // make two objects children of new object
-            buildModel1.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
-            buildModel2.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
-            holdingObjects_List.Add(newHoldingObject);
-
-            buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
-            buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
-
-            CheckAssembly();
-
-            return;
-        }
-
-        // make two objects children of new object
-        buildModel1.GetComponent<NetworkHelper>().SetParent(holdingObjects_List[0].transform);
-        buildModel2.GetComponent<NetworkHelper>().SetParent(holdingObjects_List[0].transform);
-
         buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
         buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
 
+        snapID = SnapID.Default;
+
         CheckAssembly();
+    }
+
+    /// <summary>
+    /// moving the objects snapPoint to the goalPoint
+    /// moving snapObject accordingly as a child of the snapPoint
+    /// </summary>
+    /// <param name="snapPoint"></param>
+    /// <param name="snapObject"></param>
+    public void Snap(GameObject snapPoint, GameObject snapObject, GameObject goalPoint)
+    {
+        // make buildPoint to Parent for moving object
+        snapPoint.transform.parent = null;
+        snapObject.transform.parent = snapPoint.transform;
+
+        // snap objects together
+        snapPoint.transform.position = goalPoint.transform.position;
+        snapPoint.transform.rotation = goalPoint.transform.rotation;
+
+        // make buildPoint child of the object again
+        snapObject.transform.parent = null;
+        snapPoint.transform.parent = snapObject.transform;
     }
 
     /// <summary>
@@ -219,6 +272,9 @@ public class BuildManager : MonoBehaviour
     /// </summary>
     public void DisassembleObjects()
     {
+        if (assembledAntenna)
+            return;
+
         foreach (GameObject buildObj in build_objects)
         {
             PhotonNetwork.Destroy(buildObj);
@@ -233,12 +289,14 @@ public class BuildManager : MonoBehaviour
         holdingObjects_List = new List<GameObject>();
         build_objects = new List<GameObject>();
 
-        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
+        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces(Clone)").gameObject;
         foreach (GameObject buildObj_prefab in build_objects_Prefab)
         {
-            GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, antennaPieces.transform.position, Quaternion.identity);
+            Vector3 pos = buildObj_prefab.transform.localPosition;
+            pos.y += 1f;
+            pos += Calibration.table.transform.position;
+            GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.localRotation);
             obj.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
-
             build_objects.Add(obj);
         }
     }
@@ -288,6 +346,7 @@ public class BuildManager : MonoBehaviour
             }
         }
         string winText = "WHOOO you have build the Antenna!";
+        assembledAntenna = true;
         Debug.Log(winText);
         ShowTextForSeconds(winText, 5);
         AssemblySuccess.Invoke(true);
@@ -306,8 +365,13 @@ public class BuildManager : MonoBehaviour
         {
             PhotonNetwork.Destroy(holdingObject);
         }
-        PhotonNetwork.Instantiate(assembledAntenna_Prefab.name, assembledAntenna_Prefab.transform.position, Quaternion.identity);
+        Vector3 pos = assembledAntenna_Prefab.transform.position;
+        pos += Calibration.table.transform.position;
+        GameObject assembledAntennaObject = PhotonNetwork.Instantiate(assembledAntenna_Prefab.name, pos, assembledAntenna_Prefab.transform.rotation);
+        //assembledAntennaObject.GetComponent<NetworkHelper>().SetParent(Calibration.table.transform);
         Destroy(dialog);
+        assembledAntenna = true;
+        AssemblySuccess.Invoke(true);
     }
 
     /// <summary>
@@ -316,8 +380,11 @@ public class BuildManager : MonoBehaviour
     /// <param name="objectName">The object name.</param>
     public void Respawn_object(string objectName)
     {
+        if (assembledAntenna)
+            return;
+
         GameObject old_object = build_objects.Find(x => x.name == objectName);
-        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces").gameObject;
+        GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces(Clone)").gameObject;
 
         Transform parent = old_object.transform.parent;
 
@@ -353,7 +420,11 @@ public class BuildManager : MonoBehaviour
         // crete prefab name from objectname without "(Clone)"
         string prefabName = objectName.Replace("(Clone)", "");
 
-        GameObject new_object = PhotonNetwork.Instantiate(prefabName, antennaPieces.transform.position, Quaternion.identity);
+        GameObject prefab = build_objects_Prefab.Find(x => x.name.Contains(prefabName));
+        Vector3 pos = prefab.transform.localPosition;
+        pos.y += 0.5f;
+        pos += Calibration.table.transform.position;
+        GameObject new_object = PhotonNetwork.Instantiate(prefabName, pos, prefab.transform.rotation);
         new_object.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
         //build_objects_Prefab.Find(x => x.name == prefabName)
         build_objects.Add(new_object);
