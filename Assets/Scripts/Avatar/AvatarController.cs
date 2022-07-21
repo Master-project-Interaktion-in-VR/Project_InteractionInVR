@@ -61,7 +61,12 @@ public class AvatarController : MonoBehaviour
             head.vrTarget.GetComponent<PhotonView>().RequestOwnership();
             leftHand.vrTarget.GetComponent<PhotonView>().RequestOwnership();
             rightHand.vrTarget.GetComponent<PhotonView>().RequestOwnership();
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PhotonView>().RequestOwnership(); // XR Origin
+
+            GameObject xrOrigin = GameObject.FindGameObjectWithTag("Player");
+            if (xrOrigin != null)
+            {
+                xrOrigin.GetComponent<PhotonView>().RequestOwnership();
+            }
         }
     }
 
