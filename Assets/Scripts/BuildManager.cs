@@ -62,7 +62,7 @@ public class BuildManager : MonoBehaviour
 
     public AssemblySuccessUnityEvent AssemblySuccess = new AssemblySuccessUnityEvent();
 
-    static int buildTries = 3;
+    static int buildTries = 0;
     const int maxTries = 3;
 
     static bool assembledAntenna = false;
@@ -366,9 +366,9 @@ public class BuildManager : MonoBehaviour
             PhotonNetwork.Destroy(holdingObject);
         }
         Vector3 pos = assembledAntenna_Prefab.transform.position;
-        pos.y += 0.5f;
         pos += Calibration.table.transform.position;
-        PhotonNetwork.Instantiate(assembledAntenna_Prefab.name, pos, assembledAntenna_Prefab.transform.rotation);
+        GameObject assembledAntennaObject = PhotonNetwork.Instantiate(assembledAntenna_Prefab.name, pos, assembledAntenna_Prefab.transform.rotation);
+        //assembledAntennaObject.GetComponent<NetworkHelper>().SetParent(Calibration.table.transform);
         Destroy(dialog);
         assembledAntenna = true;
         AssemblySuccess.Invoke(true);
