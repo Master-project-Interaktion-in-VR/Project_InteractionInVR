@@ -9,7 +9,7 @@ public class Calibration : MonoBehaviour
 {
     Transform CameraRig;
     Transform handMarker;  //the controller on the hand
-    Transform fixedMarker; //the fixed controller
+    static Transform fixedMarker; //the fixed controller
     public GameObject table_Prefab;
     public static GameObject table;
     public List<GameObject> build_objects_Prefab;
@@ -29,6 +29,20 @@ public class Calibration : MonoBehaviour
         {
             //Calibrate(position, rotation);
         }
+
+        OVRPlugin.SystemHeadset headset = OVRPlugin.GetSystemHeadsetType();
+
+        if (headset == OVRPlugin.SystemHeadset.Oculus_Link_Quest || headset == OVRPlugin.SystemHeadset.Oculus_Quest)
+        {
+            fixedMarker = GameObject.Find("fixedMarker_quest1").transform;
+            GameObject.Find("fixedMarker_quest2").SetActive(false);
+        }
+        else
+        {
+            fixedMarker = GameObject.Find("fixedMarker_quest2").transform;
+            GameObject.Find("fixedMarker_quest1").SetActive(false);
+        }
+
     }
 
     void Update()
@@ -72,9 +86,6 @@ public class Calibration : MonoBehaviour
 
             AddDisassembleListeners();
         }
-
-        fixedMarker = GameObject.Find("fixedMarker").transform;
-
         fixedMarker.transform.parent = null;
         table.transform.parent = fixedMarker.transform;
 
