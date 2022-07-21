@@ -51,8 +51,10 @@ public class BuildManager : MonoBehaviour
 
     public AssemblySuccessUnityEvent AssemblySuccess = new AssemblySuccessUnityEvent();
 
-    static int buildTries = 2;
+    static int buildTries = 3;
     const int maxTries = 3;
+
+    static bool assembledAntenna = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -120,7 +122,7 @@ public class BuildManager : MonoBehaviour
             newHoldingBody = true;
 
         // if both objects of the collision are already in a collection of assembled objects, put all in one holdingObject
-        if (buildModel1.transform.parent.name == "holdingBody" && buildModel2.transform.parent.name == "holdingBody")
+        if (buildModel1.transform.parent.name.Substring(0, 11) == "holdingBody" && buildModel2.transform.parent.name.Substring(0, 11) == "holdingBody")
         {
             // find the holdingObjects of buildModels and make it the main holdingObject
             GameObject snap_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel1.name));
@@ -190,6 +192,7 @@ public class BuildManager : MonoBehaviour
         {
             GameObject newHoldingObject = PhotonNetwork.Instantiate("HoldingBody", Vector3.zero, Quaternion.identity);
             newHoldingObject.GetComponent<NetworkHelper>().InitHoldingBody();
+            newHoldingObject.name = $"holdingBody{holdingObjects_List.Count}";
 
             // make two objects children of new object
             buildModel1.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
@@ -219,6 +222,9 @@ public class BuildManager : MonoBehaviour
     /// </summary>
     public void DisassembleObjects()
     {
+        if (assembledAntenna)
+            return;
+
         foreach (GameObject buildObj in build_objects)
         {
             PhotonNetwork.Destroy(buildObj);
@@ -237,7 +243,7 @@ public class BuildManager : MonoBehaviour
         foreach (GameObject buildObj_prefab in build_objects_Prefab)
         {
             Vector3 pos = buildObj_prefab.transform.localPosition;
-            pos.y += 0.5f;
+            pos.y += 1f;
             pos += Calibration.table.transform.position;
             GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.localRotation);
             obj.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
@@ -290,6 +296,7 @@ public class BuildManager : MonoBehaviour
             }
         }
         string winText = "WHOOO you have build the Antenna!";
+        assembledAntenna = true;
         Debug.Log(winText);
         ShowTextForSeconds(winText, 5);
         AssemblySuccess.Invoke(true);
@@ -308,8 +315,13 @@ public class BuildManager : MonoBehaviour
         {
             PhotonNetwork.Destroy(holdingObject);
         }
-        PhotonNetwork.Instantiate(assembledAntenna_Prefab.name, assembledAntenna_Prefab.transform.position, Quaternion.identity);
+        Vector3 pos = assembledAntenna_Prefab.transform.position;
+        pos.y += 0.5f;
+        pos += Calibration.table.transform.position;
+        PhotonNetwork.Instantiate(assembledAntenna_Prefab.name, pos, assembledAntenna_Prefab.transform.rotation);
         Destroy(dialog);
+        assembledAntenna = true;
+        AssemblySuccess.Invoke(true);
     }
 
     /// <summary>
@@ -318,6 +330,9 @@ public class BuildManager : MonoBehaviour
     /// <param name="objectName">The object name.</param>
     public void Respawn_object(string objectName)
     {
+        if (assembledAntenna)
+            return;
+
         GameObject old_object = build_objects.Find(x => x.name == objectName);
         GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces(Clone)").gameObject;
 
