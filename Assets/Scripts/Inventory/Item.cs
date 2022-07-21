@@ -28,6 +28,8 @@ public class Item : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _inventoryManager = GameObject.FindGameObjectWithTag("Inventory Manager").GetComponent<InventoryManager>();
         _photonView = GetComponent<PhotonView>();
+        _originPos = transform.position;
+        _originRotation = transform.rotation;
     }
 
     private void OnEnable()
@@ -48,25 +50,10 @@ public class Item : MonoBehaviour
         }
     }
 
-    public void SetOrigin()
-    {
-        _photonView.RPC("SetOriginRpc", RpcTarget.All);
-    }
-
-    [PunRPC]
-    private void SetOriginRpc() // should not be necessary?
-    {
-        _originPos = transform.position;
-        _originRotation = transform.rotation;
-    }
-
     private void OnSelectEnter(SelectEnterEventArgs arg0)
     {
         CancelInvoke(nameof(ResetToOrigin));
         _selected = true;
-        //Debug.LogError("item pos: " + transform.position);
-        //Debug.LogError("parent: " + transform.parent.name);
-        //Debug.LogError("item pos: " + _originPos);
         _renderer.material.DisableKeyword("_EMISSION");
     }
 
@@ -81,13 +68,16 @@ public class Item : MonoBehaviour
     {
         if (resetToOrigin && !_colliderTriggered && !_selected && _photonView.IsMine) // only reset to origin if this is my photon view (VR)
         {
-            //transform.rotation = _originRotation;
-            //transform.position = _originPos;
-            //_rigidbody.velocity = Vector3.zero;
-            NetworkHelper networkHelper = GetComponent<NetworkHelper>();
-            networkHelper.SetPositionAll(_originPos, _originRotation.eulerAngles);
-            networkHelper.SetRigidbodyVelocity(Vector3.zero);
+            _photonView.RPC("ResetToOriginRpc", RpcTarget.All);
         }
+    }
+
+    [PunRPC]
+    public void ResetToOriginRpc()
+    {
+        transform.rotation = _originRotation;
+        transform.position = _originPos;
+        _rigidbody.velocity = Vector3.zero;
     }
 
     public void HoverEnter(HoverEnterEventArgs arg0)
@@ -117,7 +107,7 @@ public class Item : MonoBehaviour
     public void ActivateEnter(ActivateEventArgs arg0)
     {
         if(_inventoryManager != null)
-            _inventoryManager.PutItemInInventory(gameObject);
+            StartCoroutine(_inventoryManager.PutItemInInventory(gameObject));
     }
 
     private void OnTriggerEnter(Collider other)

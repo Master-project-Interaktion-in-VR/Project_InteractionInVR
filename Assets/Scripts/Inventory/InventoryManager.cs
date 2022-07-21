@@ -98,12 +98,12 @@ public class InventoryManager : MonoBehaviour
         inventory.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
     }
 
-    public void PutItemInInventory(GameObject item)
+    public IEnumerator PutItemInInventory(GameObject item)
     {
         item.GetComponent<Animator>().SetBool("shrink", true);
         antennaPartsPickedUp++;
-        // ADD DELAY 0.9
-        //item.GetPhotonView().RequestOwnership()
+        yield return new WaitForSeconds(0.9f);
+        item.GetPhotonView().RequestOwnership(); // just to be sure
         PhotonNetwork.Destroy(item);
 
         if (item == itemInLeftHand)

@@ -12,7 +12,7 @@ public class Spawner : MonoBehaviour
     private Transform saveSpawnPoint;
 
     [SerializeField]
-    private GameObject antennaParent;
+    private GameObject antennaOriginsParent;
 
     [SerializeField]
     private GameObject originPrefab;
@@ -20,7 +20,7 @@ public class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        if (!Application.isMobilePlatform) // only spawn items once, VR player must be owner in order to send position and destroy it
+        if (!Application.isMobilePlatform) // only spawn items once, VR player must be owner in order to synchronize position (grabbing) and destroy it
             return;
 
         // spawn on VR platform
@@ -52,12 +52,12 @@ public class Spawner : MonoBehaviour
     private void SpawnItem(GameObject item, Vector3 position)
     {
         GameObject spawned = PhotonNetwork.Instantiate("EnvironmentAntennaPieces/" + item.name, position, Quaternion.identity);
-        spawned.GetComponent<NetworkHelper>().SetParent(antennaParent.transform);
-        spawned.GetComponent<Item>().SetOrigin(); // set origin, after parent (and therefore absolute position) was changed
+        //spawned.GetComponent<NetworkHelper>().SetParent(antennaParent.transform); can't set parent because of XRI grabbing
+        //spawned.GetComponent<Item>().SetOrigin(); // set origin, after parent (and therefore absolute position) was changed
 
         // origin collider
         Physics.Raycast(position, Vector3.down, out RaycastHit hit, 5, 1 << LayerMask.NameToLayer("Drawable"));
         GameObject origin = PhotonNetwork.Instantiate("EnvironmentAntennaPieces/" + originPrefab.name, hit.point + new Vector3(0, 0.5f, 0), Quaternion.identity);
-        origin.GetComponent<NetworkHelper>().SetParent(antennaParent.transform);
+        origin.GetComponent<NetworkHelper>().SetParent(antennaOriginsParent.transform);
     }
 }
