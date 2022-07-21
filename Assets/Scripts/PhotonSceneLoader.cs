@@ -1,13 +1,11 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class Photon_LoadScene : MonoBehaviour
+public class PhotonSceneLoader : MonoBehaviour
 {
-    public string GameScene_name;
-
-    public void LoadScene()
+    public void LoadScene(string GameScene_name)
     {
         PhotonNetwork.LoadLevel(GameScene_name);
     }
