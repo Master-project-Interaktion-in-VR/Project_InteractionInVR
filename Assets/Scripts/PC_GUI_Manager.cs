@@ -36,6 +36,21 @@ public class PC_GUI_Manager : MonoBehaviour
 				sketchpadButton.SetActive(sketchpadEnabled);
 				tutorialButton.SetActive(tutorialEnabled);
 				mapButton.SetActive(mapEnabled);
+		}
+
+		private void PuzzleButtonOnClick(int buttonIndex)
+		{
+				Debug.Log("You have clicked the button #" + buttonIndex, PuzzleButtons[buttonIndex]);
+
+				if (PuzzleSolution[CurrentPuzzleIndex] == buttonIndex)
+				{
+						InputGlyphs[CurrentPuzzleIndex].GetComponent<Image>().sprite = GlyphSprites[buttonIndex];
+						CurrentPuzzleIndex++;
+				}
+		}
+
+		public IEnumerator StartPuzzle(int[] solution)
+		{
 
 				GlyphSprites[0] = Resources.Load<Sprite>("PuzzleGlyphs/Glyph 01");
 				GlyphSprites[1] = Resources.Load<Sprite>("PuzzleGlyphs/Glyph 02");
@@ -53,24 +68,13 @@ public class PC_GUI_Manager : MonoBehaviour
 						int index = i;
 						PuzzleButtons[index].GetComponent<Button>().onClick.AddListener(delegate { PuzzleButtonOnClick(index); });
 				}
-		}
 
-		private void PuzzleButtonOnClick(int buttonIndex)
-		{
-				Debug.Log("You have clicked the button #" + buttonIndex, PuzzleButtons[buttonIndex]);
-
-				if (PuzzleSolution[CurrentPuzzleIndex] == buttonIndex)
-				{
-						InputGlyphs[CurrentPuzzleIndex].GetComponent<Image>().sprite = GlyphSprites[buttonIndex];
-						CurrentPuzzleIndex++;
-				}
-		}
-
-		public void StartPuzzle(int[] solution)
-		{
 				PuzzelPanel.SetActive(true);
 				PuzzleSolution = solution;
 				CurrentPuzzleIndex = 0;
+
+
+				yield return 0;
 		}
 
 		public void SubmitPuzzle()
