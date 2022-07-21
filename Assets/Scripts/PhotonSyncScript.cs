@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using System.Linq;
 
 public class PhotonSyncScript : MonoBehaviour
 {
@@ -36,16 +37,29 @@ public class PhotonSyncScript : MonoBehaviour
 		}
 
 	private bool _abc;
+	private bool _xyz;
 
 		// Update is called once per frame
 		void Update()
 		{
+		if (_xyz)
+        {
+			_xyz = false;
+			if (PhotonNetwork.IsMasterClient)
+				StartPuzzleVR();
+		}
 		if (_abc || !PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2)
 			return;
 		_abc = true;
-		if (PhotonNetwork.IsMasterClient)
-			StartPuzzleVR();
+		StartCoroutine(Test());
 	}
+
+	private IEnumerator Test()
+    {
+		Debug.LogError("wait 3 seconds");
+		yield return new WaitForSeconds(3);
+		_xyz = true;
+    }
 
 		public void StartPuzzleVR()
 		{
@@ -60,7 +74,7 @@ public class PhotonSyncScript : MonoBehaviour
 				}
 
 				// send the solution to the other players
-				_photonView.RPC("StartPuzzle", RpcTarget.All, solution);
+				_photonView.RPC("StartPuzzle", RpcTarget.All, (object)solution);
 				//StartPuzzle(solution); // TODO: this is just here for testing purposes
 		}
 

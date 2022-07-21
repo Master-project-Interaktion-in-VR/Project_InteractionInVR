@@ -10,7 +10,7 @@ public class ShortcutPhotonRoomJoin : MonoBehaviourPunCallbacks
     public AssemblySuccessUnityEvent asue = new AssemblySuccessUnityEvent();
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinOrCreateRoom("TEST", new RoomOptions(), TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom("TEST123ABC", new RoomOptions(), TypedLobby.Default);
     }
 
     public override void OnJoinedRoom()

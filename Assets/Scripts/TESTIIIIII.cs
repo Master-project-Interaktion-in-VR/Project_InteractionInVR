@@ -23,7 +23,10 @@ public class TESTIIIIII : MonoBehaviour
         {
             _xyz = false;
             if (PhotonNetwork.IsMasterClient)
-                TESTA();
+            {
+                _photonView.RequestOwnership();
+                _photonView.RPC("TESTA", RpcTarget.All);
+            }
         }
         if (_abc || !PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2)
             return;
