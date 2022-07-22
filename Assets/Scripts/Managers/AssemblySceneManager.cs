@@ -13,7 +13,7 @@ public class AssemblySceneManager : MonoBehaviour
     // TODO deactivate objects for PC
     private void Awake()
     {
-#if !UNITY_EDITOR || !ABC
+#if !UNITY_EDITOR //|| !ABC
         if (!Application.isMobilePlatform)
         {
             foreach (GameObject obj in deactivateObjects)

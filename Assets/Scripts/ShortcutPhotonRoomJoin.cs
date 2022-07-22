@@ -10,7 +10,7 @@ public class ShortcutPhotonRoomJoin : MonoBehaviourPunCallbacks
     public AssemblySuccessUnityEvent asue = new AssemblySuccessUnityEvent();
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinOrCreateRoom("TEST", new RoomOptions(), TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom("MyTestRoom", new RoomOptions(), TypedLobby.Default);
     }
 
     public override void OnJoinedRoom()
@@ -31,8 +31,8 @@ public class ShortcutPhotonRoomJoin : MonoBehaviourPunCallbacks
 
     private IEnumerator Cor()
     {
-        yield return new WaitForSeconds(20);
-        if (Application.isMobilePlatform)
+        yield return new WaitForSeconds(2);
+        //if (Application.isMobilePlatform)
             asue.Invoke(true);
     }
 }

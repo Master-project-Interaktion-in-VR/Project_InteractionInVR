@@ -20,9 +20,10 @@ GameObject:
   - component: {fileID: -4426691556896809526}
   - component: {fileID: 2301183233427327743}
   - component: {fileID: 6236556988033787320}
+  - component: {fileID: -3745929561078667583}
   m_Layer: 0
   m_Name: bodenteil
-  m_TagString: Untagged
+  m_TagString: InitialObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +73,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8a33980753f504f7da530fcbb60108bb, type: 2}
+  - {fileID: 2100000, guid: 0f651011f36aef64cb8c0a0e2ab9d2cb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -256,6 +257,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c111e49189bfc409fbb0b748f28d0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3745929561078667583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6310099699761181848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+  IsBoundsHandles: 0
 --- !u!1 &7070696126368326557
 GameObject:
   m_ObjectHideFlags: 0

@@ -109,7 +109,7 @@ public class NetworkHelper : MonoBehaviour
         }
     }
 
-    public void SetPositionOthers(Transform transform)
+    public void SetPosition(Transform transform)
     {
         _photonView.RPC("SetPositionRpc", RpcTarget.Others, transform.position, transform.rotation.eulerAngles);
     }

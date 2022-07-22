@@ -9,7 +9,7 @@ public class Calibration : MonoBehaviour
 {
     Transform CameraRig;
     Transform handMarker;  //the controller on the hand
-    Transform fixedMarker; //the fixed controller
+    static Transform fixedMarker; //the fixed controller
     public GameObject table_Prefab;
     public static GameObject table;
     public List<GameObject> build_objects_Prefab;
@@ -23,30 +23,43 @@ public class Calibration : MonoBehaviour
         CameraRig = GameObject.Find("MRTK-Quest_OVRCameraRig(Clone)").transform;
         handMarker = CameraRig.FindChildRecursive("RightControllerAnchor").transform;
         table = GameObject.Find("Table");
+
+        OVRPlugin.SystemHeadset headset = OVRPlugin.GetSystemHeadsetType();
+        if (headset == OVRPlugin.SystemHeadset.Oculus_Link_Quest || headset == OVRPlugin.SystemHeadset.Oculus_Quest)
+        {
+            fixedMarker = GameObject.Find("fixedMarker_quest1").transform;
+            GameObject.Find("fixedMarker_quest2").SetActive(false);
+        }
+        else
+        {
+            fixedMarker = GameObject.Find("fixedMarker_quest2").transform;
+            GameObject.Find("fixedMarker_quest1").SetActive(false);
+        }
+
         Vector3 position = SceneInformationManager.CrossSceneInformation_position;
         Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
         if (position != null && rotation != null)
         {
-            //Calibrate(position, rotation);
+            Calibrate(position, rotation, true);
         }
     }
 
     void Update()
     {
         // fix for starting assembly scene directly with photon
-        //if (!PhotonNetwork.InRoom)
-        //    return;
+        if (!PhotonNetwork.InRoom)
+            return;
 
         if (OVRInput.GetActiveController() == OVRInput.Controller.Touch)
         {
             if (OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch)) //detect is button 'A' has been pressed
             {
-                Calibrate(handMarker.position, handMarker.rotation);
+                Calibrate(handMarker.position, handMarker.rotation, false);
             }
         }
     }
 
-    public void Calibrate(Vector3 position, Quaternion rotation)
+    public void Calibrate(Vector3 position, Quaternion rotation, bool moveTable)
     {
         //if(table == null)
         //{
@@ -73,17 +86,24 @@ public class Calibration : MonoBehaviour
             AddDisassembleListeners();
         }
 
-        fixedMarker = GameObject.Find("fixedMarker").transform;
+        if (moveTable)
+        {
+            table.transform.position = position;
+            table.transform.rotation = rotation;
+        }
+        else
+        {
+            fixedMarker.transform.parent = null;
+            table.transform.parent = fixedMarker.transform;
 
-        fixedMarker.transform.parent = null;
-        table.transform.parent = fixedMarker.transform;
+            fixedMarker.transform.position = position;
 
-        fixedMarker.transform.position = position;
+            fixedMarker.transform.rotation = rotation;
 
-        fixedMarker.transform.rotation = rotation;
-
-        table.transform.parent = null;
-        fixedMarker.transform.parent = table.transform.parent;
+            table.transform.parent = null;
+            fixedMarker.transform.parent = table.transform.parent;
+        }
+        Debug.Log("Calibrate with position " + position + " and rotation " + rotation + " moveTable: " + moveTable);
     }
 
     /// <summary>
@@ -97,14 +117,12 @@ public class Calibration : MonoBehaviour
         disassembleButtons.Find(x => x.name == "Disassemble_Button").GetComponent<Interactable>().OnClick.AddListener(manager.DisassembleObjects);
 
         // add listener for each disassemble button
-        AddListener("Disassemble_halterungsstange1_Button", "halterungsstange_1(Clone)");
-        AddListener("Disassemble_halterungsstange2_Button", "halterungsstange_2(Clone)");
-        AddListener("Disassemble_schuessel1_Button", "schüssel_1(Clone)");
-        AddListener("Disassemble_schuessel2_Button", "schüssel_2(Clone)");
+        AddListener("Disassemble_halterungsstange_Button", "halterungsstange(Clone)");
+        AddListener("Disassemble_schuessel_Button", "schuessel(Clone)");
         AddListener("Disassemble_mittelstange_Button", "mittelstange(Clone)");
         AddListener("Disassemble_bodenteil_Button", "bodenteil(Clone)");
-        AddListener("Disassemble_seitenteil_Button", "seitenteil(Clone)");
-        AddListener("Disassemble_zwischenhalterung_Button", "zwischenhalterung(Clone)");
+        AddListener("Disassemble_seitenteil_unten_Button", "seitenteil_unten(Clone)");
+        AddListener("Disassemble_seitenteil_oben_Button", "seitenteil_oben(Clone)");
     }
 
     /// <summary>

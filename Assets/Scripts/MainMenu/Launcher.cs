@@ -1,5 +1,5 @@
 #define VR_IN_EDITOR
-#define SKIP_INTRO
+// #define SKIP_INTRO
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -15,7 +16,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     private string gameVersion;
 
     [SerializeField]
-    private Animation intro;
+    private VideoPlayer introVideo;
 
     [SerializeField]
     private TextPanel infoTextPanel;
@@ -101,7 +102,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             // just make sure, menu is disabled and cutscene is enabled and played
             menu.SetActive(false);
-            GameObjectExtensions.FindObject("MenuCorridor").SetActive(true);
             StartCoroutine(Intro());
         }
         else
@@ -140,8 +140,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     /// </summary>
     public IEnumerator Intro()
     {
-        intro.Play();
-        while (intro.isPlaying)
+        introVideo.Play(); 
+        yield return new WaitForSeconds(1);
+        while (introVideo.isPlaying)
         {
             yield return new WaitForSeconds(1);
         }

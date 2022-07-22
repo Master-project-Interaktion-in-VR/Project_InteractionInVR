@@ -12,6 +12,7 @@ TagManager:
   - Item Anchor
   - Left Inventory Anchor
   - Right Inventory Anchor
+  - SaveWallTrigger
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - 
   - VrHands
   - Hidden
-  - 
+  - Waypoint
   - 
   - 
   - 

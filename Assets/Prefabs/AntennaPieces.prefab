@@ -1883,7 +1883,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: dd6d439cc075ef749975207ef5e8d926, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8a33980753f504f7da530fcbb60108bb, type: 2}
+      objectReference: {fileID: 2100000, guid: 0f651011f36aef64cb8c0a0e2ab9d2cb, type: 2}
     - target: {fileID: 919132149155446097, guid: dd6d439cc075ef749975207ef5e8d926, type: 3}
       propertyPath: m_Name
       value: mittelstange
@@ -2075,7 +2075,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 684c20c5b385eba4d9441a55615e3661, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8a33980753f504f7da530fcbb60108bb, type: 2}
+      objectReference: {fileID: 2100000, guid: 0f651011f36aef64cb8c0a0e2ab9d2cb, type: 2}
     - target: {fileID: 919132149155446097, guid: 684c20c5b385eba4d9441a55615e3661, type: 3}
       propertyPath: m_Name
       value: bodenteil
@@ -2267,7 +2267,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: bdb17681b6f23dc4c969b5eee5635a7b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8a33980753f504f7da530fcbb60108bb, type: 2}
+      objectReference: {fileID: 2100000, guid: 0f651011f36aef64cb8c0a0e2ab9d2cb, type: 2}
     - target: {fileID: 919132149155446097, guid: bdb17681b6f23dc4c969b5eee5635a7b, type: 3}
       propertyPath: m_Name
       value: "sch\xFCssel_2"
@@ -2459,7 +2459,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 5f3ffc80d63ab244d87e6e4424cd5e43, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8a33980753f504f7da530fcbb60108bb, type: 2}
+      objectReference: {fileID: 2100000, guid: 0f651011f36aef64cb8c0a0e2ab9d2cb, type: 2}
     - target: {fileID: 919132149155446097, guid: 5f3ffc80d63ab244d87e6e4424cd5e43, type: 3}
       propertyPath: m_Name
       value: seitenteil
@@ -2651,7 +2651,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: d10e9796dbeb20d4da506cdddabffa7e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 94f56123865054b62a3c385450ada42d, type: 2}
+      objectReference: {fileID: 2100000, guid: 0f651011f36aef64cb8c0a0e2ab9d2cb, type: 2}
     - target: {fileID: 919132149155446097, guid: d10e9796dbeb20d4da506cdddabffa7e, type: 3}
       propertyPath: m_Name
       value: zwischenhalterung
@@ -2843,7 +2843,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 98cc70beb5bf8ed4e926870961699952, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8a33980753f504f7da530fcbb60108bb, type: 2}
+      objectReference: {fileID: 2100000, guid: 0f651011f36aef64cb8c0a0e2ab9d2cb, type: 2}
     - target: {fileID: 919132149155446097, guid: 98cc70beb5bf8ed4e926870961699952, type: 3}
       propertyPath: m_Name
       value: halterungsstange_1
@@ -3035,7 +3035,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: ae8d02f0ef4f42d4b9be492656769781, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8a33980753f504f7da530fcbb60108bb, type: 2}
+      objectReference: {fileID: 2100000, guid: 0f651011f36aef64cb8c0a0e2ab9d2cb, type: 2}
     - target: {fileID: 919132149155446097, guid: ae8d02f0ef4f42d4b9be492656769781, type: 3}
       propertyPath: m_Name
       value: "sch\xFCssel_1"
@@ -3227,7 +3227,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 1396920dec8740444a9497a398cdd7af, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 94f56123865054b62a3c385450ada42d, type: 2}
+      objectReference: {fileID: 2100000, guid: 0f651011f36aef64cb8c0a0e2ab9d2cb, type: 2}
     - target: {fileID: 919132149155446097, guid: 1396920dec8740444a9497a398cdd7af, type: 3}
       propertyPath: m_Name
       value: halterungsstange_2
