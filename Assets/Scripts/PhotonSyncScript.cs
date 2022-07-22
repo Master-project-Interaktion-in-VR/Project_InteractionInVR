@@ -41,6 +41,8 @@ public class PhotonSyncScript : MonoBehaviour
 				GlyphSprites[8] = Resources.Load<Sprite>("VRPuzzle/PuzzleButton09");
 
 				//StartPuzzleVR();
+				// if (PhotonNetwork.IsMasterClient)
+				// 		StartPuzzleVR();
 
 		}
 
@@ -50,16 +52,16 @@ public class PhotonSyncScript : MonoBehaviour
 		// Update is called once per frame
 		void Update()
 		{
-				if (_xyz)
-				{
-						_xyz = false;
-						if (PhotonNetwork.IsMasterClient)
-								StartPuzzleVR();
-				}
-				if (_abc || !PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2)
-						return;
-				_abc = true;
-				StartCoroutine(Test());
+				// if (_xyz)
+				// {
+				// 		_xyz = false;
+				// 		if (PhotonNetwork.IsMasterClient)
+				// 				StartPuzzleVR();
+				// }
+				// if (_abc || !PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2)
+				// 		return;
+				// _abc = true;
+				// StartCoroutine(Test());
 		}
 
 		private IEnumerator Test()

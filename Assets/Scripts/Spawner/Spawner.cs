@@ -20,25 +20,9 @@ public class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        if (!Application.isMobilePlatform) // only spawn items once, VR player must be owner in order to synchronize position (grabbing) and destroy it
-            return;
+        // if (!Application.isMobilePlatform) // only spawn items once, VR player must be owner in order to synchronize position (grabbing) and destroy it
+        //     return;
 
-        // spawn on VR platform
-        //List<Vector3> spawnPoints = new List<Vector3>();
-        //foreach (Transform child in transform)
-        //{
-        //    spawnPoints.Add(child.position);
-        //}
-
-        //SpawnAll(spawnPoints);
-    }
-
-    private bool _abc;
-    private void Update()
-    {
-        if (!Application.isMobilePlatform || !PhotonNetwork.InRoom || _abc)
-            return;
-        _abc = true;
         // spawn on VR platform
         List<Vector3> spawnPoints = new List<Vector3>();
         foreach (Transform child in transform)
@@ -47,6 +31,22 @@ public class Spawner : MonoBehaviour
         }
 
         SpawnAll(spawnPoints);
+    }
+
+    private bool _abc;
+    private void Update()
+    {
+        // if (!Application.isMobilePlatform || !PhotonNetwork.InRoom || !_abc)
+        //     return;
+        // _abc = true;
+        // // spawn on VR platform
+        // List<Vector3> spawnPoints = new List<Vector3>();
+        // foreach (Transform child in transform)
+        // {
+        //     spawnPoints.Add(child.position);
+        // }
+        //
+        // SpawnAll(spawnPoints);
     }
 
     private void SpawnAll(List<Vector3> spawnPoints)
