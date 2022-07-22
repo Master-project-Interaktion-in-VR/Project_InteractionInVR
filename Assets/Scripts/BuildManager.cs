@@ -350,6 +350,10 @@ public class BuildManager : MonoBehaviour
         Debug.Log(winText);
         ShowTextForSeconds(winText, 5);
         AssemblySuccess.Invoke(true);
+
+        PhotonSyncScript syncScript = GameObject.Find("PhotonSync").GetComponent<PhotonSyncScript>();
+
+        syncScript.StartPuzzleVR();
     }
 
     /// <summary>

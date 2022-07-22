@@ -31,39 +31,39 @@ public class PhotonSyncScript : MonoBehaviour
 				GlyphSprites[6] = Resources.Load<Sprite>("VRPuzzle/PuzzleButton07");
 				GlyphSprites[7] = Resources.Load<Sprite>("VRPuzzle/PuzzleButton08");
 				GlyphSprites[8] = Resources.Load<Sprite>("VRPuzzle/PuzzleButton09");
-				
+
 				//StartPuzzleVR();
 
 		}
 
-	private bool _abc;
-	private bool _xyz;
+		private bool _abc;
+		private bool _xyz;
 
 		// Update is called once per frame
 		void Update()
 		{
-		if (_xyz)
-        {
-			_xyz = false;
-			if (PhotonNetwork.IsMasterClient)
-				StartPuzzleVR();
+				if (_xyz)
+				{
+						_xyz = false;
+						if (PhotonNetwork.IsMasterClient)
+								StartPuzzleVR();
+				}
+				if (_abc || !PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2)
+						return;
+				_abc = true;
+				StartCoroutine(Test());
 		}
-		if (_abc || !PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2)
-			return;
-		_abc = true;
-		StartCoroutine(Test());
-	}
 
-	private IEnumerator Test()
-    {
-		Debug.LogError("wait 3 seconds");
-		yield return new WaitForSeconds(3);
-		_xyz = true;
-    }
+		private IEnumerator Test()
+		{
+				Debug.LogError("wait 3 seconds");
+				yield return new WaitForSeconds(3);
+				_xyz = true;
+		}
 
 		public void StartPuzzleVR()
 		{
-		Debug.LogError("PUZZLE");
+				Debug.LogError("PUZZLE");
 				// generate an array with 4 fields filled with random numbers between 0 and 8
 				int[] solution = new int[4];
 				for (int i = 0; i < solution.Length; i++)
@@ -80,10 +80,10 @@ public class PhotonSyncScript : MonoBehaviour
 
 		[PunRPC]
 		public void StartPuzzle(int[] solution)
-	{
-		Debug.LogError("PUZZLE RPC");
-		// if PC_GUI_Manager is not null
-		if (PC_GUI_Manager != null)
+		{
+				Debug.LogError("PUZZLE RPC");
+				// if PC_GUI_Manager is not null
+				if (PC_GUI_Manager != null)
 				{
 						StartCoroutine(PC_GUI_Manager.StartPuzzle(solution));
 				}
@@ -98,6 +98,7 @@ public class PhotonSyncScript : MonoBehaviour
 		public void PuzzleSolved()
 		{
 				// TODO: What happens after the puzzle is solved?
+
 		}
 
 		[PunRPC]
