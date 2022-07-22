@@ -248,4 +248,14 @@ public class InventoryManager : MonoBehaviour
             snapTurnScript.enabled = true;
         }
     }
+
+    public bool DetectorIsInRightHand()
+    {
+        return itemInRightHand.CompareTag("Detector");
+    }
+    
+    public bool DetectorIsInLeftHand()
+    {
+        return itemInLeftHand.CompareTag("Detector");
+    }
 }

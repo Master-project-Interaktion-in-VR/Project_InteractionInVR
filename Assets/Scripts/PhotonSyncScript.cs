@@ -4,12 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using System.Linq;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class PhotonSyncScript : MonoBehaviour
 {
 		private PhotonView _photonView;
 
 		public PC_GUI_Manager PC_GUI_Manager;
+
+		public float vibrationDuration = .2f;
+		public float vibrationIntensity = .2f;
+
+		public XRBaseController leftController;
+		public XRBaseController rightController;
+		public InventoryManager InventoryManager;
 
 		public GameObject[] GlyphSlots;
 		Sprite[] GlyphSprites = new Sprite[9];
@@ -105,8 +113,14 @@ public class PhotonSyncScript : MonoBehaviour
 		public void triggerVibration()
 		{
 				Debug.Log("trigger vibration");
+				
 				// starts vibration on the right Touch controller
-				OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RTouch);
+				if(InventoryManager.DetectorIsInLeftHand())
+					leftController.SendHapticImpulse(vibrationIntensity, vibrationDuration);
+				else if(InventoryManager.DetectorIsInRightHand())
+					rightController.SendHapticImpulse(vibrationIntensity, vibrationDuration);
+			
+				//OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RTouch);
 		}
 
 

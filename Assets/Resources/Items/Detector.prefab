@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: -3830710433635109224}
   m_Layer: 0
   m_Name: Detector
-  m_TagString: Untagged
+  m_TagString: Detector
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -264,6 +264,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetToOrigin: 0
   resetDelayTime: 0
+  itemIndex: 0
+  inventory: {fileID: 0}
 --- !u!64 &8157274052205264383
 MeshCollider:
   m_ObjectHideFlags: 0

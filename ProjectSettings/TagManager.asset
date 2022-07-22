@@ -13,6 +13,7 @@ TagManager:
   - Left Inventory Anchor
   - Right Inventory Anchor
   - SaveWallTrigger
+  - Detector
   layers:
   - Default
   - TransparentFX

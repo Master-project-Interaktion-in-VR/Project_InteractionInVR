@@ -41,7 +41,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
         }
 #endif
 
-//#if !UNITY_EDITOR
+#if !UNITY_EDITOR
 
         if (!Application.isMobilePlatform)
         {
@@ -61,6 +61,6 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
             //assistantCamera.gameObject.SetActive(true);
             GameObject.Find("PaintController").GetComponent<InputController>().enabled = false;
         }
-//#endif
+#endif
     }
 }
