@@ -35,6 +35,7 @@
       <Path>Library/PackageCache/com.unity.xr.oculus@3.0.1</Path>
       <Path>Packages</Path>
       <Path>ProjectSettings</Path>
+      <Path>../../../Users/emir-/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.cinemachine@2.8.6</Path>
     </explicitIncludes>
     <explicitExcludes>
       <Path>.git</Path>

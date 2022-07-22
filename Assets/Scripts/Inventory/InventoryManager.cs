@@ -55,8 +55,8 @@ public class InventoryManager : MonoBehaviour
         leftHandAction.FindAction("Secondary Action").performed += SpawnItem;
         rightHandAction.FindAction("Secondary Action").performed += SpawnItem;
 
-        leftHandLocomotion.FindAction("Turn").performed += SwitchItem;
-        rightHandLocomotion.FindAction("Turn").performed += SwitchItem;
+        leftHandLocomotion.FindAction("Turn").performed += SwitchItemLeft;
+        rightHandLocomotion.FindAction("Turn").performed += SwitchItemRight;
 
         itemAnchor = GameObject.FindGameObjectWithTag("Item Anchor");
         leftAnchor = GameObject.FindGameObjectWithTag("Left Inventory Anchor");
@@ -145,11 +145,25 @@ public class InventoryManager : MonoBehaviour
     {
         itemInRightHand = null;
     }
-
-    private void SwitchItem(InputAction.CallbackContext obj)
+    
+    private void SwitchItemLeft(InputAction.CallbackContext obj)
     {
         var dir = obj.ReadValue<Vector2>();
 
+        if (!_isRight)
+            SwitchItem(dir);
+    }
+
+    private void SwitchItemRight(InputAction.CallbackContext obj)
+    {
+        var dir = obj.ReadValue<Vector2>();
+
+        if (_isRight)
+            SwitchItem(dir);
+    }
+
+    private void SwitchItem(Vector2 dir)
+    {
         if (inventoryUI.activeInHierarchy && dir.x != .5f)
         {
             var right = dir.x > .5f;
@@ -159,7 +173,7 @@ public class InventoryManager : MonoBehaviour
             glassAnimator.SetBool("scale", right);
         }
     }
-
+    
     private void OpenCloseRightInventory(InputAction.CallbackContext obj)
     {
         if (inventoryUI.activeInHierarchy && _isRight || !inventoryUI.activeInHierarchy && itemInRightHand == null)
