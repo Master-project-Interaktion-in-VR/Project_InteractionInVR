@@ -36,7 +36,7 @@ public class Spawner : MonoBehaviour
     private bool _abc;
     private void Update()
     {
-        if (!PhotonNetwork.InRoom || _abc)
+        if (!Application.isMobilePlatform || !PhotonNetwork.InRoom || _abc)
             return;
         _abc = true;
         // spawn on VR platform
