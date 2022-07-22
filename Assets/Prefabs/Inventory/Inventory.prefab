@@ -2731,8 +2731,8 @@ MonoBehaviour:
   inventoryUI: {fileID: 8808705143558592483}
   leftArrows: {fileID: 8808705142794088941}
   rightArrows: {fileID: 8808705143610678895}
-  detector: {fileID: 8392379577192607140, guid: a38afb8a039485a47970ef550c34e5b0, type: 3}
-  glass: {fileID: 1655195902271712480, guid: 715a1c14539a360418cf000325de5697, type: 3}
+  detector: {fileID: 8392379577192607140, guid: fba26e0773b7f304c91c25880236c2d2, type: 3}
+  glass: {fileID: 1655195902271712480, guid: f6c33bb3f7504d944acd6268f578bd55, type: 3}
   antennaPartCounter: {fileID: 6233265581266921445}
   antennaPartsUI:
   - {fileID: 1845604857}

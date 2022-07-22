@@ -24,6 +24,22 @@ public class Spawner : MonoBehaviour
             return;
 
         // spawn on VR platform
+        //List<Vector3> spawnPoints = new List<Vector3>();
+        //foreach (Transform child in transform)
+        //{
+        //    spawnPoints.Add(child.position);
+        //}
+
+        //SpawnAll(spawnPoints);
+    }
+
+    private bool _abc;
+    private void Update()
+    {
+        if (!PhotonNetwork.InRoom || _abc)
+            return;
+        _abc = true;
+        // spawn on VR platform
         List<Vector3> spawnPoints = new List<Vector3>();
         foreach (Transform child in transform)
         {

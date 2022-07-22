@@ -4,6 +4,7 @@ using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using XDPaint.Controllers;
 
 public class GameSceneManager : MonoBehaviourPunCallbacks
 {
@@ -40,7 +41,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
         }
 #endif
 
-#if !UNITY_EDITOR
+//#if !UNITY_EDITOR
 
         if (!Application.isMobilePlatform)
         {
@@ -57,8 +58,9 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
             {
                 obj.SetActive(false);
             }
-            assistantCamera.gameObject.SetActive(true);
+            //assistantCamera.gameObject.SetActive(true);
+            GameObject.Find("PaintController").GetComponent<InputController>().enabled = false;
         }
-#endif
+//#endif
     }
 }
