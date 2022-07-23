@@ -60,14 +60,15 @@ public class BuildManager : MonoBehaviour
     public GameObject dialog_Prefab;
     static GameObject dialog;
 
-    public AssemblySuccessUnityEvent AssemblySuccess = new AssemblySuccessUnityEvent();
+    [SerializeField]
+    private AssemblySuccessUnityEvent assemblySuccess = new AssemblySuccessUnityEvent();
 
     static int buildTries = 0;
     const int maxTries = 3;
 
     static bool assembledAntenna = false;
 
-    // Start is called before the first frame update
+
     void Awake()
     {
         collisions = new Queue<CollisionEvent>();
@@ -162,10 +163,8 @@ public class BuildManager : MonoBehaviour
         switch (snapID)
         {
             case SnapID.NoneInHoldingBody:
-                GameObject newHoldingObject = PhotonNetwork.Instantiate("HoldingBody", Vector3.zero, Quaternion.identity);
-                newHoldingObject.GetComponent<NetworkHelper>().InitHoldingBody();
-                if (GameObject.Find("holdingBody") != null)
-                    newHoldingObject.name = $"holdingBody{holdingObjects_List.Count}";
+                GameObject newHoldingObject = PhotonNetwork.Instantiate("holdingBody", Vector3.zero, Quaternion.identity);
+                newHoldingObject.name = $"holdingBody{holdingObjects_List.Count}";
 
                 holdingObjects_List.Add(newHoldingObject);
 
@@ -349,11 +348,7 @@ public class BuildManager : MonoBehaviour
         assembledAntenna = true;
         Debug.Log(winText);
         ShowTextForSeconds(winText, 5);
-        AssemblySuccess.Invoke(true);
-
-        PhotonSyncScript syncScript = GameObject.Find("PhotonSync").GetComponent<PhotonSyncScript>();
-
-        syncScript.StartPuzzleVR();
+        assemblySuccess.Invoke(true);
     }
 
     /// <summary>
@@ -375,7 +370,7 @@ public class BuildManager : MonoBehaviour
         //assembledAntennaObject.GetComponent<NetworkHelper>().SetParent(Calibration.table.transform);
         Destroy(dialog);
         assembledAntenna = true;
-        AssemblySuccess.Invoke(true);
+        assemblySuccess.Invoke(true);
     }
 
     /// <summary>
@@ -390,49 +385,44 @@ public class BuildManager : MonoBehaviour
         GameObject old_object = build_objects.Find(x => x.name == objectName);
         GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces(Clone)").gameObject;
 
-        Transform parent = old_object.transform.parent;
+        // create prefab name from objectname without "(Clone)"
+        List<string> toBeInstantiated = new List<string>();
+        toBeInstantiated.Add(objectName.Replace("(Clone)", ""));
 
-        // reset position of the object
+        // destroy old object
         PhotonNetwork.Destroy(old_object);
         build_objects.Remove(old_object);
 
-        // if the object is attached to one other object in a holdingBody
-        if (parent != antennaPieces && parent.childCount == 2)
+        Transform parent = old_object.transform.parent;
+        // if the object is attached to one other object in a holdingBody, destroy it too
+        if (parent != antennaPieces && parent.childCount == 2) // object still existing?
         {
-            // get all children of the parent
-            List<GameObject> children = new List<GameObject>();
-            int childCount = parent.childCount;
-            for (int i = 0; i < childCount; ++i)
-                // add child from parent to list
-                children.Add(parent.GetChild(i).gameObject);
-
-            foreach (GameObject child in children)
+            foreach (Transform child in parent)
             {
                 if (child.name != objectName)
                 {
-                    // move child to the antennaPieces
-                    child.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
-                    child.GetComponent<NetworkHelper>().AddComponents();
+                    toBeInstantiated.Add(child.name.Replace("(Clone)", ""));
+                    PhotonNetwork.Destroy(child.gameObject);
                 }
             }
-
             // destroy holding body
             PhotonNetwork.Destroy(parent.gameObject);
             holdingObjects_List.Remove(parent.gameObject);
         }
 
-        // crete prefab name from objectname without "(Clone)"
-        string prefabName = objectName.Replace("(Clone)", "");
-
-        GameObject prefab = build_objects_Prefab.Find(x => x.name.Contains(prefabName));
-        Vector3 pos = prefab.transform.localPosition;
-        pos.y += 0.5f;
-        pos += Calibration.table.transform.position;
-        GameObject new_object = PhotonNetwork.Instantiate(prefabName, pos, prefab.transform.rotation);
-        new_object.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
-        //build_objects_Prefab.Find(x => x.name == prefabName)
-        build_objects.Add(new_object);
+        foreach (string prefabName in toBeInstantiated)
+        {
+            GameObject prefab = build_objects_Prefab.Find(x => x.name.Contains(prefabName));
+            Vector3 pos = prefab.transform.localPosition;
+            pos.y += 0.5f;
+            pos += Calibration.table.transform.position;
+            GameObject new_object = PhotonNetwork.Instantiate(prefabName, pos, prefab.transform.rotation);
+            new_object.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
+            //build_objects_Prefab.Find(x => x.name == prefabName)
+            build_objects.Add(new_object);
+        }
     }
+
 
     /// <summary>
     /// Shows the text for seconds on a plane in VR

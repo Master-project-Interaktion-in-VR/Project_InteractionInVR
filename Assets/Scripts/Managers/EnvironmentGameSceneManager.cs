@@ -51,9 +51,6 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
 
 
 
-    private PhotonView _photonView;
-
-
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinOrCreateRoom("DSDDHALD", new RoomOptions(), TypedLobby.Default);
@@ -89,8 +86,8 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
 
     private void ConfigurePcView()
     {
-        // run this for PC view
-        // is assistant
+        // run this code for PC view
+
         pcPlayerGui.SetActive(true);
 
         // disable VR components
@@ -98,8 +95,6 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         //Destroy(vrCamera.GetComponent<AudioListener>());
         // destroying camera causes paint exception, should we disable VR painting configurations for pc?
         vrCamera.GetComponent<Camera>().cullingMask = 0; // necessary?
-
-        // leave all VR components, do we need to remove them?
 
         // deactivate hand models
         foreach (GameObject obj in deactivateObjects)

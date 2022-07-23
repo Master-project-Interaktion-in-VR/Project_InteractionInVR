@@ -15,24 +15,22 @@ public class HandPoseTracker : MonoBehaviour
 
     private void Awake()
     {
-#if !UNITY_EDITOR || !ABC
-        if (!Application.isMobilePlatform) // only track hands with VR glasses
-            return;
-#endif
-
-        if (handedness == Handedness.Left)
-            _hand = GameObject.Find("LeftHandAnchor").transform;
-        else
-            _hand = GameObject.Find("RightHandAnchor").transform;
+        if (AssemblySceneManager.IsRunningOnGlasses())
+        { 
+            // find runtime MRTK hands and track them
+            if (handedness == Handedness.Left)
+                _hand = GameObject.Find("LeftHandAnchor").transform;
+            else
+                _hand = GameObject.Find("RightHandAnchor").transform;
+        }
     }
 
     private void Update()
     {
-#if !UNITY_EDITOR || !ABC
-        if (!Application.isMobilePlatform)
-            return;
-#endif
-        transform.position = _hand.position;
-        transform.rotation = _hand.rotation;
+        if (AssemblySceneManager.IsRunningOnGlasses())
+        {
+            transform.position = _hand.position;
+            transform.rotation = _hand.rotation;
+        }
     }
 }
