@@ -126,11 +126,17 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
 
     }
 
+    public void OnPuzzleSuccess(bool success)
+    {
+        _photonView.RPC("PuzzleSolved", RpcTarget.All);
+    }
+
     [PunRPC]
     public void PuzzleSolved()
     {
-        // TODO: What happens after the puzzle is solved?
-
+        Debug.Log("PUZZLE SOLVED");
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("EndScene");
     }
 
 

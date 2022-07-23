@@ -29,27 +29,6 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
 
 
 
-    [Header("Vibration and Audio")]
-
-    [SerializeField]
-    private XRBaseController leftController;
-
-    [SerializeField]
-    private XRBaseController rightController;
-
-    [SerializeField]
-    private float vibrationDuration;
-
-    [SerializeField]
-    private float vibrationIntensity;
-
-    [SerializeField]
-    private InventoryManager InventoryManager;
-
-    [SerializeField]
-    private AudioSource detectorAudio;
-
-
 
     public override void OnConnectedToMaster()
     {
@@ -103,30 +82,6 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         }
         paintInputController.enabled = false;
     }
-
-
-    [PunRPC]
-    public void TriggerVibrationRpc()
-    {
-        if (InventoryManager.DetectorIsInLeftHand())
-            leftController.SendHapticImpulse(vibrationIntensity, vibrationDuration);
-        else if (InventoryManager.DetectorIsInRightHand())
-            rightController.SendHapticImpulse(vibrationIntensity, vibrationDuration);
-        else
-            return;
-
-        Debug.Log("Trigger vibration");
-    }
-
-
-    [PunRPC]
-    public void TriggerSoundRpc()
-    {
-        Debug.Log("Trigger sound");
-        detectorAudio.Play();
-    }
-
-
 
 
 
