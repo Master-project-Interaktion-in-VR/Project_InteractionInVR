@@ -164,6 +164,9 @@ public class BuildManager : MonoBehaviour
         {
             case SnapID.NoneInHoldingBody:
                 GameObject newHoldingObject = PhotonNetwork.Instantiate("holdingBody", Vector3.zero, Quaternion.identity);
+                //Microsoft.MixedReality.Toolkit.UI.ObjectManipulator om = newHoldingObject.AddComponent<Microsoft.MixedReality.Toolkit.UI.ObjectManipulator>();
+                //om.TwoHandedManipulationType = Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Move | Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Rotate;
+                //om.AllowFarManipulation = false;
                 newHoldingObject.name = $"holdingBody{holdingObjects_List.Count}";
 
                 holdingObjects_List.Add(newHoldingObject);

@@ -1,5 +1,5 @@
 #define JOIN_TEST_ROOM
-#define ON_OCULUS_LINK
+//#define ON_OCULUS_LINK
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -19,6 +19,9 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private GameObject pcPlayerGui;
+
+    [SerializeField]
+    private GameObject puzzlePlane;
 
     [SerializeField]
     private List<GameObject> glyphSlots;
@@ -102,6 +105,8 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
 
             glyphSlots[i].GetComponent<Image>().sprite = glyphSprites[solution[i]];
         }
+
+        puzzlePlane.SetActive(true);
 
         // send the solution to the other players
         _photonView.RPC("StartPuzzleRpc", RpcTarget.All, solution);

@@ -947,7 +947,7 @@ MonoBehaviour:
   IsEraser: 0
   drawRect: {fileID: 1839427135874748677}
   drawCamera: {fileID: 0}
-  networkSendDelay: 0
+  networkSendDelay: 0.03
   plane: {fileID: 0}
 --- !u!1 &1839427135930313472
 GameObject:
