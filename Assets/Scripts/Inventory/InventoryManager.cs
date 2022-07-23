@@ -124,7 +124,6 @@ public class InventoryManager : MonoBehaviour
     public void PutItemInLeftHand(SelectEnterEventArgs args)
     {
         itemInLeftHand = args.interactableObject.transform.gameObject;
-       // itemInLeftHand.AddComponent<Rigidbody>();
         //itemInLeftHand.GetComponent<Rigidbody>().useGravity = true;
 
         // if an object is grabbed
