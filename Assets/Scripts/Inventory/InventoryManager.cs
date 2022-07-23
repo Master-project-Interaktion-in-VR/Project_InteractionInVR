@@ -30,6 +30,7 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private int antennaPartsPickedUp;
     [SerializeField] private int maxAntennaParts;
+    [SerializeField] private float spawnHeight = 0.5f;
 
     private bool _isRight;
 
@@ -55,8 +56,8 @@ public class InventoryManager : MonoBehaviour
         leftHandAction.FindAction("Secondary Action").performed += SpawnItem;
         rightHandAction.FindAction("Secondary Action").performed += SpawnItem;
 
-        //leftHandLocomotion.FindAction("Turn").performed += SwitchItemLeft;
-        //rightHandLocomotion.FindAction("Turn").performed += SwitchItemRight;
+        leftHandLocomotion.FindAction("Turn").performed += SwitchItemLeft;
+        rightHandLocomotion.FindAction("Turn").performed += SwitchItemRight;
 
         itemAnchor = GameObject.FindGameObjectWithTag("Item Anchor");
         leftAnchor = GameObject.FindGameObjectWithTag("Left Inventory Anchor");
@@ -123,6 +124,8 @@ public class InventoryManager : MonoBehaviour
     public void PutItemInLeftHand(SelectEnterEventArgs args)
     {
         itemInLeftHand = args.interactableObject.transform.gameObject;
+       // itemInLeftHand.AddComponent<Rigidbody>();
+        //itemInLeftHand.GetComponent<Rigidbody>().useGravity = true;
 
         // if an object is grabbed
         if (inventoryUI.activeInHierarchy && itemInLeftHand != null)
@@ -132,6 +135,7 @@ public class InventoryManager : MonoBehaviour
     public void PutItemInRightHand(SelectEnterEventArgs args)
     {
         itemInRightHand = args.interactableObject.transform.gameObject;
+       //itemInRightHand.GetComponent<Rigidbody>().useGravity = true;
 
         // if an object is grabbed
         if (inventoryUI.activeInHierarchy && itemInRightHand != null)
@@ -140,15 +144,17 @@ public class InventoryManager : MonoBehaviour
 
     public void DropItemFromLeftHand(SelectExitEventArgs args)
     {
+        //itemInLeftHand.GetComponent<Rigidbody>().useGravity = true;
         itemInLeftHand = null;
     }
 
     public void DropItemFromRightHand(SelectExitEventArgs args)
     {
+        //itemInRightHand.GetComponent<Rigidbody>().useGravity = true;
         itemInRightHand = null;
     }
     
-    /*private void SwitchItemLeft(InputAction.CallbackContext obj)
+    private void SwitchItemLeft(InputAction.CallbackContext obj)
     {
         var dir = obj.ReadValue<Vector2>();
 
@@ -162,8 +168,21 @@ public class InventoryManager : MonoBehaviour
 
         if (_isRight)
             SwitchItem(dir);
-    }*/
+    }
 
+    private void SwitchItem(Vector2 dir)
+    {
+        if (inventoryUI.activeInHierarchy && dir.x != .5f)
+        {
+            var right = dir.x > .5f;
+            rightArrows.SetActive(right);
+            leftArrows.SetActive(!right);
+            detectorAnimator.SetBool("scale", !right);
+            glassAnimator.SetBool("scale", right);
+        }
+    }
+
+    // For Device Simulator
     private void SwitchItem(bool right)
     {
         if (inventoryUI.activeInHierarchy)
@@ -174,7 +193,7 @@ public class InventoryManager : MonoBehaviour
             glassAnimator.SetBool("scale", right);
         }
     }
-    
+
     private void OpenCloseRightInventory(InputAction.CallbackContext obj)
     {
         if (inventoryUI.activeInHierarchy && _isRight || !inventoryUI.activeInHierarchy && itemInRightHand == null)
@@ -242,7 +261,11 @@ public class InventoryManager : MonoBehaviour
             else
                 prefab = detector;
 
-            itemObject = Instantiate(prefab, itemAnchor.transform.position, Quaternion.identity);
+            var spawnPosition = itemAnchor.transform.position;
+            spawnPosition.y = spawnHeight;
+
+            itemObject = PhotonNetwork.Instantiate("Items/" + prefab.name, spawnPosition, Quaternion.identity);          
+
             inventoryUI.SetActive(false);
             snapTurnScript.enabled = true;
         }
