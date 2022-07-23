@@ -9,8 +9,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class PhotonSyncScript : MonoBehaviour
 {
 		private PhotonView _photonView;
-
-		public PC_GUI_Manager PC_GUI_Manager;
+		
+		[SerializeField]
+		private PC_GUI_Manager PC_GUI_Manager;
 
 		public float vibrationDuration = .2f;
 		public float vibrationIntensity = .2f;
@@ -28,7 +29,6 @@ public class PhotonSyncScript : MonoBehaviour
 		void Awake()
 		{
 				_photonView = GetComponent<PhotonView>();
-				PC_GUI_Manager = GameObject.Find("PCPlayerGUI").GetComponent<PC_GUI_Manager>();
 
 				GlyphSprites[0] = Resources.Load<Sprite>("VRPuzzle/PuzzleButton01");
 				GlyphSprites[1] = Resources.Load<Sprite>("VRPuzzle/PuzzleButton02");

@@ -251,11 +251,11 @@ public class InventoryManager : MonoBehaviour
 
     public bool DetectorIsInRightHand()
     {
-        return itemInRightHand.CompareTag("Detector");
+        return itemInRightHand != null && itemInRightHand.CompareTag("Detector");
     }
     
     public bool DetectorIsInLeftHand()
     {
-        return itemInLeftHand.CompareTag("Detector");
+        return itemInLeftHand != null && itemInLeftHand.CompareTag("Detector");
     }
 }

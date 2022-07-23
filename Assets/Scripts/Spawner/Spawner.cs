@@ -1,5 +1,4 @@
 using Photon.Pun;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,35 +17,39 @@ public class Spawner : MonoBehaviour
     private GameObject originPrefab;
 
 
+    private bool _testRoomSpawnDone;
+
     private void OnEnable()
     {
-        // if (!Application.isMobilePlatform) // only spawn items once, VR player must be owner in order to synchronize position (grabbing) and destroy it
-        //     return;
+        if (EnvironmentGameSceneManager.IsRunningOnGlasses() && !EnvironmentGameSceneManager.RUNNING_IN_TEST_ROOM) // if in test room, spawn must be in Update
+        {
+            // spawn on VR platform
+            // only spawn items once, VR player must be owner in order to synchronize position (grabbing) and destroy it
+            List<Vector3> spawnPoints = GetSpawnPoints();
+            SpawnAll(spawnPoints);
+        }
+    }
 
-        // spawn on VR platform
+    /// <summary>
+    /// Only for spawning in test room because then we have to wait with the Photon calls until we have joined the room.
+    /// </summary>
+    private void Update()
+    {
+        if (!EnvironmentGameSceneManager.RUNNING_IN_TEST_ROOM || !PhotonNetwork.InRoom || _testRoomSpawnDone)
+            return;
+        _testRoomSpawnDone = true;
+        List<Vector3> spawnPoints = GetSpawnPoints();
+        SpawnAll(spawnPoints);
+    }
+
+    private List<Vector3> GetSpawnPoints()
+    {
         List<Vector3> spawnPoints = new List<Vector3>();
         foreach (Transform child in transform)
         {
             spawnPoints.Add(child.position);
         }
-
-        SpawnAll(spawnPoints);
-    }
-
-    private bool _abc;
-    private void Update()
-    {
-        // if (!Application.isMobilePlatform || !PhotonNetwork.InRoom || !_abc)
-        //     return;
-        // _abc = true;
-        // // spawn on VR platform
-        // List<Vector3> spawnPoints = new List<Vector3>();
-        // foreach (Transform child in transform)
-        // {
-        //     spawnPoints.Add(child.position);
-        // }
-        //
-        // SpawnAll(spawnPoints);
+        return spawnPoints;
     }
 
     private void SpawnAll(List<Vector3> spawnPoints)
