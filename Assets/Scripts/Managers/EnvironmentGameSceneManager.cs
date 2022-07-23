@@ -29,30 +29,6 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
 
 
 
-    [Header("Vibration and Audio")]
-
-    [SerializeField]
-    private XRBaseController leftController;
-
-    [SerializeField]
-    private XRBaseController rightController;
-
-    [SerializeField]
-    private float vibrationDuration;
-
-    [SerializeField]
-    private float vibrationIntensity;
-
-    [SerializeField]
-    private InventoryManager InventoryManager;
-
-    [SerializeField]
-    private AudioSource detectorAudio;
-
-
-
-    private PhotonView _photonView;
-
 
     public override void OnConnectedToMaster()
     {
@@ -89,8 +65,8 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
 
     private void ConfigurePcView()
     {
-        // run this for PC view
-        // is assistant
+        // run this code for PC view
+
         pcPlayerGui.SetActive(true);
 
         // disable VR components
@@ -99,8 +75,6 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         // destroying camera causes paint exception, should we disable VR painting configurations for pc?
         vrCamera.GetComponent<Camera>().cullingMask = 0; // necessary?
 
-        // leave all VR components, do we need to remove them?
-
         // deactivate hand models
         foreach (GameObject obj in deactivateObjects)
         {
@@ -108,30 +82,6 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         }
         paintInputController.enabled = false;
     }
-
-
-    [PunRPC]
-    public void TriggerVibrationRpc()
-    {
-        if (InventoryManager.DetectorIsInLeftHand())
-            leftController.SendHapticImpulse(vibrationIntensity, vibrationDuration);
-        else if (InventoryManager.DetectorIsInRightHand())
-            rightController.SendHapticImpulse(vibrationIntensity, vibrationDuration);
-        else
-            return;
-
-        Debug.Log("Trigger vibration");
-    }
-
-
-    [PunRPC]
-    public void TriggerSoundRpc()
-    {
-        Debug.Log("Trigger sound");
-        detectorAudio.Play();
-    }
-
-
 
 
 

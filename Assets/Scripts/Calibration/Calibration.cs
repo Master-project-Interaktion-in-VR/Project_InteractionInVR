@@ -35,27 +35,34 @@ public class Calibration : MonoBehaviour
             fixedMarker = GameObject.Find("fixedMarker_quest2").transform;
             GameObject.Find("fixedMarker_quest1").SetActive(false);
         }
+    }
 
-        Vector3 position = SceneInformationManager.CrossSceneInformation_position;
-        Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
-        if (position != null && rotation != null)
+    private void OnEnable()
+    {
+        if (!AssemblySceneManager.RUNNING_IN_TEST_ROOM) // if in test room, calibrate must be in Update
         {
-            Calibrate(position, rotation, true);
+            PreCalibrate();
         }
     }
 
     void Update()
     {
-        // fix for starting assembly scene directly with photon
-        if (!PhotonNetwork.InRoom)
-            return;
-
         if (OVRInput.GetActiveController() == OVRInput.Controller.Touch)
         {
             if (OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch)) //detect is button 'A' has been pressed
             {
                 Calibrate(handMarker.position, handMarker.rotation, false);
             }
+        }
+    }
+
+    private void PreCalibrate()
+    {
+        Vector3 position = SceneInformationManager.CrossSceneInformation_position;
+        Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
+        if (position != null && rotation != null)
+        {
+            Calibrate(position, rotation, true);
         }
     }
 

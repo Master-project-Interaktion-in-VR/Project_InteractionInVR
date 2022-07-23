@@ -388,8 +388,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hostTransform: {fileID: 5027921833477864257}
   manipulationType: 3
-  twoHandedManipulationType: 7
-  allowFarManipulation: 1
+  twoHandedManipulationType: 3
+  allowFarManipulation: 0
   useForcesForNearManipulation: 0
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
@@ -403,7 +403,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 3746416918111891155, guid: 52fdf64fd5984da44ab84ff8495a0700, type: 3}
+  constraintsManager: {fileID: 4454140085181418977}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:

@@ -34,48 +34,6 @@ public class NetworkHelper : MonoBehaviour
         transform.SetParent(null);
     }
 
-    public void InitHoldingBody()
-    {
-        _photonView.RPC("InitHoldingBodyRpc", RpcTarget.All);
-    }
-
-    [PunRPC]
-    private void InitHoldingBodyRpc()
-    {
-        gameObject.name = "holdingBody";
-        AddComponentsRpc();
-        // add gravity script after rigidbody has been added
-        gameObject.AddComponent<DisableMyGravity>();
-    }
-
-    public void AddComponents()
-    {
-        _photonView.RPC("AddComponentsRpc", RpcTarget.All);
-    }
-
-    /// <summary>
-    /// Used for holding body as well as antenna pieces.
-    /// </summary>
-    /// <returns> same GameObject with added components</returns>
-    [PunRPC]
-    public void AddComponentsRpc()
-    {
-        // add rigidBody to Object
-        gameObject.AddComponent<Rigidbody>();
-        gameObject.AddComponent<PhotonTransformView>();
-        //obj.AddComponent<PhotonView>();
-        //obj.AddComponent<PhotonTransformView>();
-        //obj.AddComponent<PhotonRigidbodyView>();
-        // add ObjectManipulator to object
-        Microsoft.MixedReality.Toolkit.UI.ObjectManipulator om = gameObject.AddComponent<Microsoft.MixedReality.Toolkit.UI.ObjectManipulator>();
-        om.TwoHandedManipulationType = Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Move | Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Rotate;
-        om.AllowFarManipulation = false;
-        // add Collision Manager
-        //obj.AddComponent<CollisionManager>();
-        // add Build tag
-        //obj.tag = "BuildObject";
-    }
-
     public void RemoveComponents()
     {
         _photonView.RPC("RemoveComponentsRpc", RpcTarget.All);
@@ -100,8 +58,6 @@ public class NetworkHelper : MonoBehaviour
             Destroy(GetComponent<Microsoft.MixedReality.Toolkit.UI.ObjectManipulator>());
             // remove Collision Manager
             //Destroy(obj.GetComponent<CollisionManager>());
-            // remove tag
-            //obj.tag = "InitialObject";
         }
         catch (Exception ex)
         {

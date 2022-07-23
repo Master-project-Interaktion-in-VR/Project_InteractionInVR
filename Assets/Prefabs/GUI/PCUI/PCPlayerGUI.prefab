@@ -947,7 +947,7 @@ MonoBehaviour:
   IsEraser: 0
   drawRect: {fileID: 1839427135874748677}
   drawCamera: {fileID: 0}
-  networkSendDelay: 0
+  networkSendDelay: 0.03
   plane: {fileID: 0}
 --- !u!1 &1839427135930313472
 GameObject:
@@ -1635,19 +1635,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1839427137472889884}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3349674008352204334}
-        m_TargetAssemblyTypeName: PC_GUI_Manager, Assembly-CSharp
-        m_MethodName: triggerVibration
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1839427137691608499
 GameObject:
   m_ObjectHideFlags: 0
@@ -1744,7 +1732,21 @@ MonoBehaviour:
   sketchpadButton: {fileID: 1377182417804797927}
   tutorialButton: {fileID: 1839427135930313472}
   mapButton: {fileID: 8929398711626684023}
-  sceneManager: {fileID: 0}
+  puzzleSuccessEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: AssemblySceneManager, Assembly-CSharp
+        m_MethodName: OnPuzzleSuccess
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   PuzzelPanel: {fileID: 255493198421743278}
   InputGlyphs:
   - {fileID: 968996795524429192}
@@ -2111,7 +2113,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3349674008352204334}
         m_TargetAssemblyTypeName: PC_GUI_Manager, Assembly-CSharp
-        m_MethodName: triggerSound
+        m_MethodName: TriggerSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
