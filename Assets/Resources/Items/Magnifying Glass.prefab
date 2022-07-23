@@ -376,6 +376,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetToOrigin: 0
   resetDelayTime: 0
+  itemIndex: 0
+  inventory: {fileID: 0}
 --- !u!65 &6595115529158981775
 BoxCollider:
   m_ObjectHideFlags: 0
