@@ -6,21 +6,53 @@ public class AssistentCameraController : MonoBehaviour
 {
 
 		public Transform target;
-		public float speed = 0.1f;
+
+		public float speed = 0.2f;
+		public float mouseSpeed = 5.0f;
+
+		private float yaw = 0.0f;
+		private float pitch = 0.0f;
+
+
+		private float xSmooth = 0.0f;
+		private float ySmooth = 0.0f;
+		private float xVelocity = 0.0f;
+		private float yVelocity = 0.0f;
 
 		void FixedUpdate()
 		{
-				Vector3 smoothPosition = Vector3.Lerp(transform.position, target.position, speed);
+				// if space is pressed
+				if (Input.GetKey(KeyCode.Space))
+				{
+						// lock cursor
+						Cursor.lockState = CursorLockMode.Locked;
 
-				// get distance to target
-				float distance = Vector3.Distance(smoothPosition, transform.position);
+						// rotate camera with mouse
+						yaw += mouseSpeed * Input.GetAxis("Mouse X");
+						pitch -= mouseSpeed * Input.GetAxis("Mouse Y");
 
-				// look at target
-				transform.LookAt(smoothPosition);
+				}
+				else
+				{
+						// unlock cursor
+						Cursor.lockState = CursorLockMode.None;
+
+						Vector3 desiredForward = target.transform.position - transform.position;
+						desiredForward.Normalize();
+
+						Quaternion desiredRotation = Quaternion.LookRotation(desiredForward);
+
+						yaw = desiredRotation.eulerAngles.y;
+						pitch = desiredRotation.eulerAngles.x;
 
 
+				}
+
+				xSmooth = Mathf.SmoothDamp(xSmooth, yaw, ref xVelocity, speed);
+				ySmooth = Mathf.SmoothDamp(ySmooth, pitch, ref yVelocity, speed);
 
 
+				transform.localRotation = Quaternion.Euler(ySmooth, xSmooth, 0);
 		}
 
 		// Start is called before the first frame update
