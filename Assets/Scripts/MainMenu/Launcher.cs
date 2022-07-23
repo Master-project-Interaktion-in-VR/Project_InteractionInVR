@@ -1,5 +1,5 @@
 #define VR_IN_EDITOR
-// #define SKIP_INTRO
+//#define SKIP_INTRO
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -83,6 +83,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             //cylinderMenuCanvas.GetComponent<MeshRenderer>().enabled = false;
             menuCanvas.worldCamera = pcCamera;
             menuCanvas.gameObject.SetActive(false);
+            menuCanvas.transform.position = new Vector3(-0.61f, 5.78f, -12.72f);
         }
 #endif
     }

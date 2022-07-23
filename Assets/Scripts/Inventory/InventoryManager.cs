@@ -102,12 +102,14 @@ public class InventoryManager : MonoBehaviour
         inventoryUI.transform.eulerAngles = new Vector3(eulerAngles.x + 15, eulerAngles.y, 0);
     }
 
-    public void PutItemInInventory(GameObject item)
+    public IEnumerator PutItemInInventory(GameObject item)
     {
-        item.GetComponent<Animator>().SetBool("shrink", true);
+        item.GetComponent<Animator>().SetBool("shrink", true); // currently not as RPC
         antennaPartsPickedUp++;
+        yield return new WaitForSeconds(0.9f);
         UpdateAntennaPartsUI();
-        Destroy(item, 0.9f);
+        item.GetPhotonView().RequestOwnership(); // just to be sure
+        PhotonNetwork.Destroy(item);
 
         if (item == itemInLeftHand)
             itemInLeftHand = null;
@@ -245,5 +247,15 @@ public class InventoryManager : MonoBehaviour
             inventoryUI.SetActive(false);
             snapTurnScript.enabled = true;
         }
+    }
+
+    public bool DetectorIsInRightHand()
+    {
+        return itemInRightHand != null && itemInRightHand.CompareTag("Detector");
+    }
+    
+    public bool DetectorIsInLeftHand()
+    {
+        return itemInLeftHand != null && itemInLeftHand.CompareTag("Detector");
     }
 }

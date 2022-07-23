@@ -13,9 +13,9 @@ public class PC_GUI_Manager : MonoBehaviour
 		public GameObject sketchpadButton;
 		public GameObject tutorialButton;
 		public GameObject mapButton;
-		private AudioSource audioSource;
 
-		public PhotonView photonSync;
+		[SerializeField]
+		private PhotonView sceneManager; // vib and sound trigger RPCs for EnvironmentGameScene, puzzle for AssemblyScene
 
 		public GameObject PuzzelPanel;
 
@@ -36,6 +36,21 @@ public class PC_GUI_Manager : MonoBehaviour
 				sketchpadButton.SetActive(sketchpadEnabled);
 				tutorialButton.SetActive(tutorialEnabled);
 				mapButton.SetActive(mapEnabled);
+		}
+
+		private void PuzzleButtonOnClick(int buttonIndex)
+		{
+				Debug.Log("You have clicked the button #" + buttonIndex, PuzzleButtons[buttonIndex]);
+
+				if (PuzzleSolution[CurrentPuzzleIndex] == buttonIndex)
+				{
+						InputGlyphs[CurrentPuzzleIndex].GetComponent<Image>().sprite = GlyphSprites[buttonIndex];
+						CurrentPuzzleIndex++;
+				}
+		}
+
+		public IEnumerator StartPuzzle(int[] solution)
+		{
 
 				GlyphSprites[0] = Resources.Load<Sprite>("PuzzleGlyphs/Glyph 01");
 				GlyphSprites[1] = Resources.Load<Sprite>("PuzzleGlyphs/Glyph 02");
@@ -53,24 +68,13 @@ public class PC_GUI_Manager : MonoBehaviour
 						int index = i;
 						PuzzleButtons[index].GetComponent<Button>().onClick.AddListener(delegate { PuzzleButtonOnClick(index); });
 				}
-		}
 
-		private void PuzzleButtonOnClick(int buttonIndex)
-		{
-				Debug.Log("You have clicked the button #" + buttonIndex, PuzzleButtons[buttonIndex]);
-
-				if (PuzzleSolution[CurrentPuzzleIndex] == buttonIndex)
-				{
-						InputGlyphs[CurrentPuzzleIndex].GetComponent<Image>().sprite = GlyphSprites[buttonIndex];
-						CurrentPuzzleIndex++;
-				}
-		}
-
-		public void StartPuzzle(int[] solution)
-		{
 				PuzzelPanel.SetActive(true);
 				PuzzleSolution = solution;
 				CurrentPuzzleIndex = 0;
+
+
+				yield return 0;
 		}
 
 		public void SubmitPuzzle()
@@ -79,7 +83,7 @@ public class PC_GUI_Manager : MonoBehaviour
 				{
 						Debug.Log("You have solved the puzzle!");
 						ResetPuzzle();
-						photonSync.RPC("PuzzleSolved", RpcTarget.All);
+						sceneManager.RPC("PuzzleSolved", RpcTarget.All);
 				}
 		}
 
@@ -92,26 +96,14 @@ public class PC_GUI_Manager : MonoBehaviour
 				}
 		}
 
-		// Update is called once per frame
-		void Update()
-		{
 
-		}
+	public void triggerVibration()
+	{
+		sceneManager.RPC("TriggerVibrationRpc", RpcTarget.All);
+	}
 
-		public void triggerVibration()
-		{
-				// Debug.Log("trigger vibration");
-				// // starts vibration on the right Touch controller
-				// OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RTouch);
-				photonSync.RPC("triggerVibration", RpcTarget.All);
-		}
-
-		public void triggerSound()
-		{
-				// Debug.Log("trigger sound");
-				// audioSource = this.GetComponent<AudioSource>();
-				// audioSource.Play();
-
-				photonSync.RPC("triggerSound", RpcTarget.All);
-		}
+	public void triggerSound()
+	{
+		sceneManager.RPC("TriggerSoundRpc", RpcTarget.All);
+	}	
 }

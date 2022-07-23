@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class Item : MonoBehaviour
     private XRGrabInteractable _grabInteractable;
     private Rigidbody _rigidbody;
     private InventoryManager _inventoryManager;
+    private PhotonView _photonView;
     
     private Vector3 _originPos;
     private Quaternion _originRotation;
@@ -27,6 +29,7 @@ public class Item : MonoBehaviour
         _grabInteractable = GetComponentInParent<XRGrabInteractable>();
         _rigidbody = GetComponent<Rigidbody>();
         _inventoryManager = GameObject.FindGameObjectWithTag("Inventory Manager").GetComponent<InventoryManager>();
+        _photonView = GetComponent<PhotonView>();
         _originPos = transform.position;
         _originRotation = transform.rotation;
     }
@@ -65,12 +68,18 @@ public class Item : MonoBehaviour
 
     private void ResetToOrigin()
     {
-        if (resetToOrigin && !_colliderTriggered && !_selected)
+        if (resetToOrigin && !_colliderTriggered && !_selected && _photonView.IsMine) // only reset to origin if this is my photon view (VR)
         {
-            transform.rotation = _originRotation;
-            transform.position = _originPos;
-            _rigidbody.velocity = Vector3.zero;
+            _photonView.RPC("ResetToOriginRpc", RpcTarget.All);
         }
+    }
+
+    [PunRPC]
+    public void ResetToOriginRpc()
+    {
+        transform.rotation = _originRotation;
+        transform.position = _originPos;
+        _rigidbody.velocity = Vector3.zero;
     }
 
     public void HoverEnter(HoverEnterEventArgs arg0)
@@ -102,7 +111,7 @@ public class Item : MonoBehaviour
         if (_inventoryManager != null)
         {
             inventory.collectedAntennaParts[itemIndex] = true;
-            _inventoryManager.PutItemInInventory(gameObject);
+            StartCoroutine(_inventoryManager.PutItemInInventory(gameObject));
         }
     }
 

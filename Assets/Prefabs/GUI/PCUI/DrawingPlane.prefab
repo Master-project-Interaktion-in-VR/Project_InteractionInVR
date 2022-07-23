@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c866f34357a7c7a47bb1f12f10236ca8, type: 2}
+  - {fileID: 2100000, guid: 7d85fef41d190ba43af6794ec501d2f5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
     shaderTextureName: _MainTex
     defaultTextureWidth: 1024
     defaultTextureHeight: 1024
-    SourceMaterial: {fileID: 2100000, guid: c866f34357a7c7a47bb1f12f10236ca8, type: 2}
+    SourceMaterial: {fileID: 2100000, guid: 7d85fef41d190ba43af6794ec501d2f5, type: 2}
   ShouldOverrideCamera: 0
   CopySourceTextureToPaintTexture: 1
   paintModeType: 0

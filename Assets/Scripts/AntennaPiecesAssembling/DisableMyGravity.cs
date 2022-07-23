@@ -6,14 +6,16 @@ using UnityEngine;
 public class DisableMyGravity : MonoBehaviour
 {
     private PhotonView _photonView;
+    private Rigidbody _rigidbody;
 
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        if (!_photonView.IsMine)
-        {
-            rigidbody.isKinematic = true;
-        }
+        _rigidbody = GetComponent<Rigidbody>();
+    }
+
+    private void FixedUpdate()
+    {
+        _rigidbody.isKinematic = !_photonView.IsMine;
     }
 }

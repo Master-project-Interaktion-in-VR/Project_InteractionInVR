@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using UnityEngine;
 
@@ -51,6 +52,23 @@ public class AvatarController : MonoBehaviour
 
 
     private bool _isTall;
+
+    private void Start()
+    {
+        if (Application.isMobilePlatform)
+        {
+            // take ownership to be able to actively move these
+            head.vrTarget.GetComponent<PhotonView>().RequestOwnership();
+            leftHand.vrTarget.GetComponent<PhotonView>().RequestOwnership();
+            rightHand.vrTarget.GetComponent<PhotonView>().RequestOwnership();
+
+            GameObject xrOrigin = GameObject.FindGameObjectWithTag("Player");
+            if (xrOrigin != null)
+            {
+                xrOrigin.GetComponent<PhotonView>().RequestOwnership();
+            }
+        }
+    }
 
 
     private void OnEnable()

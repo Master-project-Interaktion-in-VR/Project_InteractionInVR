@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelUserStore">
-    <attachedFolders />
+    <attachedFolders>
+      <Path>../../../Users/emir-/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.cinemachine@2.8.6</Path>
+    </attachedFolders>
     <explicitIncludes>
       <Path>Library/PackageCache/com.microsoft.mixedreality.toolkit.examples@2.7.3</Path>
       <Path>Library/PackageCache/com.microsoft.mixedreality.toolkit.extensions@2.7.3</Path>
@@ -35,7 +37,6 @@
       <Path>Library/PackageCache/com.unity.xr.oculus@3.0.1</Path>
       <Path>Packages</Path>
       <Path>ProjectSettings</Path>
-      <Path>../../../Users/emir-/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.cinemachine@2.8.6</Path>
     </explicitIncludes>
     <explicitExcludes>
       <Path>.git</Path>
@@ -44,7 +45,6 @@
       <Path>Library</Path>
       <Path>Logs</Path>
       <Path>Recordings</Path>
-      <Path>Temp</Path>
       <Path>UserSettings</Path>
       <Path>obj</Path>
     </explicitExcludes>
