@@ -1,4 +1,5 @@
 # Projekt Setup
+Dieses Projekt wurde mit Unity 2021.3.0f1 erstellt. Alle verwendeten Assets befinden sich in der genutzen Version im `ImportedAssets` Ordner in google drive.
 <aside>
 💡 Um das Projekt zum laufen zu bekommen, müssen folgende initiale Schritte ausgeführt werden. Sobald sich Elemente in `ImportedAssets` ändern, müssen die Schritte wiederholt werden.
 
@@ -28,14 +29,6 @@
 - Darin dupliziert er/sie die aktuelle Main-Scene (oder bei Bedarf eine andere Scene) und benennt sie wieder entsprechend um: AbgeleiteteScene_ZuständigerName_Funktionalität → bsp: Main_Emir_VRMovement
 - Wenn die Funktionalität soweit fertig ist und alles fehlerfrei läuft, kann ein Pull-Request auf den Main-Branch gestellt werden. Der Zuständige überprüft dies zeitnah und merged den Branch auf die Main. Von dort aus kann der aktuelle Main-Stand gepullt und wiederum ein eigener Branch erstellt werden.
 
-## Assets
-
-- Eine zentrale Liste zu allen benötigten Assets
-- Person A, die neue Assets hinzufügt
-    1. Updated Liste (mit Asset-Name, Verlinkung und wie man es installiert)
-    2. Packt Asset ins ./gitignore (bzw. Ordner “Imported Assets” mit Assets steht im gitignore)
-- Person B
-    1. Lädt Assets aus Liste via Link in Unity
 
 ## Unity Ordner-Struktur
 
