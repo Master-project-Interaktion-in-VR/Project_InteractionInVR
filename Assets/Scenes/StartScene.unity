@@ -633,7 +633,7 @@ VideoPlayer:
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_SkipOnDrop: 1
   m_Looping: 0
   m_WaitForFirstFrame: 1
@@ -1449,6 +1449,7 @@ MonoBehaviour:
   infoTextPanel: {fileID: 204606972}
   lightsPanel: {fileID: 1592659426}
   playerReadyPanel: {fileID: 211566930950370686}
+  actionAsset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   menu: {fileID: 2079985672}
   mainMenuContainer: {fileID: 6494801972305471454}
   roomMenuContainer: {fileID: 1986939911}
@@ -2092,7 +2093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6494801972107160106, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 85.00015
+      value: 85.0003
       objectReference: {fileID: 0}
     - target: {fileID: 6494801972650676355, guid: df09b8210f2194f4b97970ff97af340b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
