@@ -7,6 +7,8 @@ public class AssistentCameraController : MonoBehaviour
 
 		public Transform target;
 
+		public GameObject PCCursor;
+
 		public float speed = 0.2f;
 		public float mouseSpeed = 5.0f;
 
@@ -26,6 +28,8 @@ public class AssistentCameraController : MonoBehaviour
 		private float zoomSmooth = 0.0f;
 		private float zoomVelocity = 0.0f;
 
+		private bool lastActiveManualControl = false;
+
 		void FixedUpdate()
 		{
 
@@ -36,6 +40,8 @@ public class AssistentCameraController : MonoBehaviour
 				{
 						// lock cursor
 						Cursor.lockState = CursorLockMode.Locked;
+						PCCursor.SetActive(false);
+						lastActiveManualControl = true;
 
 						// rotate camera with mouse
 						yaw += mouseSpeed * Input.GetAxis("Mouse X");
@@ -48,7 +54,12 @@ public class AssistentCameraController : MonoBehaviour
 				else
 				{
 						// unlock cursor
-						Cursor.lockState = CursorLockMode.None;
+						if (lastActiveManualControl)
+						{
+								Cursor.lockState = CursorLockMode.None;
+								PCCursor.SetActive(true);
+								lastActiveManualControl = false;
+						}
 
 						// Rotation
 						Vector3 desiredForward = target.transform.position - transform.position;
