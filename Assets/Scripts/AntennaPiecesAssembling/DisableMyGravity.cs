@@ -16,6 +16,7 @@ public class DisableMyGravity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rigidbody.isKinematic = !_photonView.IsMine;
+        if (_rigidbody != null)
+            _rigidbody.isKinematic = !_photonView.IsMine;
     }
 }
