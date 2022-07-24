@@ -1,10 +1,12 @@
 #define JOIN_TEST_ROOM
-//#define ON_OCULUS_LINK
+#define ON_OCULUS_LINK
 
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SpatialTracking;
 using UnityEngine.UI;
@@ -33,7 +35,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private AssemblySuccessUnityEvent dummyEvent = new AssemblySuccessUnityEvent();
 
-
+    private bool _otherReady;
     private PhotonView _photonView;
     private PC_GUI_Manager _pcGuiManager;
 
@@ -50,10 +52,18 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     }
 
 
+    [PunRPC]
+    public void OnOtherReady()
+    {
+        _otherReady = true;
+    }
+
+
     void Awake()
     {
         _photonView = GetComponent<PhotonView>();
         _pcGuiManager = pcPlayerGui.GetComponent<PC_GUI_Manager>();
+
 
 #if JOIN_TEST_ROOM
         if (!PhotonNetwork.IsConnected)
