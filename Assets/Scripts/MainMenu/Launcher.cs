@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using UnityEngine.Video;
 
 public class Launcher : MonoBehaviourPunCallbacks
@@ -27,6 +28,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField]
     private LightsPanel playerReadyPanel;
 
+    [SerializeField] 
+    private InputActionAsset actionAsset;
 
     [Header("Menus")]
 
@@ -60,12 +63,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField]
     private Canvas menuCanvas;
 
-
-
     private PhotonView _photonView;
 
     public string GameScene_name;
-
 
     private void Awake()
     {
@@ -90,6 +90,10 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        var leftHandAction = actionAsset.FindActionMap("XRI LeftHand Interaction");
+        leftHandAction.FindAction("Start Action").performed += VideoStopper;
+        leftHandAction.FindAction("Start Action").canceled += CancelVideoStopper;
+
 #if UNITY_EDITOR && SKIP_INTRO
         ConnectToPhoton();
 #if VR_IN_EDITOR
@@ -113,9 +117,17 @@ public class Launcher : MonoBehaviourPunCallbacks
 #endif
     }
 
-
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.UpArrow))  //FOR DEVICE SIMULATOR
+        {
+            VideoStopper(new InputAction.CallbackContext());
+        }
+        else if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            CancelVideoStopper(new InputAction.CallbackContext());
+        }
+
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
@@ -141,8 +153,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     /// </summary>
     public IEnumerator Intro()
     {
-        introVideo.Play(); 
+        introVideo.Play();    
         yield return new WaitForSeconds(1);
+
         while (introVideo.isPlaying)
         {
             yield return new WaitForSeconds(1);
@@ -160,6 +173,23 @@ public class Launcher : MonoBehaviourPunCallbacks
 #endif
 #endif
         yield return new WaitForSeconds(1);
+        ConnectToPhoton();
+    }
+
+    private void VideoStopper(InputAction.CallbackContext obj)
+    {
+        Invoke(nameof(StopVideo), 3);
+    }
+
+    private void CancelVideoStopper(InputAction.CallbackContext obj)
+    {
+        CancelInvoke(nameof(StopVideo));
+    }
+
+    private void StopVideo()
+    {
+        introVideo.Stop();
+        menu.SetActive(true);
         ConnectToPhoton();
     }
 
