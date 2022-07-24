@@ -1,5 +1,5 @@
 #define JOIN_TEST_ROOM
-#define ON_OCULUS_LINK
+//#define ON_OCULUS_LINK
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -90,7 +90,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
             table.RequestOwnership();
             
             // invoke assembly success event for testing
-            StartCoroutine(PublishDummyEvent(5));
+            //StartCoroutine(PublishDummyEvent(5));
         }
 #endif
     }
