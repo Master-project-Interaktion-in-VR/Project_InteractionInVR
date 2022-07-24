@@ -15,7 +15,7 @@ public class NetworkHelper : MonoBehaviour
 
     public void SetParent(Transform parent)
     {
-        _photonView.RPC("SetParentRpc", RpcTarget.All, parent);
+        _photonView.RPC("SetParentRpc", RpcTarget.All, parent.name);
     }
     public void SetParentRoot()
     {
