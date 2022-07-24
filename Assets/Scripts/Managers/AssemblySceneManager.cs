@@ -23,6 +23,9 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     private GameObject pcPlayerGui;
 
     [SerializeField]
+    private PhotonView table;
+
+    [SerializeField]
     private GameObject puzzlePlane;
 
     [SerializeField]
@@ -84,6 +87,8 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
             ConfigurePcView();
         }
         else {
+            table.RequestOwnership();
+            
             // invoke assembly success event for testing
             StartCoroutine(PublishDummyEvent(5));
         }
