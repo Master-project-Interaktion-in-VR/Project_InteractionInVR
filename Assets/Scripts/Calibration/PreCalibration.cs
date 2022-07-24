@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PreCalibration : MonoBehaviour
 {
     public GameObject table_prefab;
-    GameObject table;
+    public GameObject table;
 
     Transform CameraRig;
     public Transform handMarker;  //the controller on the hand
@@ -21,6 +21,18 @@ public class PreCalibration : MonoBehaviour
         CameraRig = GameObject.Find("XR Origin").transform;
         var rightHandAction = actionAsset.FindActionMap("XRI RightHand Interaction");
         rightHandAction.FindAction("Secondary Action").performed += Calibrate;
+
+        OVRPlugin.SystemHeadset headset = OVRPlugin.GetSystemHeadsetType();
+        if (headset == OVRPlugin.SystemHeadset.Oculus_Link_Quest || headset == OVRPlugin.SystemHeadset.Oculus_Quest)
+        {
+            fixedMarker = GameObject.Find("fixedMarker_quest1").transform;
+            GameObject.Find("fixedMarker_quest2").SetActive(false);
+        }
+        else
+        {
+            fixedMarker = GameObject.Find("fixedMarker_quest2").transform;
+            GameObject.Find("fixedMarker_quest1").SetActive(false);
+        }
     }
 
     public void Calibrate(InputAction.CallbackContext obj)
@@ -32,18 +44,12 @@ public class PreCalibration : MonoBehaviour
                 table = Instantiate(table_prefab);
             }
 
-            fixedMarker = GameObject.Find("fixedMarker").transform;
-            Vector3 posOffset = fixedMarker.position - handMarker.position; //calculate the difference in positions
-                                                                            //CameraRig.transform.position += posOffset; //offset the position of the cameraRig to realign the controllers
-
             fixedMarker.transform.parent = null;
             table.transform.parent = fixedMarker.transform;
 
             fixedMarker.transform.position = handMarker.position;
 
-            Vector3 rotOffset = fixedMarker.eulerAngles - handMarker.eulerAngles; //calculate the difference in rotations
             fixedMarker.transform.rotation = handMarker.rotation;
-            //CameraRig.transform.RotateAround(handMarker.position, Vector3.up, rotOffset.y); //using the hand as a pivot, rotate around Y
 
             table.transform.parent = null;
             fixedMarker.transform.parent = table.transform.parent;
