@@ -15,7 +15,7 @@ public class NetworkHelper : MonoBehaviour
 
     public void SetParent(Transform parent)
     {
-        StartCoroutine(Wait(parent.name));
+        _photonView.RPC("SetParentRpc", RpcTarget.All, parent);
     }
     public void SetParentRoot()
     {
@@ -37,12 +37,6 @@ public class NetworkHelper : MonoBehaviour
     private void SetParentRpc(string parentName)
     {
         transform.SetParent(GameObject.Find(parentName).transform);
-    }
-
-    private IEnumerator Wait(string parent)
-    {
-        yield return new WaitForSeconds(1f);
-        _photonView.RPC("SetParentRpc", RpcTarget.All, parent);
     }
 
     [PunRPC]

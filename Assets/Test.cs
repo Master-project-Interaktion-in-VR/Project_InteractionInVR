@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class Test : MonoBehaviourPun
 {
 
     private PhotonView _photonView;
@@ -17,12 +17,12 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _photonView.RPC("TestPrintRpc", RpcTarget.All, "test");
+        _photonView.RPC("TestPrintRpc", RpcTarget.Others, (object)"test");
     }
 
     [PunRPC]
     private void TestPrintRpc(string test)
     {
-        Debug.Log(test);
+        Debug.LogError(test);
     }
 }

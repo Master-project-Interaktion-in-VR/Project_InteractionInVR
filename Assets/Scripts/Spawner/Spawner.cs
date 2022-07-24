@@ -21,13 +21,13 @@ public class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        //if (EnvironmentGameSceneManager.IsRunningOnGlasses() && !EnvironmentGameSceneManager.RUNNING_IN_TEST_ROOM) // if in test room, spawn must be in Update
-        //{
-        //    // spawn on VR platform
-        //    // only spawn items once, VR player must be owner in order to synchronize position (grabbing) and destroy it
-        //    List<Vector3> spawnPoints = GetSpawnPoints();
-        //    SpawnAll(spawnPoints);
-        //}
+        if (EnvironmentGameSceneManager.IsRunningOnGlasses() && !EnvironmentGameSceneManager.RUNNING_IN_TEST_ROOM) // if in test room, spawn must be in Update
+        {
+            // spawn on VR platform
+            // only spawn items once, VR player must be owner in order to synchronize position (grabbing) and destroy it
+            List<Vector3> spawnPoints = GetSpawnPoints();
+            SpawnAll(spawnPoints);
+        }
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public class Spawner : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (!PhotonNetwork.InRoom || _testRoomSpawnDone)
+        if (!EnvironmentGameSceneManager.RUNNING_IN_TEST_ROOM || !PhotonNetwork.InRoom || _testRoomSpawnDone)
             return;
         _testRoomSpawnDone = true;
         List<Vector3> spawnPoints = GetSpawnPoints();
