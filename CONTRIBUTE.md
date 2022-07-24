@@ -1,6 +1,6 @@
 # Projekt Setup
 <aside>
-💡 Um das Projekt zum laufen zu bekommen, müssen folgende initiale Schritte ausgeführt werden. Sobald sich Elemente im `ImportedAssets` ändern, müssen die Schritte wiederholt werden.
+💡 Um das Projekt zum laufen zu bekommen, müssen folgende initiale Schritte ausgeführt werden. Sobald sich Elemente in `ImportedAssets` ändern, müssen die Schritte wiederholt werden.
 
 </aside>
 
