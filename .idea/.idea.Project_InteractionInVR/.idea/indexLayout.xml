@@ -11,6 +11,7 @@
       <Path>Library/PackageCache/com.microsoft.mixedreality.toolkit.standardassets@2.7.3</Path>
       <Path>Library/PackageCache/com.unity.animation.rigging@1.1.1</Path>
       <Path>Library/PackageCache/com.unity.burst@1.6.5</Path>
+      <Path>Library/PackageCache/com.unity.cinemachine@2.8.6</Path>
       <Path>Library/PackageCache/com.unity.collab-proxy@1.15.15</Path>
       <Path>Library/PackageCache/com.unity.editorcoroutines@1.0.0</Path>
       <Path>Library/PackageCache/com.unity.ext.nunit@1.0.6</Path>
@@ -45,6 +46,7 @@
       <Path>Library</Path>
       <Path>Logs</Path>
       <Path>Recordings</Path>
+      <Path>Temp</Path>
       <Path>UserSettings</Path>
       <Path>obj</Path>
     </explicitExcludes>

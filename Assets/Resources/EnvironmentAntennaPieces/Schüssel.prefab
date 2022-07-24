@@ -271,7 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetToOrigin: 1
   resetDelayTime: 2
-  itemIndex: 3
+  itemIndex: 4
   inventory: {fileID: 11400000, guid: d1a255b4b746e304eb02fa463a55d96e, type: 2}
 --- !u!54 &7099664491167846996
 Rigidbody:
