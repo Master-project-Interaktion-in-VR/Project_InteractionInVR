@@ -1,4 +1,4 @@
-//#define VR_IN_EDITOR
+#define VR_IN_EDITOR
 #define SKIP_INTRO
 
 using Photon.Pun;
@@ -167,6 +167,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsConnected)
         {
+            PhotonNetwork.ConnectToRegion("eu");
             PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.GameVersion = gameVersion;
         }
