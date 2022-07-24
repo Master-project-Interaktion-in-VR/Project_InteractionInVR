@@ -5,6 +5,8 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SpatialTracking;
 using UnityEngine.UI;
@@ -21,6 +23,9 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     private GameObject pcPlayerGui;
 
     [SerializeField]
+    private PhotonView table;
+
+    [SerializeField]
     private GameObject puzzlePlane;
 
     [SerializeField]
@@ -33,7 +38,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private AssemblySuccessUnityEvent dummyEvent = new AssemblySuccessUnityEvent();
 
-
+    private bool _otherReady;
     private PhotonView _photonView;
     private PC_GUI_Manager _pcGuiManager;
 
@@ -50,19 +55,27 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     }
 
 
+    [PunRPC]
+    public void OnOtherReady()
+    {
+        _otherReady = true;
+    }
+
+
     void Awake()
     {
         _photonView = GetComponent<PhotonView>();
         _pcGuiManager = pcPlayerGui.GetComponent<PC_GUI_Manager>();
+
 
 #if JOIN_TEST_ROOM
         if (!PhotonNetwork.IsConnected)
         {
             RUNNING_IN_TEST_ROOM = true;
             PhotonNetwork.ConnectUsingSettings();
+            // invoke assembly success event for testing
+            StartCoroutine(PublishDummyEvent(5));
         }
-        // invoke assembly success event for testing
-        StartCoroutine(PublishDummyEvent(5));
 #endif
 
 #if UNITY_EDITOR && !ON_OCULUS_LINK
@@ -72,6 +85,12 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         if (!Application.isMobilePlatform)
         {
             ConfigurePcView();
+        }
+        else {
+            table.RequestOwnership();
+            
+            // invoke assembly success event for testing
+            StartCoroutine(PublishDummyEvent(5));
         }
 #endif
     }
@@ -109,7 +128,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         puzzlePlane.SetActive(true);
 
         // send the solution to the other players
-        _photonView.RPC("StartPuzzleRpc", RpcTarget.All, solution);
+        _photonView.RPC("StartPuzzleRpc", RpcTarget.Others, solution);
     }
 
     [PunRPC]

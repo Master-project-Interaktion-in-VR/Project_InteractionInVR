@@ -35,10 +35,7 @@ public class Calibration : MonoBehaviour
             fixedMarker = GameObject.Find("fixedMarker_quest2").transform;
             GameObject.Find("fixedMarker_quest1").SetActive(false);
         }
-    }
 
-    private void OnEnable()
-    {
         if (!AssemblySceneManager.RUNNING_IN_TEST_ROOM) // if in test room, calibrate must be in Update
         {
             PreCalibrate();

@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3831604514217277267, guid: bf5e26ea82b3f8b4ca5150ea1cf38578, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5027921833477864257, guid: bf5e26ea82b3f8b4ca5150ea1cf38578, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -113,6 +117,10 @@ PrefabInstance:
     - target: {fileID: 6042285118544833101, guid: 9cfc8f94da699754d812177db0b1c829, type: 3}
       propertyPath: sceneViewId
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6042285118544833101, guid: 9cfc8f94da699754d812177db0b1c829, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6310099699761181848, guid: 9cfc8f94da699754d812177db0b1c829, type: 3}
       propertyPath: m_Name
@@ -180,6 +188,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5921433889251924250, guid: 411fdf0ad15a23b4bbf6c39ac2c07375, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6584729588074971016, guid: 411fdf0ad15a23b4bbf6c39ac2c07375, type: 3}
       propertyPath: m_Name
       value: Halterungsstange
@@ -245,6 +257,10 @@ PrefabInstance:
     - target: {fileID: -2491436734405057065, guid: 600ab9e9b372cb142b15da7cc85d0fcf, type: 3}
       propertyPath: sceneViewId
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2491436734405057065, guid: 600ab9e9b372cb142b15da7cc85d0fcf, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4993325403161982641, guid: 600ab9e9b372cb142b15da7cc85d0fcf, type: 3}
       propertyPath: m_Name
@@ -312,6 +328,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5932296398004568416, guid: 8105b6d4a008b47458baf333e10729b1, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5027921833477864257, guid: 8105b6d4a008b47458baf333e10729b1, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -377,6 +397,10 @@ PrefabInstance:
     - target: {fileID: -6999329248545727070, guid: 30bb652ac17466046b99bfc38fe8dee0, type: 3}
       propertyPath: sceneViewId
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6999329248545727070, guid: 30bb652ac17466046b99bfc38fe8dee0, type: 3}
+      propertyPath: OwnershipTransfer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7099664491167847000, guid: 30bb652ac17466046b99bfc38fe8dee0, type: 3}
       propertyPath: m_RootOrder
