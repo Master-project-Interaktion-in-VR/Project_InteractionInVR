@@ -1746,6 +1746,7 @@ MonoBehaviour:
   sketchpadButton: {fileID: 1377182417804797927}
   tutorialButton: {fileID: 1839427135930313472}
   mapButton: {fileID: 8929398711626684023}
+  sketchCanvas: {fileID: 1839427137082121639}
   puzzleSuccessEvent:
     m_PersistentCalls:
       m_Calls:

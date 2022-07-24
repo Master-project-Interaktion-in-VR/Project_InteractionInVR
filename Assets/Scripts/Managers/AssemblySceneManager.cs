@@ -1,5 +1,5 @@
 #define JOIN_TEST_ROOM
-#define ON_OCULUS_LINK
+//#define ON_OCULUS_LINK
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -38,7 +38,6 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private AssemblySuccessUnityEvent dummyEvent = new AssemblySuccessUnityEvent();
 
-    private bool _otherReady;
     private PhotonView _photonView;
     private PC_GUI_Manager _pcGuiManager;
 
@@ -52,13 +51,6 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log("Joined Test room");
-    }
-
-
-    [PunRPC]
-    public void OnOtherReady()
-    {
-        _otherReady = true;
     }
 
 
@@ -90,7 +82,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
             table.RequestOwnership();
             
             // invoke assembly success event for testing
-            StartCoroutine(PublishDummyEvent(5));
+            //StartCoroutine(PublishDummyEvent(5));
         }
 #endif
     }

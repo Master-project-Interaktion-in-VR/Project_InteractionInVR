@@ -13,6 +13,23 @@ public class NetworkHelper : MonoBehaviour
         _photonView = GetComponent<PhotonView>();
     }
 
+
+    public void SetGravity(bool gravity)
+    {
+        _photonView.RPC("SetGravityRpc", RpcTarget.All, gravity);
+    }
+
+    [PunRPC]
+    public void SetGravityRpc(bool gravity)
+    {
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        if (rigidbody != null)
+        {
+            rigidbody.useGravity = gravity;
+        }
+    }
+
+
     public void SetParent(Transform parent)
     {
         _photonView.RPC("SetParentRpc", RpcTarget.All, parent.name);

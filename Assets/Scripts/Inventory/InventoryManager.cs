@@ -147,13 +147,17 @@ public class InventoryManager : MonoBehaviour
 
     public void DropItemFromLeftHand(SelectExitEventArgs args)
     {
-        //itemInLeftHand.GetComponent<Rigidbody>().useGravity = true;
+        string name = args.interactableObject.transform.name;
+        if (name.Contains(detector.name) || name.Contains(glass.name))
+            itemInLeftHand.GetComponent<NetworkHelper>().SetGravity(true);
         itemInLeftHand = null;
     }
 
     public void DropItemFromRightHand(SelectExitEventArgs args)
     {
-        //itemInRightHand.GetComponent<Rigidbody>().useGravity = true;
+        string name = args.interactableObject.transform.name;
+        if (name.Contains(detector.name) || name.Contains(glass.name))
+            itemInRightHand.GetComponent<NetworkHelper>().SetGravity(true);
         itemInRightHand = null;
     }
     
