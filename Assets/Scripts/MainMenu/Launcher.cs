@@ -1,11 +1,8 @@
 #define VR_IN_EDITOR
-#define VR_ENABLED
 //#define SKIP_INTRO
 
-#if VR_ENABLED
 using System.Collections.Generic;
 using UnityEngine.XR;
-#endif
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -67,11 +64,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public string GameScene_name;
     
-#if VR_ENABLED
 		private bool buttonTriggered;
 		private InputDevice rightHandedController;
 		private InputDevice leftHandedController;
-#endif
 
     private void Awake()
     {
@@ -97,9 +92,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     void Start()
     {
         
-#if VR_ENABLED
-			TryInitialize();
-#endif
+			  TryInitialize();
 
 #if UNITY_EDITOR && SKIP_INTRO
         ConnectToPhoton();

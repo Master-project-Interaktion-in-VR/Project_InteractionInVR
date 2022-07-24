@@ -51,6 +51,8 @@ GameObject:
   - component: {fileID: -2491436734405057065}
   - component: {fileID: -8462762947136358368}
   - component: {fileID: -8479039927681248863}
+  - component: {fileID: -2938066871393638795}
+  - component: {fileID: -8576307295526414127}
   m_Layer: 13
   m_Name: Mittelstange
   m_TagString: Untagged
@@ -384,7 +386,7 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents:
   - {fileID: -8462762947136358368}
@@ -417,6 +419,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5467664e1573e7c4ab6ef59914adf735, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-2938066871393638795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4993325403161982641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4f1f19f9b74a7e40a41e6486186f3c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8576307295526414127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4993325403161982641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c111e49189bfc409fbb0b748f28d0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8230604313201483958

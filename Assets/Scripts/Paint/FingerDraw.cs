@@ -93,4 +93,17 @@ public class FingerDraw : MonoBehaviour
     {
         _paintManager.PaintObject.DrawLine(lineStartPosition, lineEndPosition);
     }
+
+    public void ResetDrawing()
+    {
+        _photonView.RPC("ResetDrawingRpc", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void ResetDrawingRpc()
+    {
+        Debug.Log("ResetDrawingRpc");
+        _paintManager.PaintObject.ClearTexture();
+        _paintManager.Render();
+    }
 }
