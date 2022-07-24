@@ -38,7 +38,6 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private AssemblySuccessUnityEvent dummyEvent = new AssemblySuccessUnityEvent();
 
-    private bool _otherReady;
     private PhotonView _photonView;
     private PC_GUI_Manager _pcGuiManager;
 
@@ -52,13 +51,6 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log("Joined Test room");
-    }
-
-
-    [PunRPC]
-    public void OnOtherReady()
-    {
-        _otherReady = true;
     }
 
 

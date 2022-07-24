@@ -23,6 +23,9 @@ public class PC_GUI_Manager : MonoBehaviour
     public GameObject tutorialButton;
     public GameObject mapButton;
 
+    [SerializeField]
+    private GameObject sketchCanvas;
+
     [SerializeField, Tooltip("Only for assembly scene")]
     private PuzzleSuccessUnityEvent puzzleSuccessEvent;
 
@@ -76,6 +79,8 @@ public class PC_GUI_Manager : MonoBehaviour
             PuzzleButtons[index].GetComponent<Button>().onClick.AddListener(delegate { PuzzleButtonOnClick(index); });
         }
 
+        sketchCanvas.SetActive(false);
+        sketchpadButton.SetActive(false);
         PuzzelPanel.SetActive(true);
         PuzzleSolution = solution;
         CurrentPuzzleIndex = 0;
