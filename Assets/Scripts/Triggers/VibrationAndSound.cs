@@ -23,26 +23,30 @@ public class VibrationAndSound : MonoBehaviour
     [SerializeField]
     private InventoryManager InventoryManager;
 
-
-
     private AudioSource _detectorAudio;
     private PhotonView _photonView;
+
+    private TrackingManager trackingManager;
 
 
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
         _detectorAudio = GetComponent<AudioSource>();
+
+        trackingManager = Object.FindObjectOfType<TrackingManager>();
     }
 
     public void TriggerVibration()
     {
         _photonView.RPC("TriggerVibrationRpc", RpcTarget.All);
+        trackingManager.IncreaseButtonVibration();
     }
 
     public void TriggerSound()
     {
         _photonView.RPC("TriggerSoundRpc", RpcTarget.All);
+        trackingManager.IncreaseButtonSound();
     }
 
 

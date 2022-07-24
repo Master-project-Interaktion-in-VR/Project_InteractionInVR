@@ -8,27 +8,28 @@ public class TrackingObject
     [SerializeField] private string userID = "tbd";
     [SerializeField] private int assemblyAttempts = 0; //TODO: implement
     [SerializeField] private bool usedAutomatedAssembly = false; //TODO: implement
-    [SerializeField] private float timeInEnvironmentScene = 0f;
-    [SerializeField] private float timeInAssemblyScene = 0f;
+    [SerializeField] private string timeInEnvironmentScene;
+    [SerializeField] private string timeInAssemblyScene;
     [SerializeField] private int buttonPressesSound = 0;
     [SerializeField] private int buttonPressesVibration = 0;
     [SerializeField] private int buttonPressesAssemblyTutorial = 0;
     [SerializeField] private int buttonPressesResetDrawing = 0;
 
-    private float startTimeAssemblyScene;
-    private float startTimeEnvironmentScene;
 
     private string strJson;
 
-    public void SetTimesAfterAssemblyScene(float endTimeAssemblyScene)
+    public void SetTimeInEnvironmentScene(TimeSpan timeInEnvironmentScene)
     {
-        this.timeInAssemblyScene = (this.startTimeAssemblyScene - endTimeAssemblyScene) * 1000; //TODO: maybe time in seconds?
-        this.startTimeEnvironmentScene = endTimeAssemblyScene;
+        this.timeInEnvironmentScene = String.Format("{0:00}:{1:00}.{2:00}",
+            timeInEnvironmentScene.Minutes, timeInEnvironmentScene.Seconds,
+            timeInEnvironmentScene.Milliseconds / 10);
     }
 
-    public void SetTimesAfterEnvironmentScene(float endTimeEnvironmentScene)
+    public void SetTimeInAssemblyScene(TimeSpan timeInAssemblyScene)
     {
-        this.timeInEnvironmentScene = (this.startTimeEnvironmentScene - endTimeEnvironmentScene) * 1000; //TODO: maybe time in seconds?
+        this.timeInAssemblyScene = String.Format("{0:00}:{1:00}.{2:00}",
+            timeInAssemblyScene.Minutes, timeInAssemblyScene.Seconds,
+            timeInAssemblyScene.Milliseconds / 10);
     }
 
     public void SetButtonPresses(int buttonPressesSound, int buttonPressesVibration, int buttonPressesAssemblyTutorial, int buttonPressesResetDrawing)
@@ -38,11 +39,6 @@ public class TrackingObject
         this.buttonPressesVibration = buttonPressesVibration;
         this.buttonPressesAssemblyTutorial = buttonPressesAssemblyTutorial;
         this.buttonPressesResetDrawing = buttonPressesResetDrawing;
-    }
-
-    public TrackingObject(float startTimeAssemblyScene)
-    {
-        this.startTimeAssemblyScene = startTimeAssemblyScene;
     }
 
     public void addTrackingToTrackings()
