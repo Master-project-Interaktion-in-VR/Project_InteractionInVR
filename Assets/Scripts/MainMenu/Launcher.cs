@@ -1,10 +1,11 @@
-//#define VR_IN_EDITOR
-#define SKIP_INTRO
+#define VR_IN_EDITOR
+//#define SKIP_INTRO
 
+using System.Collections.Generic;
+using UnityEngine.XR;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,7 +27,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private LightsPanel playerReadyPanel;
-
 
     [Header("Menus")]
 
@@ -60,12 +60,13 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField]
     private Canvas menuCanvas;
 
-
-
     private PhotonView _photonView;
 
     public string GameScene_name;
-
+    
+		private bool buttonTriggered;
+		private InputDevice rightHandedController;
+		private InputDevice leftHandedController;
 
     private void Awake()
     {
@@ -90,6 +91,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        
+			  TryInitialize();
+
 #if UNITY_EDITOR && SKIP_INTRO
         ConnectToPhoton();
 #if VR_IN_EDITOR
@@ -113,9 +117,17 @@ public class Launcher : MonoBehaviourPunCallbacks
 #endif
     }
 
-
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.UpArrow))  //FOR DEVICE SIMULATOR
+        {
+            VideoStopper();
+        }
+        else if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            CancelVideoStopper();
+        }
+
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
@@ -134,6 +146,25 @@ public class Launcher : MonoBehaviourPunCallbacks
             }
         }
 #endif
+        
+        if (!rightHandedController.isValid || !leftHandedController.isValid)
+        {
+            // controllers are not instantly available
+            TryInitialize();
+            return;
+        }
+        
+        leftHandedController.TryGetFeatureValue(CommonUsages.menuButton, out var rightTriggerValue);
+        if (rightTriggerValue && !buttonTriggered)
+        {
+            VideoStopper();
+            buttonTriggered = true;
+        }
+        else if(!rightTriggerValue && buttonTriggered)
+        {
+            CancelVideoStopper();
+            buttonTriggered = false;
+        }
     }
 
     /// <summary>
@@ -141,8 +172,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     /// </summary>
     public IEnumerator Intro()
     {
-        introVideo.Play(); 
+        introVideo.Play();    
         yield return new WaitForSeconds(1);
+
         while (introVideo.isPlaying)
         {
             yield return new WaitForSeconds(1);
@@ -160,6 +192,25 @@ public class Launcher : MonoBehaviourPunCallbacks
 #endif
 #endif
         yield return new WaitForSeconds(1);
+        ConnectToPhoton();
+    }
+
+    private void VideoStopper()
+    {
+        Debug.Log("stop");
+        Invoke(nameof(StopVideo), 3);
+    }
+
+    private void CancelVideoStopper()
+    {
+        Debug.Log("cancel stop");
+        CancelInvoke(nameof(StopVideo));
+    }
+
+    private void StopVideo()
+    {
+        introVideo.Stop();
+        menu.SetActive(true);
         ConnectToPhoton();
     }
 
@@ -262,6 +313,23 @@ public class Launcher : MonoBehaviourPunCallbacks
         if (PhotonNetwork.InRoom)
         {
             PhotonNetwork.LeaveRoom();
+        }
+    }
+    
+    private void TryInitialize()
+    {
+        List<InputDevice> allDevices = new List<InputDevice>();
+        InputDevices.GetDevices(allDevices);
+        foreach (InputDevice device in allDevices)
+        {
+            if (device.name.Contains("Right"))
+            {
+                rightHandedController = device;
+            }
+            else if (device.name.Contains("Left"))
+            {
+                leftHandedController = device;
+            }
         }
     }
 }

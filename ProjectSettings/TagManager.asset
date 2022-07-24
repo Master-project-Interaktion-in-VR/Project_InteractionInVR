@@ -9,7 +9,6 @@ TagManager:
   - InitialObject
   - BuildObject
   - Inventory Manager
-  - Item Anchor
   - Left Inventory Anchor
   - Right Inventory Anchor
   - SaveWallTrigger

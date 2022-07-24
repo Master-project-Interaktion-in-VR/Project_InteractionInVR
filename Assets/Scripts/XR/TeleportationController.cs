@@ -23,34 +23,26 @@ public class TeleportationController : MonoBehaviour
     [SerializeField] private float increaseDelay;
 
     private bool _deactivated;
-    private bool _calibrated;
 
     private void Start()
     {
         teleportActivationReference.action.performed += ActivateTeleport;
         teleportActivationReference.action.canceled += CancelTeleport;
-        calibrationReference.action.performed += SetCalibration;
     }
 
     private void ActivateTeleport(InputAction.CallbackContext obj)
     {
-        if (_calibrated)
-        {
-            rayInteractor.enabled = true;
-            controller.enableInputActions = true;
-            _deactivated = false;
-            rayInteractor.interactionLayers = noTeleportationLayerMask;
-            StartCoroutine(IncreaseVelocity());
-        }
+        rayInteractor.enabled = true;
+        controller.enableInputActions = true;
+        _deactivated = false;
+        rayInteractor.interactionLayers = noTeleportationLayerMask;
+        StartCoroutine(IncreaseVelocity());
     }
 
     private void CancelTeleport(InputAction.CallbackContext obj)
     {
-        if (_calibrated)
-        {
-            _deactivated = true;
-            Invoke(nameof(DeactivateTeleport), .1f);
-        }
+        _deactivated = true;
+        Invoke(nameof(DeactivateTeleport), .1f);
     }
 
     private void DeactivateTeleport()
@@ -72,10 +64,5 @@ public class TeleportationController : MonoBehaviour
         {
             rayInteractor.interactionLayers = teleportationLayerMask;
         }
-    }
-
-    private void SetCalibration(InputAction.CallbackContext obj)
-    {
-        _calibrated = true;
     }
 }

@@ -8,18 +8,17 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class TeleportHandler : MonoBehaviour
 {
     public static GameObject saveWall;
-    public static bool teleported = false;
+    private bool confirmed = false;
 
     void Start()
     {
         saveWall = this.gameObject;
-        GameObject.Find("Environment/Terrain/PlayArea/PaintTerrain").GetComponent<TeleportationArea>().teleporting.AddListener(ActivateTeleport);
         saveWall.GetComponent<MeshRenderer>().enabled = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "SaveWallTrigger" && teleported)
+        if (other.tag == "SaveWallTrigger" && confirmed)
         {
             Debug.Log("--- Collided with saveWall! " + other.gameObject.name);
             saveWall.GetComponent<MeshRenderer>().enabled = true;
@@ -28,10 +27,9 @@ public class TeleportHandler : MonoBehaviour
         }
     }
 
-    public void ActivateTeleport(TeleportingEventArgs args)
+    public void ConfirmCalibration()
     {
-        Debug.Log("Teleport Started");
-        teleported = true;
+        confirmed = true;
         saveWall.GetComponent<MeshRenderer>().enabled = false;
         Transform camRig = GameObject.Find("XR Origin").transform;
         saveWall.transform.parent = camRig;

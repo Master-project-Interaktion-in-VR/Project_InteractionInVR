@@ -37,7 +37,8 @@ public class ButtonVis : MonoBehaviour
         EventTrigger.Entry entry = new EventTrigger.Entry();
         entry.eventID = eventType;
         entry.callback.AddListener((data) => { callbackFunction((PointerEventData)data); });
-        _trigger.triggers.Add(entry);
+        if(_trigger != null)
+            _trigger.triggers.Add(entry);
     }
 
     public void OnHover(PointerEventData data)
