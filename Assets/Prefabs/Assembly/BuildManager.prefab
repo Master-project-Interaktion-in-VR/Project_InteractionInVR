@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7593227335296448394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7593227335296448396}
+  - component: {fileID: 7593227335296448399}
+  - component: {fileID: 7593227335296448398}
+  m_Layer: 0
+  m_Name: BuildManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7593227335296448396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7593227335296448394}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7593227335296448399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7593227335296448394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b7ed8d3a0d4da458863fcbf615feac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  build_objects_Prefab:
+  - {fileID: 6310099699761181848, guid: 52fdf64fd5984da44ab84ff8495a0700, type: 3}
+  - {fileID: 6584729588074971016, guid: b27cc029a6224f343a2fc7687ba2c5e2, type: 3}
+  - {fileID: 4993325403161982641, guid: 1305db4ff3f92a74fbd6b9a44540a8b0, type: 3}
+  - {fileID: 7099664491167847007, guid: 1b5ed21462387e942a7cc88c55d94c11, type: 3}
+  - {fileID: 5027921833477864262, guid: 08a97419d9f731d4f9a071ebdb4e1195, type: 3}
+  - {fileID: 5027921833477864262, guid: 5ec1c954de349724abfbc8fa40e31afc, type: 3}
+  assembledAntenna_Prefab: {fileID: 4173102086806331288, guid: e8e89aaf73959f542835325f9cbabad5, type: 3}
+  infoCanvas_Prefab: {fileID: 7685771641723021541, guid: b9c78baffe52d804c9c04fca63406c62, type: 3}
+  dialog_Prefab: {fileID: 1720138958710635210, guid: e694a13843960e24aabf77589102466f, type: 3}
+  assemblySuccess:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: FingerDraw, Assembly-CSharp
+        m_MethodName: OnAssemblySuccess
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: AssemblySceneManager, Assembly-CSharp
+        m_MethodName: OnAssemblySuccess
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7593227335296448398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7593227335296448394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 644db5aed257e0746a9680af45db6372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  table_Prefab: {fileID: 4939866303544938946, guid: 60a726eaf1f49244c9198319b08c6acc, type: 3}
+  build_objects_Prefab:
+  - {fileID: 6310099699761181848, guid: 52fdf64fd5984da44ab84ff8495a0700, type: 3}
+  - {fileID: 6584729588074971016, guid: b27cc029a6224f343a2fc7687ba2c5e2, type: 3}
+  - {fileID: 4993325403161982641, guid: 1305db4ff3f92a74fbd6b9a44540a8b0, type: 3}
+  - {fileID: 7099664491167847007, guid: 1b5ed21462387e942a7cc88c55d94c11, type: 3}
+  - {fileID: 5027921833477864262, guid: 08a97419d9f731d4f9a071ebdb4e1195, type: 3}
+  - {fileID: 5027921833477864262, guid: 5ec1c954de349724abfbc8fa40e31afc, type: 3}

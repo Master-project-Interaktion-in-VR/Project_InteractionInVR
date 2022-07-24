@@ -22,6 +22,7 @@ public class Item : MonoBehaviour
     
     private bool _colliderTriggered;
     private bool _selected;
+    private bool _collected;
     
     private void Awake()
     {
@@ -108,9 +109,11 @@ public class Item : MonoBehaviour
     
     public void ActivateEnter(ActivateEventArgs arg0)
     {
-        if (_inventoryManager != null)
+        if (_inventoryManager != null && inventory != null && !_collected)
         {
             inventory.collectedAntennaParts[itemIndex] = true;
+            _collected = true;
+            Debug.Log("enter");
             StartCoroutine(_inventoryManager.PutItemInInventory(gameObject));
         }
     }
