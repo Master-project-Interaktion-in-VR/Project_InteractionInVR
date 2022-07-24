@@ -509,7 +509,7 @@
                 {
                     "name": "",
                     "id": "434ef72c-94e5-4e24-b16e-a280af2d36a7",
-                    "path": "<XRController>{LeftHand}/menuButton",
+                    "path": "<XRController>{LeftHand}/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1169,6 +1169,34 @@
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "XRI RightHand Calibration",
+            "id": "147a0a4a-01d6-4802-bd81-3cfcc43595c1",
+            "actions": [
+                {
+                    "name": "Calibrate",
+                    "type": "Button",
+                    "id": "e46def0d-b1f4-4a79-81bf-0f5a131684e6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b4c67947-0194-45ff-921a-11755e917a82",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Calibrate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

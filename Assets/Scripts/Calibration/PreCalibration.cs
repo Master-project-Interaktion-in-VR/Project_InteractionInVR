@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class PreCalibration : MonoBehaviour
 {
-    public GameObject table_prefab;
     public GameObject table;
 
     Transform CameraRig;
@@ -19,8 +18,8 @@ public class PreCalibration : MonoBehaviour
     void Start()
     {
         CameraRig = GameObject.Find("XR Origin").transform;
-        var rightHandAction = actionAsset.FindActionMap("XRI RightHand Interaction");
-        rightHandAction.FindAction("Secondary Action").performed += Calibrate;
+        var rightHandAction = actionAsset.FindActionMap("XRI RightHand Calibration");
+        rightHandAction.FindAction("Calibrate").performed += Calibrate;
 
         OVRPlugin.SystemHeadset headset = OVRPlugin.GetSystemHeadsetType();
         if (headset == OVRPlugin.SystemHeadset.Oculus_Link_Quest || headset == OVRPlugin.SystemHeadset.Oculus_Quest)
@@ -37,13 +36,8 @@ public class PreCalibration : MonoBehaviour
 
     public void Calibrate(InputAction.CallbackContext obj)
     {
-        if (!inventory.activeInHierarchy && !TeleportHandler.teleported)
+        if (!inventory.activeInHierarchy)
         {
-            if (table == null)
-            {
-                table = Instantiate(table_prefab);
-            }
-
             fixedMarker.transform.parent = null;
             table.transform.parent = fixedMarker.transform;
 
