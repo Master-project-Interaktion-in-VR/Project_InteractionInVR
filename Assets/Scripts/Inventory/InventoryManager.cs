@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -27,14 +28,14 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private Animator glassAnimator;
 
     [SerializeField] private InputActionAsset actionAsset;
+    
+    [SerializeField] private Transform itemAnchor;
 
     [SerializeField] private int antennaPartsPickedUp;
     [SerializeField] private int maxAntennaParts;
-    [SerializeField] private float spawnHeight = 0.5f;
 
     private bool _isRight;
 
-    private GameObject itemAnchor;
     private GameObject leftAnchor;
     private GameObject rightAnchor;
     private GameObject itemInLeftHand;
@@ -59,7 +60,6 @@ public class InventoryManager : MonoBehaviour
         leftHandLocomotion.FindAction("Turn").performed += SwitchItemLeft;
         rightHandLocomotion.FindAction("Turn").performed += SwitchItemRight;
 
-        itemAnchor = GameObject.FindGameObjectWithTag("Item Anchor");
         leftAnchor = GameObject.FindGameObjectWithTag("Left Inventory Anchor");
         rightAnchor = GameObject.FindGameObjectWithTag("Right Inventory Anchor");
         snapTurnScript = GameObject.FindGameObjectWithTag("Player").GetComponent<ActionBasedSnapTurnProvider>();
@@ -260,11 +260,20 @@ public class InventoryManager : MonoBehaviour
             else
                 prefab = detector;
 
-            var spawnPosition = itemAnchor.transform.position;
-            spawnPosition.y = spawnHeight;
+            var anchorPos = new Vector2(itemAnchor.position.x, itemAnchor.position.z);
+            var prefabPos = prefab.transform.position;
+            anchorPos += new Vector2(itemAnchor.forward.x, itemAnchor.forward.z) * prefabPos.z;
+            var spawnPosition = new Vector3(anchorPos.x, itemAnchor.position.y - prefabPos.y, anchorPos.y);
+            
+            Quaternion spawnRotation;
+            if(prefab.CompareTag("Detector"))
+                spawnRotation = Quaternion.Euler(0, itemAnchor.eulerAngles.y, 0);
+            else
+                spawnRotation = Quaternion.Euler(90, 0, itemAnchor.eulerAngles.y * -1);
 
-            itemObject = PhotonNetwork.Instantiate("Items/" + prefab.name, spawnPosition, Quaternion.identity);          
-
+            itemObject = PhotonNetwork.Instantiate("Items/" + prefab.name, spawnPosition, spawnRotation);
+            var itemRb = itemObject.GetComponent<Rigidbody>();
+            itemRb.velocity = Vector3.zero;
             inventoryUI.SetActive(false);
             snapTurnScript.enabled = true;
         }
