@@ -28,6 +28,9 @@ public class CollisionManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
+        if (!Application.isMobilePlatform)
+            return;
+
         GameObject colObject = col.gameObject;
         if (colObject.tag == "BuildObject")
         {

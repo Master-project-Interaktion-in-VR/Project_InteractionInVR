@@ -167,8 +167,7 @@ public class BuildManager : MonoBehaviour
                 //Microsoft.MixedReality.Toolkit.UI.ObjectManipulator om = newHoldingObject.AddComponent<Microsoft.MixedReality.Toolkit.UI.ObjectManipulator>();
                 //om.TwoHandedManipulationType = Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Move | Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Rotate;
                 //om.AllowFarManipulation = false;
-                newHoldingObject.name = $"holdingBody{holdingObjects_List.Count}";
-
+                newHoldingObject.GetComponent<NetworkHelper>().SetName($"holdingBody{holdingObjects_List.Count}");
                 holdingObjects_List.Add(newHoldingObject);
 
                 // do not snap the mittelstange, because its the bigger object 

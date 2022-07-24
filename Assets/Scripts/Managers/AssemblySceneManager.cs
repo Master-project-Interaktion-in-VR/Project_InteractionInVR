@@ -60,9 +60,9 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         {
             RUNNING_IN_TEST_ROOM = true;
             PhotonNetwork.ConnectUsingSettings();
+            // invoke assembly success event for testing
+            StartCoroutine(PublishDummyEvent(5));
         }
-        // invoke assembly success event for testing
-        StartCoroutine(PublishDummyEvent(5));
 #endif
 
 #if UNITY_EDITOR && !ON_OCULUS_LINK
@@ -72,6 +72,10 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         if (!Application.isMobilePlatform)
         {
             ConfigurePcView();
+        }
+        else {
+            // invoke assembly success event for testing
+            StartCoroutine(PublishDummyEvent(5));
         }
 #endif
     }
@@ -109,7 +113,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         puzzlePlane.SetActive(true);
 
         // send the solution to the other players
-        _photonView.RPC("StartPuzzleRpc", RpcTarget.All, solution);
+        _photonView.RPC("StartPuzzleRpc", RpcTarget.Others, solution);
     }
 
     [PunRPC]

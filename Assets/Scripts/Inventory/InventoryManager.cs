@@ -251,7 +251,7 @@ public class InventoryManager : MonoBehaviour
                 itemInRightHand = null;
 
             if (itemObject != null)
-                Destroy(itemObject);
+                PhotonNetwork.Destroy(itemObject);
 
             GameObject prefab;
 
