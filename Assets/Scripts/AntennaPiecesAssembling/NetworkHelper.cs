@@ -36,7 +36,19 @@ public class NetworkHelper : MonoBehaviour
     [PunRPC]
     private void SetParentRpc(string parentName)
     {
-        transform.SetParent(GameObject.Find(parentName).transform);
+        GameObject parent = GameObject.Find(parentName);
+        while (parent == null)
+        {
+            StartCoroutine(Wait());
+            parent = GameObject.Find(parentName);
+        }
+
+        transform.SetParent(parent.transform);
+    }
+
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(0.2f);
     }
 
     [PunRPC]
