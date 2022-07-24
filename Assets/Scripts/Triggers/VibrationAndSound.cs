@@ -23,16 +23,14 @@ public class VibrationAndSound : MonoBehaviour
     [SerializeField]
     private InventoryManager InventoryManager;
 
-
-
     private AudioSource _detectorAudio;
     private PhotonView _photonView;
-
 
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
         _detectorAudio = GetComponent<AudioSource>();
+
     }
 
     public void TriggerVibration()
