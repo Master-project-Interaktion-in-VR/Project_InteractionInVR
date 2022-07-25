@@ -1203,7 +1203,7 @@ MonoBehaviour:
   calibrationReference: {fileID: -6522255514029517973, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   startVelocity: 3
   maxVelocity: 7
-  increaseStep: 0.1
+  increaseStep: 0.3
   increaseDelay: 0.01
 --- !u!114 &656628313
 MonoBehaviour:
@@ -2772,7 +2772,7 @@ MonoBehaviour:
   calibrationReference: {fileID: -6522255514029517973, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   startVelocity: 3
   maxVelocity: 7
-  increaseStep: 0.1
+  increaseStep: 0.3
   increaseDelay: 0.01
 --- !u!114 &193509049
 MonoBehaviour:
