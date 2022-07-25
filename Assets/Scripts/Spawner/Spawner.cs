@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour
 
     private bool _testRoomSpawnDone;
 
-    private void OnEnable()
+    private void Start()
     {
         if (EnvironmentGameSceneManager.IsRunningOnGlasses() && !EnvironmentGameSceneManager.RUNNING_IN_TEST_ROOM) // if in test room, spawn must be in Update
         {

@@ -32,7 +32,7 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinOrCreateRoom("DSDDHALD", new RoomOptions(), TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom("DSDDHAdddddLD", new RoomOptions(), TypedLobby.Default);
     }
 
     public override void OnJoinedRoom()
