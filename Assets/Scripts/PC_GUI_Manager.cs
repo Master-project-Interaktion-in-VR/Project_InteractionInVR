@@ -58,10 +58,12 @@ public class PC_GUI_Manager : MonoBehaviour
         InputGlyphs[CurrentPuzzleIndex].GetComponent<Image>().sprite = GlyphSprites[buttonIndex];
         CurrentPuzzleIndex++;
     }
-
+    private bool alreadyStarted;
     public IEnumerator StartPuzzle(int[] solution)
     {
-
+        if (alreadyStarted)
+            yield return 0;
+        alreadyStarted = true;
         GlyphSprites[0] = Resources.Load<Sprite>("PuzzleGlyphs/Glyph 01");
         GlyphSprites[1] = Resources.Load<Sprite>("PuzzleGlyphs/Glyph 02");
         GlyphSprites[2] = Resources.Load<Sprite>("PuzzleGlyphs/Glyph 03");

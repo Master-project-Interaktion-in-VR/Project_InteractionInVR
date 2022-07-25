@@ -1,5 +1,5 @@
 #define JOIN_TEST_ROOM
-#define ON_OCULUS_LINK
+//#define ON_OCULUS_LINK
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -47,7 +47,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinOrCreateRoom("MyTestRoom", new RoomOptions(), TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom("MyTestRoomdd", new RoomOptions(), TypedLobby.Default);
     }
 
     public override void OnJoinedRoom()
@@ -69,7 +69,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
             RUNNING_IN_TEST_ROOM = true;
             PhotonNetwork.ConnectUsingSettings();
             // invoke assembly success event for testing
-            StartCoroutine(PublishDummyEvent(5));
+            //StartCoroutine(PublishDummyEvent(5));
         }
 #endif
 

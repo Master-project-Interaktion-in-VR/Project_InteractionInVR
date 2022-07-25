@@ -1,5 +1,5 @@
-#define VR_IN_EDITOR
-//#define SKIP_INTRO
+//#define VR_IN_EDITOR
+#define SKIP_INTRO
 
 using System.Collections.Generic;
 using UnityEngine.XR;
@@ -212,6 +212,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         introVideo.Stop();
         menu.SetActive(true);
         ConnectToPhoton();
+    }
+
+    public void StopVideoPcShortcut()
+    {
+        introVideo.Stop();
+        ConnectToPhoton(); 
+        menuCanvas.gameObject.SetActive(true);
     }
 
     private void ConnectToPhoton()

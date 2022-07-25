@@ -24,8 +24,12 @@ public class PhotonSceneLoader : MonoBehaviourPun
     {
         if (Input.GetKey(KeyCode.Q))
         {
-            if (Input.GetKey(KeyCode.T))
+            if (Input.GetKeyUp(KeyCode.T))
             {
+                if (scene.name == "StartScene")
+                {
+                    GameObject.Find("Launcher").GetComponent<Launcher>().StopVideoPcShortcut();
+                }
                 if (scene.name == "EnvironmentGameScene")
                 {
                     Debug.Log("EnvironmentScene skipped");
