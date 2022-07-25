@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static BuildManager;
 
 public class PhotonSceneLoader : MonoBehaviourPun
 {
+    [SerializeField]
+    private AssemblySuccessUnityEvent asue = new AssemblySuccessUnityEvent();
+
+
     private Scene scene;
     PhotonView _photonView;
 
@@ -29,8 +34,16 @@ public class PhotonSceneLoader : MonoBehaviourPun
                 }
                 else if (scene.name == "AssemblyScene")
                 {
-                    Debug.Log("AssemblyScene skipped");
-                    _photonView.RPC("LoadScene", RpcTarget.All, "EndScene");
+                    if (GameObject.Find("Puzzle") == null)
+                    {
+                        Debug.Log("Skip assembly");
+                        asue.Invoke(true);
+                    }
+                    else
+                    {
+                        Debug.Log("Skip puzzle");
+                        _photonView.RPC("LoadScene", RpcTarget.All, "EndScene");
+                    }
                 }
             }
         }

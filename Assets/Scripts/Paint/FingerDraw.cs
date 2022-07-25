@@ -44,15 +44,31 @@ public class FingerDraw : MonoBehaviour
 
     public void OnAssemblySuccess(bool success)
     {
-        _photonView.RPC("OnAssemblySuccessRpc", RpcTarget.Others, success);
+        _photonView.RPC("OnAssemblySuccessPcRpc", RpcTarget.Others, success);
         _customHandInteractionPanZoom.Enabled = true;
+        GetComponent<MeshRenderer>().material = screenOnMaterial;
+        _paintManager.enabled = true;
+    }
+
+    public void OnAssemblySuccessPcShortcut(bool success)
+    {
+        _photonView.RPC("OnAssemblySuccessVrRpc", RpcTarget.Others, success);
         GetComponent<MeshRenderer>().material = screenOnMaterial;
         _paintManager.enabled = true;
     }
 
 
     [PunRPC]
-    private void OnAssemblySuccessRpc(bool success)
+    private void OnAssemblySuccessVrRpc(bool success)
+    {
+        // is on VR
+        _customHandInteractionPanZoom.Enabled = true;
+        GetComponent<MeshRenderer>().material = screenOnMaterial;
+        _paintManager.enabled = true;
+    }
+
+    [PunRPC]
+    private void OnAssemblySuccessPcRpc(bool success)
     {
         // is on PC
         //_customHandInteractionPanZoom.Enabled = true;

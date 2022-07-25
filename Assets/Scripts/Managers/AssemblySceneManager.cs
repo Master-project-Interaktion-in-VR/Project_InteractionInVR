@@ -29,6 +29,9 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     private GameObject puzzlePlane;
 
     [SerializeField]
+    private GameObject drawingEraseButton;
+
+    [SerializeField]
     private List<GameObject> glyphSlots;
 
     [SerializeField]
@@ -106,8 +109,15 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         StartPuzzleVR();
     }
 
+    public void OnAssemblySuccessPcShortcut(bool success)
+    {
+        _photonView.RPC("StartPuzzleVR", RpcTarget.Others);
+    }
+
+    [PunRPC]
     public void StartPuzzleVR()
     {
+        drawingEraseButton.SetActive(true);
         // generate an array with 4 fields filled with random numbers between 0 and 8
         int[] solution = new int[4];
         for (int i = 0; i < solution.Length; i++)
@@ -120,14 +130,15 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         puzzlePlane.SetActive(true);
 
         // send the solution to the other players
-        _photonView.RPC("StartPuzzleRpc", RpcTarget.Others, solution);
+        _photonView.RPC("StartPuzzlePcRpc", RpcTarget.Others, solution);
     }
 
     [PunRPC]
-    public void StartPuzzleRpc(int[] solution)
+    public void StartPuzzlePcRpc(int[] solution)
     {
         if (_pcGuiManager != null) // why??
         {
+            drawingEraseButton.SetActive(true);
             StartCoroutine(_pcGuiManager.StartPuzzle(solution));
         }
         else
