@@ -22,7 +22,7 @@ public class AssistentCameraController : MonoBehaviour
 		private float yVelocity = 0.0f;
 
 		private Camera assistentCamera;
-		private float minFov = 5f;
+		private float minFov = 2f;
 		private float maxFov = 90f;
 		private float sensitivity = 10f;
 		private float zoomSmooth = 0.0f;
