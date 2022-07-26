@@ -10,6 +10,8 @@ public class PlayerMapMarker : MonoBehaviour
     private void LateUpdate()
     {
         transform.position = vrHead.position;
-        transform.rotation = vrHead.rotation; // CONTINUE
+        Vector3 currentRotation = Vector3.zero;
+        currentRotation.y = vrHead.rotation.eulerAngles.y;
+        transform.rotation = Quaternion.Euler(currentRotation);
     }
 }
