@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef8b69cf502c66409b0ee7c54041399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuTriggerActionReference: {fileID: 9175358987284860745, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  menuTriggerActionReference: {fileID: -2573321128131721649, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   holoMenu: {fileID: 8071019953694951809}
   pauseMenuContainer: {fileID: 3035476835299916602}
   confirmMenuContainer: {fileID: 8071019952903300768}

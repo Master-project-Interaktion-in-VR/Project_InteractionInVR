@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using OVR;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,9 @@ public class PhotonSceneLoader : MonoBehaviourPun
 {
     [SerializeField]
     private AssemblySuccessUnityEvent asue = new AssemblySuccessUnityEvent();
+
+    [SerializeField] 
+    private FadeScreen fadeScreen;
 
 
     private Scene scene;
@@ -34,7 +38,7 @@ public class PhotonSceneLoader : MonoBehaviourPun
                 {
                     Debug.Log("EnvironmentScene skipped");
                     //SceneManager.LoadScene("AssemblyScene");
-                    _photonView.RPC("LoadScene", RpcTarget.All, "AssemblyScene");
+                    StartCoroutine(LoadAssemblyScene());
                 }
                 else if (scene.name == "AssemblyScene")
                 {
@@ -46,7 +50,7 @@ public class PhotonSceneLoader : MonoBehaviourPun
                     else
                     {
                         Debug.Log("Skip puzzle");
-                        _photonView.RPC("LoadScene", RpcTarget.All, "EndScene");
+                        StartCoroutine(LoadEndScene());
                     }
                 }
             }
@@ -60,5 +64,21 @@ public class PhotonSceneLoader : MonoBehaviourPun
         {
             PhotonNetwork.LoadLevel(GameScene_name);
         }
+    }
+
+    private IEnumerator LoadAssemblyScene()
+    {
+        fadeScreen.FadeOut();
+        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        
+        _photonView.RPC("LoadScene", RpcTarget.All, "AssemblyScene");
+    }
+    
+    private IEnumerator LoadEndScene()
+    {
+        fadeScreen.FadeOut();
+        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        
+        _photonView.RPC("LoadScene", RpcTarget.All, "EndScene");
     }
 }
