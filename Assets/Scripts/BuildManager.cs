@@ -276,14 +276,7 @@ public class BuildManager : MonoBehaviour
         if (assembledAntenna)
             return;
 
-        foreach (GameObject buildObj in build_objects)
-        {
-            PhotonNetwork.Destroy(buildObj);
-        }
-        foreach (GameObject holdingObject in holdingObjects_List)
-        {
-            PhotonNetwork.Destroy(holdingObject);
-        }
+        DestroyAllBuildObjects();
 
         collisions = new Queue<CollisionEvent>();
         assembledBuildPoints = new List<AssembledBuildPoints>();
@@ -347,6 +340,7 @@ public class BuildManager : MonoBehaviour
             }
         }
         string winText = "WHOOO you have build the Antenna!";
+        DestroyAllBuildObjects();
         assembledAntenna = true;
         Debug.Log(winText);
         ShowTextForSeconds(winText, 5);
@@ -358,14 +352,7 @@ public class BuildManager : MonoBehaviour
     /// </summary>
     public void SpawnAssembledAntenna()
     {
-        foreach (GameObject buildObj in build_objects)
-        {
-            PhotonNetwork.Destroy(buildObj);
-        }
-        foreach (GameObject holdingObject in holdingObjects_List)
-        {
-            PhotonNetwork.Destroy(holdingObject);
-        }
+        DestroyAllBuildObjects();
         Vector3 pos = assembledAntenna_Prefab.transform.position;
         pos += Calibration.table.transform.position;
         GameObject assembledAntennaObject = PhotonNetwork.Instantiate(assembledAntenna_Prefab.name, pos, assembledAntenna_Prefab.transform.rotation);
@@ -415,9 +402,11 @@ public class BuildManager : MonoBehaviour
         foreach (string prefabName in toBeInstantiated)
         {
             GameObject prefab = build_objects_Prefab.Find(x => x.name.Contains(prefabName));
-            Vector3 pos = prefab.transform.localPosition;
+            //Vector3 pos = prefab.transform.localPosition;
+            //pos.y += 0.5f;
+            //pos += Calibration.table.transform.position;
+            Vector3 pos = GameObject.Find("Table/SpawnPoint").transform.position;
             pos.y += 0.5f;
-            pos += Calibration.table.transform.position;
             GameObject new_object = PhotonNetwork.Instantiate(prefabName, pos, prefab.transform.rotation);
             new_object.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
             //build_objects_Prefab.Find(x => x.name == prefabName)
@@ -425,6 +414,17 @@ public class BuildManager : MonoBehaviour
         }
     }
 
+    public void DestroyAllBuildObjects()
+    {
+        foreach (GameObject buildObj in build_objects)
+        {
+            PhotonNetwork.Destroy(buildObj);
+        }
+        foreach (GameObject holdingObject in holdingObjects_List)
+        {
+            PhotonNetwork.Destroy(holdingObject);
+        }
+    }
 
     /// <summary>
     /// Shows the text for seconds on a plane in VR

@@ -49,9 +49,8 @@ public class BoundsController : MonoBehaviour
         {
             foreach (GameObject obj in toRemove)
             {
-                Vector3 pos = Calibration.table.transform.position;
+                Vector3 pos = GameObject.Find("Table/SpawnPoint").transform.position;
                 pos.y += 0.5f;
-                pos.z += 0.5f;
                 obj.GetComponent<Rigidbody>().useGravity = false;
                 //obj.GetComponent<Rigidbody>().isKinematic = true;
 
