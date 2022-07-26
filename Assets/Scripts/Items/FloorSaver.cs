@@ -9,7 +9,7 @@ public class FloorSaver : MonoBehaviour
 
     void Update()
     {
-        bool hitSomething = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 2, 1 << LayerMask.NameToLayer("Drawable"));
+        bool hitSomething = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 5, 1 << LayerMask.NameToLayer("Drawable"));
         if (!hitSomething)
         {
             //Physics.Raycast(transform.position, Vector3.up, out RaycastHit hitUp, 20, 1 << LayerMask.NameToLayer("Drawable"));
