@@ -6,7 +6,7 @@ using UnityEngine;
 public class FadeScreen : MonoBehaviour
 {
     [SerializeField] private bool fadeOnStart = true;
-    [SerializeField] private float fadeDuration = 2;
+    public float fadeDuration = 2;
 
     [SerializeField] private Color fadeColor;
 

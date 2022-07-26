@@ -62,6 +62,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     private PhotonView _photonView;
 
+    [SerializeField] 
+    private FadeScreen fadeScreen;
+    
     public string GameScene_name;
     
 		private bool buttonTriggered;
@@ -261,8 +264,16 @@ public class Launcher : MonoBehaviourPunCallbacks
             infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
         else
         {
-            PhotonNetwork.LoadLevel(GameScene_name);
+            StartCoroutine(LoadGame());
         }
+    }
+
+    private IEnumerator LoadGame()
+    {
+        fadeScreen.FadeOut();
+        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        
+        PhotonNetwork.LoadLevel(GameScene_name);
     }
 
     public void OnClickedQuitButton()
