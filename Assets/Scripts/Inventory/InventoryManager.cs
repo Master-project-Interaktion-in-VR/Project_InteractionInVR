@@ -23,6 +23,8 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<Image> antennaPartsUI;
         
     [SerializeField] private Inventory inventory;
+    
+    [SerializeField] private FadeScreen fadeScreen;
 
     [SerializeField] private Animator detectorAnimator;
     [SerializeField] private Animator glassAnimator;
@@ -66,7 +68,9 @@ public class InventoryManager : MonoBehaviour
 
         leftAnchor = GameObject.FindGameObjectWithTag("Left Inventory Anchor");
         rightAnchor = GameObject.FindGameObjectWithTag("Right Inventory Anchor");
-        snapTurnScript = GameObject.FindGameObjectWithTag("Player").GetComponent<ActionBasedSnapTurnProvider>();
+        
+        var player = GameObject.FindGameObjectWithTag("Player");
+        snapTurnScript = player.GetComponent<ActionBasedSnapTurnProvider>();
 
         inventory.collectedAntennaParts = new bool[maxAntennaParts];
     }
@@ -122,7 +126,7 @@ public class InventoryManager : MonoBehaviour
             itemInRightHand = null;
 
         if (antennaPartsPickedUp == maxAntennaParts)
-            NextLevel();
+            StartCoroutine(NextLevel());
     }
 
     public void PutItemInLeftHand(SelectEnterEventArgs args)
@@ -233,19 +237,22 @@ public class InventoryManager : MonoBehaviour
 
     private void UpdateAntennaPartsUI()
     {
-        for (int i = 0; i < antennaPartsUI.Count; i++)
+        for (int i = 0; i < maxAntennaParts; i++)
         {
             if (inventory.collectedAntennaParts[i])
             {
-                antennaPartsUI[i].color = Color.white;
+                antennaPartsUI[i].color = new Color(0, 1, 0.6f);
             }
         }
 
         antennaPartCounter.text = antennaPartsPickedUp + " / " + maxAntennaParts;
     }
 
-    private void NextLevel()
+    private IEnumerator NextLevel()
     {
+        fadeScreen.FadeOut();
+        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        
         _photonView.RPC("NextLevelRpc", RpcTarget.All);
     }
 
