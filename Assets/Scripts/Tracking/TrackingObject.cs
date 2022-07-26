@@ -6,7 +6,7 @@ using UnityEngine;
 public class TrackingObject 
 {
     [SerializeField] private string userID = "tbd";
-    [SerializeField] private int assemblyAttempts = 0; //TODO: implement
+    [SerializeField] private int buildTries = 0; //TODO: implement
     [SerializeField] private bool usedAutomatedAssembly = false; //TODO: implement
     [SerializeField] private string timeInEnvironmentScene;
     [SerializeField] private string timeInAssemblyScene;
@@ -39,6 +39,16 @@ public class TrackingObject
         this.buttonPressesVibration = buttonPressesVibration;
         this.buttonPressesAssemblyTutorial = buttonPressesAssemblyTutorial;
         this.buttonPressesResetDrawing = buttonPressesResetDrawing;
+    }
+
+    public void SetBuildTries(int buildTries)
+    {
+        this.buildTries = buildTries;
+    }
+
+    public void SetUsedAutomatedAssembly(bool usedAutomatedAssembly)
+    {
+        this.usedAutomatedAssembly = usedAutomatedAssembly;
     }
 
     public void addTrackingToTrackings()

@@ -13,6 +13,8 @@ public class TrackingManager : MonoBehaviour
     private int buttonPressesVibration = 0;
     private int buttonPressesAssemblyTutorial = 0;
     private int buttonPressesResetDrawing = 0;
+    private int buildTries;
+    private bool usedAutomatedAssembly;
 
     private Stopwatch timeInEnvScene = new Stopwatch();
     private Stopwatch timeInAssemblyScene = new Stopwatch();
@@ -69,11 +71,22 @@ public class TrackingManager : MonoBehaviour
     {
         this.buttonPressesResetDrawing += 1;
     }
+    public void SetBuildTries(int buildTries)
+    {
+        this.buildTries = buildTries;
+    }
+
+    public void SetUsedAutomatedAssembly(bool usedAutomatedAssembly)
+    {
+        this.usedAutomatedAssembly = usedAutomatedAssembly;
+    }
 
     private void OnApplicationQuit()
     {
         trackingObject.SetButtonPresses(this.buttonPressesSound, this.buttonPressesVibration, this.buttonPressesAssemblyTutorial, this.buttonPressesResetDrawing);
         trackingObject.addTrackingToTrackings();
+        trackingObject.SetBuildTries(buildTries);
+        trackingObject.SetUsedAutomatedAssembly(usedAutomatedAssembly);
 
         StartCoroutine(Send());
     }

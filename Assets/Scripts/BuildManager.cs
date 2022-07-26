@@ -11,6 +11,7 @@ using UnityEngine.UI;
 
 public class BuildManager : MonoBehaviour
 {
+    private TrackingManager trackingManager;
     [Serializable]
     public class AssemblySuccessUnityEvent : UnityEvent<bool>
     {
@@ -79,6 +80,11 @@ public class BuildManager : MonoBehaviour
         handVisualisation.OnToggleHandJoint();
 
         holdingObjects_List = new List<GameObject>();
+    }
+
+    private void Start()
+    {
+        trackingManager = FindObjectOfType<TrackingManager>();
     }
 
     // Update is called once per frame
@@ -344,6 +350,7 @@ public class BuildManager : MonoBehaviour
         assembledAntenna = true;
         Debug.Log(winText);
         ShowTextForSeconds(winText, 5);
+        trackingManager.SetBuildTries(buildTries);
         assemblySuccess.Invoke(true);
     }
 
@@ -352,6 +359,7 @@ public class BuildManager : MonoBehaviour
     /// </summary>
     public void SpawnAssembledAntenna()
     {
+        trackingManager.SetUsedAutomatedAssembly(true);
         DestroyAllBuildObjects();
         Vector3 pos = assembledAntenna_Prefab.transform.position;
         pos += Calibration.table.transform.position;
