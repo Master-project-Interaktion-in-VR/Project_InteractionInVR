@@ -87,7 +87,8 @@ public class Launcher : MonoBehaviourPunCallbacks
             //cylinderMenuCanvas.GetComponent<MeshRenderer>().enabled = false;
             menuCanvas.worldCamera = pcCamera;
             menuCanvas.gameObject.SetActive(false);
-            menuCanvas.transform.position = new Vector3(-0.61f, 5.78f, -12.72f);
+            menuCanvas.transform.position = new Vector3(-0.449f, 3.465f, 0.804f);
+            menuCanvas.transform.rotation = Quaternion.Euler(new Vector3(0f, -18.4f, 0f));
         }
 #endif
     }
