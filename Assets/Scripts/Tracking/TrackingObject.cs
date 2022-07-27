@@ -20,15 +20,15 @@ public class TrackingObject
 
     public void SetTimeInEnvironmentScene(TimeSpan timeInEnvironmentScene)
     {
-        this.timeInEnvironmentScene = String.Format("{0:00}:{1:00}.{2:00}",
-            timeInEnvironmentScene.Minutes, timeInEnvironmentScene.Seconds,
+        this.timeInEnvironmentScene = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            timeInEnvironmentScene.Hours, timeInEnvironmentScene.Minutes, timeInEnvironmentScene.Seconds,
             timeInEnvironmentScene.Milliseconds / 10);
     }
 
     public void SetTimeInAssemblyScene(TimeSpan timeInAssemblyScene)
     {
-        this.timeInAssemblyScene = String.Format("{0:00}:{1:00}.{2:00}",
-            timeInAssemblyScene.Minutes, timeInAssemblyScene.Seconds,
+        this.timeInAssemblyScene = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            timeInAssemblyScene.Hours, timeInAssemblyScene.Minutes, timeInAssemblyScene.Seconds,
             timeInAssemblyScene.Milliseconds / 10);
     }
 

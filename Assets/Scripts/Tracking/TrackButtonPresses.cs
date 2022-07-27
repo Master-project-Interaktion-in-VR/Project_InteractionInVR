@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TrackButtonPresses : MonoBehaviour
 {
-    TrackingManager trackingManager;
+    [SerializeField]
+    private TrackingManager trackingManager;
 
     private void Start()
     {

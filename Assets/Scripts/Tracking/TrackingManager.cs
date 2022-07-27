@@ -6,18 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class TrackingManager : MonoBehaviour
 {
+    [SerializeField]
     private TrackingObject trackingObject;
+
+    [SerializeField]
     const string url = "https://fixit-bot.up.railway.app/";
 
-    private int buttonPressesSound = 0;
-    private int buttonPressesVibration = 0;
-    private int buttonPressesAssemblyTutorial = 0;
-    private int buttonPressesResetDrawing = 0;
-    private int buildTries;
-    private bool usedAutomatedAssembly;
+    [SerializeField] private int buttonPressesSound = 0;
+    [SerializeField] private int buttonPressesVibration = 0;
+    [SerializeField] private int buttonPressesAssemblyTutorial = 0;
+    [SerializeField] private int buttonPressesResetDrawing = 0;
+    [SerializeField] private int buildTries;
+    [SerializeField] private bool usedAutomatedAssembly;
 
-    private Stopwatch timeInEnvScene = new Stopwatch();
-    private Stopwatch timeInAssemblyScene = new Stopwatch();
+    [SerializeField] private Stopwatch timeInEnvScene = new Stopwatch();
+    [SerializeField] private Stopwatch timeInAssemblyScene = new Stopwatch();
 
     void OnEnable()
     {

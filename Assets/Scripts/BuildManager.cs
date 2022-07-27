@@ -11,7 +11,9 @@ using UnityEngine.UI;
 
 public class BuildManager : MonoBehaviour
 {
+    [SerializeField]
     private TrackingManager trackingManager;
+
     [Serializable]
     public class AssemblySuccessUnityEvent : UnityEvent<bool>
     {
