@@ -68,16 +68,16 @@ public class PhotonSceneLoader : MonoBehaviourPun
 
     private IEnumerator LoadAssemblyScene()
     {
-        fadeScreen.FadeOut();
-        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        //fadeScreen.FadeOut();
+        yield return new WaitForSeconds(1);
         
         _photonView.RPC("LoadScene", RpcTarget.All, "AssemblyScene");
     }
     
     private IEnumerator LoadEndScene()
     {
-        fadeScreen.FadeOut();
-        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        //fadeScreen.FadeOut();
+        yield return new WaitForSeconds(1);
         
         _photonView.RPC("LoadScene", RpcTarget.All, "EndScene");
     }

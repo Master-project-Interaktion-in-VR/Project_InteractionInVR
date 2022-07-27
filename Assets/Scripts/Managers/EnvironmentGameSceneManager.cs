@@ -1,5 +1,5 @@
 #define JOIN_TEST_ROOM
-//#define ON_OCULUS_LINK
+#define ON_OCULUS_LINK
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -26,6 +26,8 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private InputController paintInputController;
+
+    [SerializeField] private GameObject minimapCamera;
 
 
 
@@ -58,6 +60,9 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         if (!Application.isMobilePlatform)
         {
             ConfigurePcView();
+        }
+        else {
+            minimapCamera.SetActive(false);
         }
 #endif
         // TODO request controllers ownership????
