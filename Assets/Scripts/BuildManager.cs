@@ -322,7 +322,16 @@ public class BuildManager : MonoBehaviour
         // checking all assembled Build Points
         foreach (AssembledBuildPoints assembledBuildPoint in assembledBuildPoints)
         {
-            bool correctAssembling = CollisionManager.correct_AssembledBuildPoints.Contains((assembledBuildPoint.buildPoint1.name, assembledBuildPoint.buildPoint2.name));
+            bool correctAssembling = false;
+            try
+            {
+                correctAssembling = CollisionManager.correct_AssembledBuildPoints.Contains((assembledBuildPoint.buildPoint1.name, assembledBuildPoint.buildPoint2.name));
+            }
+            catch (Exception e)
+            {
+                Debug.Log("catched exception in BuildManager CheckAssembly(): " + e.Message);
+            }
+
             if (!correctAssembling)
             {
                 buildTries++;
@@ -348,12 +357,18 @@ public class BuildManager : MonoBehaviour
             }
         }
         string winText = "WHOOO you have build the Antenna!";
-        DestroyAllBuildObjects();
+        StartCoroutine(DespawnAfterSeconds(1f));
         assembledAntenna = true;
         Debug.Log(winText);
-        ShowTextForSeconds(winText, 5);
+        //ShowTextForSeconds(winText, 5);
         trackingManager.SetBuildTries(buildTries);
         assemblySuccess.Invoke(true);
+    }
+
+    IEnumerator DespawnAfterSeconds(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        DestroyAllBuildObjects();
     }
 
     /// <summary>
