@@ -146,7 +146,7 @@ MonoBehaviour:
   leftController: {fileID: 0}
   rightController: {fileID: 0}
   vibrationDuration: 0.2
-  vibrationIntensity: 0.2
+  vibrationIntensity: 0.6
   InventoryManager: {fileID: 0}
 --- !u!114 &2173707552295123185
 MonoBehaviour:
