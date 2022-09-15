@@ -1,5 +1,5 @@
 //#define VR_IN_EDITOR
-#define SKIP_INTRO
+//#define SKIP_INTRO
 
 using System.Collections.Generic;
 using UnityEngine.XR;
@@ -123,16 +123,19 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))  //FOR DEVICE SIMULATOR
-        {
-            VideoStopper();
-        }
-        else if (Input.GetKeyUp(KeyCode.UpArrow))
-        {
-            CancelVideoStopper();
-        }
+
 
 #if UNITY_EDITOR
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            if (Input.GetKeyUp(KeyCode.T))
+            {
+                Debug.Log("Skipped Intro Video");
+                StopVideoPcShortcut();
+            }
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             const float maxDistance = 100f;
