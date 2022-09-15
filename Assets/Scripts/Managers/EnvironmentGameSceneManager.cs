@@ -3,6 +3,7 @@
 
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
@@ -29,8 +30,9 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
 
     [SerializeField] private GameObject minimapCamera;
 
+    private PhotonView _photonView;
 
-
+    #region Photon Callbacks
 
     public override void OnConnectedToMaster()
     {
@@ -43,8 +45,12 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         Debug.Log("Joined Test room");
     }
 
+    #endregion
+
     void Awake()
     {
+        _photonView = GetComponent<PhotonView>();
+
 #if JOIN_TEST_ROOM
         if (!PhotonNetwork.IsConnected)
         {
@@ -68,6 +74,20 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         // TODO request controllers ownership????
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Q))
+        {
+            if (Input.GetKeyUp(KeyCode.T))
+            {
+                Debug.Log("EnvironmentScene skipped");
+                //SceneManager.LoadScene("AssemblyScene");
+                StartCoroutine(LoadAssemblyScene());
+            }
+        }
+    }
+
+
     private void ConfigurePcView()
     {
         // run this code for PC view
@@ -88,7 +108,24 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         paintInputController.enabled = false;
     }
 
+    private IEnumerator LoadAssemblyScene()
+    {
+        //fadeScreen.FadeOut();
+        //yield return new WaitForSeconds(fadeScreen.fadeDuration);
 
+        _photonView.RPC("LoadScene", RpcTarget.All, "AssemblyScene");
+        yield return null;
+    }
+
+
+    [PunRPC]
+    public void LoadScene(string sceneName)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel(sceneName);
+        }
+    }
 
     public static bool IsRunningOnGlasses()
     {

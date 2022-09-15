@@ -93,6 +93,47 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
 #endif
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Q))
+        {
+            if (Input.GetKeyUp(KeyCode.T))
+            {
+                if (GameObject.Find("Puzzle") == null)
+                {
+                    Debug.Log("Skip assembly");
+                    dummyEvent.Invoke(true);
+                }
+                else
+                {
+                    Debug.Log("Skip puzzle");
+                    StartCoroutine(LoadEndScene());
+                }
+            }
+        }
+    }
+
+
+    private IEnumerator LoadEndScene()
+    {
+        //fadeScreen.FadeOut();
+        //yield return new WaitForSeconds(fadeScreen.fadeDuration);
+
+        _photonView.RPC("LoadScene", RpcTarget.All, "EndScene");
+        yield return null;
+    }
+
+
+    [PunRPC]
+    public void LoadScene(string sceneName)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel(sceneName);
+        }
+    }
+
+
     private void ConfigurePcView()
     {
         // run this code for PC view
