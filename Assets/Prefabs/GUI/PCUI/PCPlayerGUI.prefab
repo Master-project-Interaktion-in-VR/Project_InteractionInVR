@@ -1793,7 +1793,7 @@ MonoBehaviour:
   target: {fileID: 0}
   PCCursor: {fileID: 4020484844733338699}
   speed: 0.1
-  mouseSpeed: 5
+  mouseSpeed: 0.1
 --- !u!1 &1839427137699976988
 GameObject:
   m_ObjectHideFlags: 0

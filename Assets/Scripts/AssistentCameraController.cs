@@ -48,7 +48,7 @@ public class AssistentCameraController : MonoBehaviour
 						pitch -= mouseSpeed * Input.GetAxis("Mouse Y");
 
 
-						fov += Input.GetAxis("Mouse ScrollWheel") * sensitivity;
+						fov -= Input.GetAxis("Mouse ScrollWheel") * sensitivity;
 
 				}
 				else

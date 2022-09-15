@@ -36,6 +36,9 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private List<Sprite> glyphSprites;
+    
+    [SerializeField] 
+    private FadeScreen fadeScreen;
 
     [Header("Debug")]
     [SerializeField]
@@ -150,6 +153,14 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
 
     public void OnPuzzleSuccess(bool success)
     {
+        StartCoroutine(PuzzleSuccess());
+    }
+
+    private IEnumerator PuzzleSuccess()
+    {
+        fadeScreen.FadeOut();
+        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        
         _photonView.RPC("PuzzleSolved", RpcTarget.All);
     }
 

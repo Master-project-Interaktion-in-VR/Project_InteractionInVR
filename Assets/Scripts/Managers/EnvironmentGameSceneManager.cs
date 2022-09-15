@@ -1,5 +1,5 @@
 #define JOIN_TEST_ROOM
-#define ON_OCULUS_LINK
+//#define ON_OCULUS_LINK
 
 using Photon.Pun;
 using Photon.Realtime;
