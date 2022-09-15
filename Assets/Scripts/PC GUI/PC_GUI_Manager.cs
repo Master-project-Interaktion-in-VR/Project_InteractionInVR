@@ -53,6 +53,8 @@ public class PC_GUI_Manager : MonoBehaviour
 
     private void PuzzleButtonOnClick(int buttonIndex)
     {
+        if (CurrentPuzzleIndex >= PuzzleSolution.Length)
+            return;
         Debug.Log("You have clicked the button #" + buttonIndex, PuzzleButtons[buttonIndex]);
         _currentlyEntered[CurrentPuzzleIndex] = buttonIndex;
         InputGlyphs[CurrentPuzzleIndex].GetComponent<Image>().sprite = GlyphSprites[buttonIndex];

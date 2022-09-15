@@ -125,7 +125,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
 
 
     [PunRPC]
-    public static void LoadScene(string sceneName)
+    public void LoadScene(string sceneName)
     {
         if (PhotonNetwork.IsMasterClient)
         {
