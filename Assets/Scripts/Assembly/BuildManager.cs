@@ -432,7 +432,7 @@ public class BuildManager : MonoBehaviour
             //pos += Calibration.table.transform.position;
             Vector3 pos = GameObject.Find("Table/SpawnPoint").transform.position;
             pos.y += 0.5f;
-            GameObject new_object = PhotonNetwork.Instantiate(prefabName, pos, prefab.transform.rotation);
+            GameObject new_object = PhotonNetwork.Instantiate("AssemblyAntennaPieces/" + prefabName, pos, prefab.transform.rotation);
             new_object.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
             //build_objects_Prefab.Find(x => x.name == prefabName)
             build_objects.Add(new_object);
