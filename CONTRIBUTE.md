@@ -1,33 +1,21 @@
 # Projekt Setup
-Dieses Projekt wurde mit Unity 2021.3.0f1 erstellt. Alle verwendeten Assets befinden sich in der genutzen Version im `ImportedAssets` Ordner in google drive.
-<aside>
-💡 Um das Projekt zum laufen zu bekommen, müssen folgende initiale Schritte ausgeführt werden. Sobald sich Elemente in `ImportedAssets` ändern, müssen die Schritte wiederholt werden.
+Dieses Projekt wurde mit Unity 2021.3.0f1 erstellt.
 
+<aside>
+💡 Um mit der Entwicklung zu starten, müssen folgende initiale Schritte ausgeführt werden. Der Ordner `ImportedAssets` ist nicht in Git enthalten. Deswegen müssen verwendete Assets in Unity in den `ImportedAssets` Ordner importiert und dann selbstständig zwischen den Teammitgliedern synchronisiert werden. 
 </aside>
 
 1. Projekt pullen bzw. clonen
-2. alle Inhalte des Ordners`ImportedAssets` löschen
-3. alle Inhalte des Ordners `Library` löschen
-4. Projekt in Unity öffnen
-5. **Unity-Package** importieren 
-    
-    [https://drive.google.com/file/d/1x5rHdCF8eu-ChTs9i_80rtx7WvA7Tsja/view?usp=sharing](https://drive.google.com/file/d/1x5rHdCF8eu-ChTs9i_80rtx7WvA7Tsja/view?usp=sharing)
-    
-6. Start und Endscene Video importieren
-    
-    [https://drive.google.com/file/d/1HGnyGWBqK896eOz__5YSctF4kY25UIPD/view?usp=sharing](https://drive.google.com/file/d/1HGnyGWBqK896eOz__5YSctF4kY25UIPD/view?usp=sharing)
-    
+2. Projekt in Unity öffnen, auftretende Fehler ignorieren (diese entstehen durch fehlende Referenzen, die noch importiert werden)
+3. Assets > Import Package > Custom Package.. > ImportedAssets.unitypackage auswählen und importieren
+4. MRTK Project Configurator: Always Skip Setup auswählen
 
+Wenn bei einem bestehenden Projekt Probleme / Fehler auftreten, kann es helfen, den Library Ordner des Projektes zu löschen.
+    
 # Git-Workflow
-- Mainscene von der alle ihre Testscenes abzweigen
-- Übersicht an Testscenes (welche Assets/Mechaniken/Packages werden jeweils neu gebraucht)
-- Merging
 
-## “Regeln”
-
-- Jede/r erstellt sich aus dem Main Branch einen eigenen Branch, den er folgendermaßen bennent: ZuständigerName_Funktionalität → bsp: Emir_VRMovement
-- Darin dupliziert er/sie die aktuelle Main-Scene (oder bei Bedarf eine andere Scene) und benennt sie wieder entsprechend um: AbgeleiteteScene_ZuständigerName_Funktionalität → bsp: Main_Emir_VRMovement
-- Wenn die Funktionalität soweit fertig ist und alles fehlerfrei läuft, kann ein Pull-Request auf den Main-Branch gestellt werden. Der Zuständige überprüft dies zeitnah und merged den Branch auf die Main. Von dort aus kann der aktuelle Main-Stand gepullt und wiederum ein eigener Branch erstellt werden.
+- Jegliches Arbeiten am Projekt geschieht auf gesonderten Branches. Z.B.: ZuständigerName_Feature: Emir_VRMovement
+- Wenn die Funktionalität soweit fertig ist und alles fehlerfrei läuft, kann ein Pull-Request auf den Main-Branch gestellt werden. Alle Änderungen vom Main-Branch müssen in den eigenen Branch integriert werden. Die Änderungen werden zeitnah überprüft und der PR gemerged.
 
 
 ## Unity Ordner-Struktur
@@ -41,8 +29,7 @@ Dieses Projekt wurde mit Unity 2021.3.0f1 erstellt. Alle verwendeten Assets befi
     - Models - .blend, .fbx
     - MRTK
     - Prefabs - .prefab
-    - Paricles - .prefab von Particle Objekten
-    - Resources
+    - Resources (Prefabs, die von Photon instanziiert werden sollen)
     - Scenes - .scene
     - Scripts - .cs
     - Textures - .png, .jpg, .renderTexture
