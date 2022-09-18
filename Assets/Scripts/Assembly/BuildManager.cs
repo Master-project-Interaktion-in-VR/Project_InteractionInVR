@@ -297,7 +297,7 @@ public class BuildManager : MonoBehaviour
             Vector3 pos = buildObj_prefab.transform.localPosition;
             pos.y += 1f;
             pos += Calibration.table.transform.position;
-            GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.localRotation);
+            GameObject obj = PhotonNetwork.Instantiate("AssemblyAntennaPieces/" + buildObj_prefab.name, pos, buildObj_prefab.transform.localRotation);
             obj.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
             build_objects.Add(obj);
         }
