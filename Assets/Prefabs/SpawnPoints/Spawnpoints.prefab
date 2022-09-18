@@ -60,15 +60,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toSpawn:
-  - {fileID: 6310099699761181848, guid: 864f6dc782e26364084d655a3e557156, type: 3}
-  - {fileID: 6584729588074971016, guid: 8cb4cfe32ee47bb41b60afbf92201045, type: 3}
-  - {fileID: 4993325403161982641, guid: 6030460a15eb46346975b123a69922a0, type: 3}
-  - {fileID: 7099664491167847007, guid: abc80a6f8d31af14c98ee5c4bd679546, type: 3}
-  - {fileID: 5027921833477864262, guid: 62f5b1c55ab7939409553476c5606ca9, type: 3}
-  - {fileID: 5027921833477864262, guid: d37c0d5e4e0c6564aa9ddab95d2a279d, type: 3}
+  - {fileID: 6310099699761181848, guid: 9cfc8f94da699754d812177db0b1c829, type: 3}
+  - {fileID: 6584729588074971016, guid: 411fdf0ad15a23b4bbf6c39ac2c07375, type: 3}
+  - {fileID: 4993325403161982641, guid: 600ab9e9b372cb142b15da7cc85d0fcf, type: 3}
+  - {fileID: 7099664491167847007, guid: 30bb652ac17466046b99bfc38fe8dee0, type: 3}
+  - {fileID: 5027921833477864262, guid: 8105b6d4a008b47458baf333e10729b1, type: 3}
+  - {fileID: 5027921833477864262, guid: bf5e26ea82b3f8b4ca5150ea1cf38578, type: 3}
   saveSpawnPoint: {fileID: 7889287097973570960}
   antennaOriginsParent: {fileID: 0}
-  originPrefab: {fileID: 1186082506581260457, guid: d029d291f686763488ba6ab4f0b972aa, type: 3}
+  originPrefab: {fileID: 1186082506581260457, guid: 4e1e635519a92134c90efebb4c413f45, type: 3}
 --- !u!1001 &5782102398141115411
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -82,7 +82,7 @@ public class Calibration : MonoBehaviour
             {
                 Vector3 pos = buildObj_prefab.transform.position;
                 pos.y += 1;
-                GameObject obj = PhotonNetwork.Instantiate(buildObj_prefab.name, pos, buildObj_prefab.transform.rotation);
+                GameObject obj = PhotonNetwork.Instantiate("AssemblyAntennaPieces/" + buildObj_prefab.name, pos, buildObj_prefab.transform.rotation);
                 obj.GetComponent<NetworkHelper>().SetParent(antennaPieces.transform);
                 BuildManager.build_objects.Add(obj);
             }
