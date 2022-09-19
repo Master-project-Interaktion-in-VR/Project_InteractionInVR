@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Copied from samples
+/// </summary>
 public class HandVisibilityToggle : MonoBehaviour
 {
     private SkinnedMeshRenderer handModel;

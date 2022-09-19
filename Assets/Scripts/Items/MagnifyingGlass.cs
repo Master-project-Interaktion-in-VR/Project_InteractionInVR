@@ -1,7 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Magnifying glasses behavior. 
+/// Flip the magnifying camera if the player rotates the glasses
+/// </summary>
 public class MagnifyingGlass : MonoBehaviour
 {
     [SerializeField]
@@ -28,7 +30,6 @@ public class MagnifyingGlass : MonoBehaviour
         //Debug.DrawRay(lensCamera.position, lensForward);
 
         float facing = Vector3.Dot(vrForward.normalized, lensForward.normalized);
-
         //Debug.Log(facing);
 
         if (!_isBackwards && facing < 0)

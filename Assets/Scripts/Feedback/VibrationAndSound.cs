@@ -33,11 +33,17 @@ public class VibrationAndSound : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Trigger the vibration for the controller of the VR player
+    /// </summary>
     public void TriggerVibration()
     {
         _photonView.RPC("TriggerVibrationRpc", RpcTarget.All);
     }
 
+    /// <summary>
+    /// Trigger the sound for every player.
+    /// </summary>
     public void TriggerSound()
     {
         _photonView.RPC("TriggerSoundRpc", RpcTarget.All);
@@ -47,6 +53,7 @@ public class VibrationAndSound : MonoBehaviour
     [PunRPC]
     public void TriggerVibrationRpc()
     {
+        // only trigger sound if detector in hand
         if (InventoryManager.DetectorIsInLeftHand())
             leftController.SendHapticImpulse(vibrationIntensity, vibrationDuration);
         else if (InventoryManager.DetectorIsInRightHand())

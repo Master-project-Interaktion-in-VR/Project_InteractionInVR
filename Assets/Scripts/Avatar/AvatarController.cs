@@ -3,25 +3,9 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// https://blog.immersive-insiders.com/animate-avatar-for-vr-in-unity/
+/// Code base from https://blog.immersive-insiders.com/animate-avatar-for-vr-in-unity/
+/// Then modified
 /// </summary>
-
-
-[System.Serializable]
-public class MapTransforms
-{
-    public Transform vrTarget;
-    public Transform ikTarget;
-
-    public Vector3 trackingPositionOffset;
-    public Vector3 trackingRotationOffset;
-
-    public void VrMapping()
-    {
-        ikTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
-        ikTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
-    }
-}
 
 public class AvatarController : MonoBehaviour
 {
@@ -70,11 +54,6 @@ public class AvatarController : MonoBehaviour
         }
     }
 
-
-    private void OnEnable()
-    {
-    }
-
     private void LateUpdate()
     {
         Physics.Raycast(ikHead.position, Vector3.down, out RaycastHit hitFloor, 10, 1 << LayerMask.NameToLayer("Drawable"));
@@ -103,4 +82,20 @@ public class AvatarController : MonoBehaviour
         rightHand.VrMapping();
     }
 
+}
+
+[Serializable]
+public class MapTransforms
+{
+    public Transform vrTarget;
+    public Transform ikTarget;
+
+    public Vector3 trackingPositionOffset;
+    public Vector3 trackingRotationOffset;
+
+    public void VrMapping()
+    {
+        ikTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
+        ikTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
+    }
 }

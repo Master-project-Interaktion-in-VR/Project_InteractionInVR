@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
+/// <summary>
+/// Code base from https://www.youtube.com/watch?v=tgacoq7qhEo
+/// </summary>
 public class AnimationController : MonoBehaviour
 {
     [SerializeField]

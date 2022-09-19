@@ -1,6 +1,10 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Invoke events for finger sensitive menu buttons.
+/// Colliders must be at the tip of the fingers.
+/// </summary>
 public class CloseToUICollision : MonoBehaviour
 {
     public static event Action<GameObject> OnEnterUIArea = delegate { };

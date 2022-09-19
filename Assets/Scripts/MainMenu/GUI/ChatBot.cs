@@ -1,9 +1,11 @@
-using Oculus.Interaction;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
+/// <summary>
+/// Simple simulation of a spacecraft onboard system posting messages
+/// to the info panel and updating status lights.
+/// </summary>
 public class ChatBot : MonoBehaviour
 {
     [SerializeField]
@@ -18,7 +20,7 @@ public class ChatBot : MonoBehaviour
     private TextPanel _textPanel;
     private bool _ready;
 
-    void Awake()
+    private void Awake()
     {
         _textPanel = GetComponent<TextPanel>();
     }
@@ -28,6 +30,18 @@ public class ChatBot : MonoBehaviour
         StartCoroutine(WelcomeMessage());
     }
 
+    private void Update()
+    {
+        if (!_ready)
+            return;
+
+        if (Random.value < Time.deltaTime * messageProbabilityPerSecond)
+            StartCoroutine(WriteRandomLine());
+    }
+
+    /// <summary>
+    /// Print welcome message and turn on indicator lights gradually.
+    /// </summary>
     private IEnumerator WelcomeMessage()
     {
         yield return new WaitForSeconds(Random.Range(3, 8));
@@ -54,19 +68,15 @@ public class ChatBot : MonoBehaviour
         _ready = true;
     }
 
-
-    void Update()
-    {
-        if (!_ready)
-            return;
-
-        if (Random.value < Time.deltaTime * messageProbabilityPerSecond)
-            StartCoroutine(WriteRandomLine());
-    }
-
+    /// <summary>
+    /// Post one of the predefined chat lines to the text panel
+    /// and wait an arbitrary time.
+    /// </summary>
     private IEnumerator WriteRandomLine()
     {
         _ready = false;
+        if (arbitraryLines.Count <= 0)
+            yield break;
         int randIndex = Random.Range(0, arbitraryLines.Count - 1);
         _textPanel.WriteLine(arbitraryLines[randIndex]);
         arbitraryLines.Remove(arbitraryLines[randIndex]);

@@ -2,18 +2,24 @@ using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// At game start spawn the antenna items at random spots.
+/// Spawn points are randomly selected from the predefined locations.
+/// Spawn points must be child gameobjects.
+/// Items must be spawned at the root of the hierarchy in order for Photon to work.
+/// </summary>
 public class Spawner : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, Tooltip("Items to be spawned")]
     private List<GameObject> toSpawn;
 
-    [SerializeField]
+    [SerializeField, Tooltip("Always spawn an item here")]
     private Transform saveSpawnPoint;
 
-    [SerializeField]
+    [SerializeField, Tooltip("Parent object to group the item origins in")]
     private GameObject antennaOriginsParent;
 
-    [SerializeField]
+    [SerializeField, Tooltip("Origin object to be used for each item")]
     private GameObject originPrefab;
 
 
@@ -42,6 +48,9 @@ public class Spawner : MonoBehaviour
         SpawnAll(spawnPoints);
     }
 
+    /// <summary>
+    /// Get available spawn points from the children of this gameobject.
+    /// </summary>
     private List<Vector3> GetSpawnPoints()
     {
         List<Vector3> spawnPoints = new List<Vector3>();
@@ -52,6 +61,9 @@ public class Spawner : MonoBehaviour
         return spawnPoints;
     }
 
+    /// <summary>
+    /// Spawn all items at different random locations.
+    /// </summary>
     private void SpawnAll(List<Vector3> spawnPoints)
     {
         List<GameObject> temp = new List<GameObject>(toSpawn);
@@ -68,6 +80,9 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawn an item and its origin via Photon.
+    /// </summary>
     private void SpawnItem(GameObject item, Vector3 position)
     {
         GameObject spawned = PhotonNetwork.Instantiate("EnvironmentAntennaPieces/" + item.name, position, Quaternion.identity);

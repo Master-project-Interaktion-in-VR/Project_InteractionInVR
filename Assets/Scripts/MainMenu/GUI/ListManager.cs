@@ -1,10 +1,11 @@
-using Photon.Pun;
-using Photon.Realtime;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// List manager for menu lists
+/// This class is specially designed for button lists of rooms.
+/// </summary>
 public class ListManager : MonoBehaviour
 {
     [SerializeField]
@@ -19,17 +20,10 @@ public class ListManager : MonoBehaviour
         _listItemNames = new List<string>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    /// <summary>
+    /// Refresh the list potentially adding new items to the list. 
+    /// In this case rooms.
+    /// </summary>
     public Dictionary<string, Button> Refresh(List<string> newRooms)
     {
         Dictionary<string, Button> addedItems = new Dictionary<string, Button>();
@@ -52,6 +46,10 @@ public class ListManager : MonoBehaviour
         return addedItems;
     }
 
+    /// <summary>
+    /// Remove an item from the list and destroy its button gameobject.
+    /// In this case a room.
+    /// </summary>
     public void RemoveItem(string roomName)
     {
         if (!_listItemNames.Contains(roomName))
@@ -62,6 +60,11 @@ public class ListManager : MonoBehaviour
         Destroy(toBeDestroyed);
     }
 
+    /// <summary>
+    /// Add a specific item to the list and create a button for it.
+    /// </summary>
+    /// <param name="separator">Whether a separator should be added</param>
+    /// <returns>the button created</returns>
     public Button AddItem(string roomName, bool separator=true)
     {
         GameObject newListItem = Instantiate(listItem, transform);
@@ -70,16 +73,7 @@ public class ListManager : MonoBehaviour
         if (!separator)
             newListItem.transform.GetChild(newListItem.transform.childCount - 1).gameObject.SetActive(false);
 
-
         newListItem.name = roomName;
-
-        // disable separator of last list item
-        //if (_listItems.Count > 0)
-        //{
-        //    GameObject secondLastItem = _listItems[_listItems.Count - 1];
-        //    secondLastItem.transform.GetChild(secondLastItem.transform.childCount - 1).gameObject.SetActive(true);
-        //}
-        //newListItem.transform.GetChild(newListItem.transform.childCount - 1).gameObject.SetActive(false);
 
         _listItems.Insert(0, newListItem);
         _listItemNames.Add(roomName);

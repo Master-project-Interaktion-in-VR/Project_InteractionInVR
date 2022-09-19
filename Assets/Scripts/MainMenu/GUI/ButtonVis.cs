@@ -1,13 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// Callbacks for button events changing the 
+/// button visuals of VR menu buttons.
+/// Types of events: hover, unhover, down, up.
+/// Subscribe to pointer events of the controller.
+/// </summary>
 public class ButtonVis : MonoBehaviour
 {
-
     [SerializeField]
     private Color normal;
 
@@ -22,7 +25,7 @@ public class ButtonVis : MonoBehaviour
 
     private EventTrigger _trigger;
 
-    void Awake()
+    private void Awake()
     {
         _trigger = GetComponent<EventTrigger>();
 
