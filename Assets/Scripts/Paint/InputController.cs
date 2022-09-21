@@ -12,6 +12,9 @@ using Microsoft.MixedReality.Toolkit.UI;
 
 namespace XDPaint.Controllers
 {
+	/// <summary>
+	/// Modified from XDPaint plugin to work with VR.
+	/// </summary>
 	public class InputController : Singleton<InputController>
 	{
 		public delegate void OnInputUpdate();
@@ -34,8 +37,6 @@ namespace XDPaint.Controllers
 
 		[SerializeField]
 		private Transform leftPenTransform;
-		//[SerializeField]
-		//private Camera drawCamera;
 
 		[SerializeField]
 		private float rayLength;
@@ -94,15 +95,13 @@ namespace XDPaint.Controllers
 #endif
 		}
 
-
 		void Update()
 		{
-
+			// ----- MODIFIED VR part -----
 			if (IsVRMode)
 			{
 				if (fingerDrawing)
 					return;
-
 
 				if (!rightHandedController.isValid || !leftHandedController.isValid)
 				{
@@ -165,7 +164,6 @@ namespace XDPaint.Controllers
 					{
 						Vector3 screenPoint = Camera.WorldToScreenPoint(hit.point);
 						_leftLastScreenPoint = screenPoint;
-						//Debug.LogError("p: " + screenPoint);
 
 						if (downLeft)
 						{
@@ -193,7 +191,6 @@ namespace XDPaint.Controllers
 					}
 					else
 					{
-						//Debug.LogError("up: " + _lastScreenPoint);
 						if (OnMouseUp != null)
 						{
 							OnMouseUp(_leftLastScreenPoint);
@@ -249,7 +246,6 @@ namespace XDPaint.Controllers
 					}
 					else
 					{
-						//Debug.LogError("up: " + _lastScreenPoint);
 						if (OnMouseUp != null)
 						{
 							OnMouseUp(_rightLastScreenPoint);
@@ -257,6 +253,7 @@ namespace XDPaint.Controllers
 					}
 				}
             }
+			// ----- MODIFIED END -----
 			else
 			{
 				//Touch / Mouse
@@ -344,6 +341,9 @@ namespace XDPaint.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Try to initialize the controllers.
+		/// </summary>
 		private void TryInitialize()
 		{
 			List<InputDevice> allDevices = new List<InputDevice>();

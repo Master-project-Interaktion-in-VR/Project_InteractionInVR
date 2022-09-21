@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using XDPaint;
 
+/// <summary>
+/// Enable drawing with the index finger on the drawing screen.
+/// </summary>
 public class FingerDraw : MonoBehaviour
 {
     [SerializeField]
@@ -26,7 +29,7 @@ public class FingerDraw : MonoBehaviour
     private CustomHandInteractionPanZoom _customHandInteractionPanZoom;
 
 
-    void Awake()
+    private void Awake()
     {
         _paintManager = GetComponent<PaintManager>();
         _paintManager.OnInitialized += OnPaintManagerInitialized;
@@ -37,24 +40,35 @@ public class FingerDraw : MonoBehaviour
         _customHandInteractionPanZoom.Enabled = false;
     }
 
+    /// <summary>
+    /// Callback for paint manager (XDPaint plugin).
+    /// </summary>
     private void OnPaintManagerInitialized(PaintManager paintManager)
     {
         _paintManagerReady = true;
     }
 
+    /// <summary>
+    /// Assembly was successful. Enable drawing pad.
+    /// </summary>
     public void OnAssemblySuccess(bool success)
     {
         _photonView.RPC("OnAssemblySuccessPcRpc", RpcTarget.Others, success);
         OnAssemblySuccessVrRpc(true);
     }
 
+    /// <summary>
+    /// Assembly was skipped. Enable drawing pad.
+    /// </summary>
     public void OnAssemblySuccessPcShortcut(bool success)
     {
         _photonView.RPC("OnAssemblySuccessVrRpc", RpcTarget.Others, success);
         OnAssemblySuccessPcRpc(true);
     }
 
-
+    /// <summary>
+    /// RPC for enabling drawing on VR.
+    /// </summary>
     [PunRPC]
     private void OnAssemblySuccessVrRpc(bool success)
     {
@@ -64,6 +78,9 @@ public class FingerDraw : MonoBehaviour
         _paintManager.enabled = true;
     }
 
+    /// <summary>
+    /// RPC for enabling drawing on PC.
+    /// </summary>
     [PunRPC]
     private void OnAssemblySuccessPcRpc(bool success)
     {
@@ -72,9 +89,13 @@ public class FingerDraw : MonoBehaviour
         _paintManager.enabled = true;
     }
 
-
+    /// <summary>
+    /// Callback for drawing.
+    /// </summary>
+    /// <param name="paintUv">The UV coordinates on the texture drawn on</param>
     public void OnFingerDrawing(Vector2 paintUv)
     {
+        // only draw if paint manager is ready
         if (!_paintManagerReady)
             return;
         Vector2 paintPosition = new Vector2(paintUv.x * sourceTextureDimensions.x, (1 - paintUv.y) * sourceTextureDimensions.y);
@@ -91,26 +112,34 @@ public class FingerDraw : MonoBehaviour
         _previousPoint = paintPosition;
     }
 
+    /// <summary>
+    /// Callback for finger was lifted off the drawing pad.
+    /// </summary>
     public void OnFingerUp(Vector2 paintUv)
     {
-        //if (!_paintManagerReady)
-        //    return;
-        //Vector2 paintPosition = new Vector2(paintUv.x * sourceTextureDimensions.x, (1 - paintUv.y) * sourceTextureDimensions.y);
-        //DrawLine(_previousPoint, paintPosition);
         _previousPoint = Vector2.zero;
     }
 
+    /// <summary>
+    /// RPC for drawing a line with XDPaint plugin.
+    /// </summary>
     [PunRPC]
     private void DrawLine(Vector2 lineStartPosition, Vector2 lineEndPosition)
     {
         _paintManager.PaintObject.DrawLine(lineStartPosition, lineEndPosition);
     }
 
+    /// <summary>
+    /// Clear the drawing screen.
+    /// </summary>
     public void ResetDrawing()
     {
         _photonView.RPC("ResetDrawingRpc", RpcTarget.All);
     }
 
+    /// <summary>
+    /// RPC for clearing the drawing screen.
+    /// </summary>
     [PunRPC]
     private void ResetDrawingRpc()
     {
