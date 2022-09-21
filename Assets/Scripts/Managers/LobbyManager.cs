@@ -6,6 +6,9 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manage room creation, joining, and filtering.
+/// </summary>
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [SerializeField]
@@ -23,17 +26,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private List<string> _closedRooms;
     private bool _roomsChanged;
 
-    void Awake()
+    private void Awake()
     {
         _platformMobile = Application.isMobilePlatform;
     }
 
-    private void Start()
-    {
-    }
-
-
-    void Update()
+    private void Update()
     {
         if (roomListManager.isActiveAndEnabled && _roomsChanged)
         {
@@ -50,6 +48,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
+    /// Photon callback for rooms.
     /// Only contains the newly added rooms. If a room is closed, an update containing 
     /// the room with null values in it and RemovedFromList == true is sent by Photon.
     /// </summary>
@@ -72,6 +71,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         _roomsChanged = true;
     }
 
+    /// <summary>
+    /// Create a new room with custom properties.
+    /// </summary>
     public void CreateRoom()
     {
         lobbyMenuContainer.SetActive(false);
@@ -81,6 +83,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomOptions.MaxPlayers = 2;
         roomOptions.EmptyRoomTtl = 500;
         roomOptions.CustomRoomProperties = new Hashtable();
+        // indicate needed platform:
         roomOptions.CustomRoomProperties.Add("n", _platformMobile ? GUIConstants.PLATFORM_PC : GUIConstants.PLATFORM_VR); // n for need
 
         string[] customLobbyProperties = new string[] { "n" };
@@ -92,7 +95,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// Join an existing room.
+    /// Join an existing room by room name.
     /// </summary>
     private void JoinRoom(string roomName)
     {

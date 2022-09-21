@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Set up endscene for PC or VR.
+/// </summary>
 public class Endscene : MonoBehaviour
 {
     [SerializeField]
@@ -10,19 +11,12 @@ public class Endscene : MonoBehaviour
     [SerializeField]
     private GameObject pcCamera;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (!Application.isMobilePlatform)
         {
             rig.SetActive(false);
             pcCamera.SetActive(true);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -17694,6 +17694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameVersion: 1
+  gameSceneName: EnvironmentGameScene
   introVideo: {fileID: 130576983}
   infoTextPanel: {fileID: 204606972}
   lightsPanel: {fileID: 1592659426}
@@ -17711,7 +17712,6 @@ MonoBehaviour:
   cylinderMenuCanvas: {fileID: 1393703105}
   menuCanvas: {fileID: 243184541}
   fadeScreen: {fileID: 1447544144}
-  GameScene_name: EnvironmentGameScene
 --- !u!114 &1363240333
 MonoBehaviour:
   m_ObjectHideFlags: 0

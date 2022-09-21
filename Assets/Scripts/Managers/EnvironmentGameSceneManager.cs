@@ -10,6 +10,11 @@ using UnityEngine.InputSystem.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using XDPaint.Controllers;
 
+/// <summary>
+/// Set up scene for either VR or PC. 
+/// Scene skipping for PC player.
+/// Use compile-time constants to control VR or PC setup in the editor and test rooms.
+/// </summary>
 public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
 {
     public static bool RUNNING_IN_TEST_ROOM;
@@ -28,26 +33,14 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private InputController paintInputController;
 
-    [SerializeField] private GameObject minimapCamera;
+    [SerializeField] 
+    private GameObject minimapCamera;
+
 
     private PhotonView _photonView;
 
-    #region Photon Callbacks
 
-    public override void OnConnectedToMaster()
-    {
-        PhotonNetwork.JoinOrCreateRoom("DSDDHAdddddLD", new RoomOptions(), TypedLobby.Default);
-    }
-
-    public override void OnJoinedRoom()
-    {
-        base.OnJoinedRoom();
-        Debug.Log("Joined Test room");
-    }
-
-    #endregion
-
-    void Awake()
+    private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
 
@@ -67,38 +60,53 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         {
             ConfigurePcView();
         }
-        else {
+        else 
+        {
             minimapCamera.SetActive(false);
         }
 #endif
-        // TODO request controllers ownership????
     }
 
     private void Update()
     {
+        // skip scene only on PC
+        if (Application.isMobilePlatform)
+            return;
         if (Input.GetKey(KeyCode.Q))
         {
             if (Input.GetKeyUp(KeyCode.T))
             {
                 Debug.Log("EnvironmentScene skipped");
-                //SceneManager.LoadScene("AssemblyScene");
                 StartCoroutine(LoadAssemblyScene());
             }
         }
     }
 
+    #region Test room Photon callbacks
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinOrCreateRoom("SOME_RANDOM_NAME_21398", new RoomOptions(), TypedLobby.Default);
+    }
 
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        Debug.Log("Joined Test room");
+    }
+    #endregion
+
+    /// <summary>
+    /// Configure scene for PC player.
+    /// </summary>
     private void ConfigurePcView()
     {
-        // run this code for PC view
-
         pcPlayerGui.SetActive(true);
 
         // disable VR components
         Destroy(vrCamera.GetComponent<TrackedPoseDriver>());
         //Destroy(vrCamera.GetComponent<AudioListener>());
-        // destroying camera causes paint exception, should we disable VR painting configurations for pc?
-        vrCamera.GetComponent<Camera>().cullingMask = 0; // necessary?
+        // do not destroy camera because of paint scripts
+        vrCamera.GetComponent<Camera>().cullingMask = 0;
 
         // deactivate hand models
         foreach (GameObject obj in deactivateObjects)
@@ -117,7 +125,10 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         yield return null;
     }
 
-
+    /// <summary>
+    /// Load scene RPC.
+    /// Scene loading only allowed for master client.
+    /// </summary>
     [PunRPC]
     public void LoadScene(string sceneName)
     {
@@ -127,6 +138,9 @@ public class EnvironmentGameSceneManager : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Is the game currently running on VR glasses?
+    /// </summary>
     public static bool IsRunningOnGlasses()
     {
 #if UNITY_EDITOR && ON_OCULUS_LINK
