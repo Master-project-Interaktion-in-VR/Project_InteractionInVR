@@ -12,6 +12,12 @@ Dieses Projekt wurde mit Unity 2021.3.0f1 erstellt.
 
 Wenn bei einem bestehenden Projekt Probleme / Fehler auftreten, kann es helfen, den Library Ordner des Projektes zu löschen.
     
+# Deployment
+Die Applikation besteht aus zwei Teilen, VR und PC. Deswegen müssen für beide Plattformen Builds gemacht werden. Die Anwendung kann zu Testzwecken auch im Editor sowohl für PC als auch VR gestartet werden. Hierfür müssen in den Managern der einzelnen Szenen die Compile-Time Variablen eingestellt werden. Hier gibt es VR_IN_EDITOR und ON_OCULUS_LINK (StartSceneManager, EnvironmentSceneGameManager und AssemblySceneManager). Diese Variablen bestimmen, in welcher Konfiguration das Spiel im Editor gestartet wird, sind aber unentscheidend für einen fertigen Build.
+Es ist nicht möglich, auf dem selben Computer den PC-Build mit dem Unity Editor als VR-Spieler zu testen, weil sowohl die gebaute Applikation als auch der Editor die angeschlossene VR-Brille erkennen und verwenden.
+
+(In der Vergangenheit gab es Probleme, wenn Builds von verschiedenen PCs zusammenspielen. Zum Beispiel: PC-Build wurde auf PC X gebaut, VR-Build wurde auf PC Y gebaut.)
+    
 # Git-Workflow
 
 - Jegliches Arbeiten am Projekt geschieht auf gesonderten Branches. Z.B.: ZuständigerName_Feature: Emir_VRMovement
