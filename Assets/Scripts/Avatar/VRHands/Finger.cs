@@ -1,4 +1,8 @@
-﻿public enum FingerType
+﻿
+/// <summary>
+/// Copied from samples
+/// </summary>
+public enum FingerType
 {
     None,
     Thumb,

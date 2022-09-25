@@ -1,9 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class GameObjectExtensions
 {
+    /// <summary>
+    /// Find a child gameobject by name.
+    /// </summary>
     public static GameObject FindObject(this GameObject parent, string name)
     {
         Transform[] trs = parent.GetComponentsInChildren<Transform>(true);
@@ -18,7 +19,7 @@ public static class GameObjectExtensions
     }
 
     /// <summary>
-    /// Hack for finding disabled game objects that are root objects
+    /// Workaround for finding disabled game objects that are root objects
     /// </summary>
     public static GameObject FindObject(string name)
     {

@@ -1,8 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Make placeholder hands track MRTK hand objects' positions and rotations.
+/// MRTK hand objects are instantiated at runtime and thus cannot be used as a reference.
+/// </summary>
 public class HandPoseTracker : MonoBehaviour
 {
     [Serializable]

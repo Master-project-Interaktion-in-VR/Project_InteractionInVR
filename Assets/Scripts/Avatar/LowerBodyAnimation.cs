@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// https://blog.immersive-insiders.com/animating-ready-player-me-lower-body-for-vr-in-unity/
+/// Code base from https://blog.immersive-insiders.com/animating-ready-player-me-lower-body-for-vr-in-unity/
 /// </summary>
 public class LowerBodyAnimation : MonoBehaviour
 {

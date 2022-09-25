@@ -3,6 +3,9 @@ using System.IO.Compression;
 
 public static class ByteArrayExtensions
 {
+    /// <summary>
+    /// Compress a byte array for faster transmission.
+    /// </summary>
     public static byte[] Compress(this byte[] raw)
     {
         using (MemoryStream memory = new MemoryStream())
@@ -15,6 +18,9 @@ public static class ByteArrayExtensions
         }
     }
 
+    /// <summary>
+    /// Decompress an encoded byte array.
+    /// </summary>
     public static byte[] Decompress(this byte[] gzip)
     {
         // Create a GZIP stream with decompression mode.

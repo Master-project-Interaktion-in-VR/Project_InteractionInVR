@@ -6,6 +6,7 @@ using UnityEditor;
 
 /// <summary>
 /// https://forum.unity.com/threads/what-is-recovery-gameobject.1005352/
+/// Find missing prefabs in project.
 /// </summary>
 public class NullComponentAndMissingPrefabSearchTool
 {

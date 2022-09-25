@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Copied from samples
+/// </summary>
 [RequireComponent(typeof (Animator))]
 public class HandAnimator : MonoBehaviour
 {

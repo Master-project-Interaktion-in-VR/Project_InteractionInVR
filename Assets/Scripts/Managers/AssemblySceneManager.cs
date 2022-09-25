@@ -12,6 +12,11 @@ using UnityEngine.SpatialTracking;
 using UnityEngine.UI;
 using static BuildManager;
 
+/// <summary>
+/// Set up scene for either VR or PC. 
+/// Assembly and puzzle skipping for PC player.
+/// Use compile-time constants to control VR or PC setup in the editor and test rooms.
+/// </summary>
 public class AssemblySceneManager : MonoBehaviourPunCallbacks
 {
     public static bool RUNNING_IN_TEST_ROOM;
@@ -42,25 +47,14 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
 
     [Header("Debug")]
     [SerializeField]
-    private AssemblySuccessUnityEvent dummyEvent = new AssemblySuccessUnityEvent();
+    private AssemblySuccessUnityEvent assemblySuccessDebugEvent = new AssemblySuccessUnityEvent();
+    
 
     private PhotonView _photonView;
     private PC_GUI_Manager _pcGuiManager;
 
 
-    public override void OnConnectedToMaster()
-    {
-        PhotonNetwork.JoinOrCreateRoom("MyTestRoomdd", new RoomOptions(), TypedLobby.Default);
-    }
-
-    public override void OnJoinedRoom()
-    {
-        base.OnJoinedRoom();
-        Debug.Log("Joined Test room");
-    }
-
-
-    void Awake()
+    private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
         _pcGuiManager = pcPlayerGui.GetComponent<PC_GUI_Manager>();
@@ -71,8 +65,6 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         {
             RUNNING_IN_TEST_ROOM = true;
             PhotonNetwork.ConnectUsingSettings();
-            // invoke assembly success event for testing
-            //StartCoroutine(PublishDummyEvent(5));
         }
 #endif
 
@@ -86,15 +78,15 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         }
         else {
             table.RequestOwnership();
-            
-            // invoke assembly success event for testing
-            //StartCoroutine(PublishDummyEvent(5));
         }
 #endif
     }
 
     private void Update()
     {
+        // skipping only for PC
+        if (Application.isMobilePlatform)
+            return;
         if (Input.GetKey(KeyCode.Q))
         {
             if (Input.GetKeyUp(KeyCode.T))
@@ -102,7 +94,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
                 if (GameObject.Find("Puzzle") == null)
                 {
                     Debug.Log("Skip assembly");
-                    dummyEvent.Invoke(true);
+                    assemblySuccessDebugEvent.Invoke(true);
                 }
                 else
                 {
@@ -113,6 +105,18 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         }
     }
 
+    #region Test room Photon callbacks
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinOrCreateRoom("MyTestRoomdd", new RoomOptions(), TypedLobby.Default);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        Debug.Log("Joined Test room");
+    }
+    #endregion
 
     private IEnumerator LoadEndScene()
     {
@@ -123,7 +127,9 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         yield return null;
     }
 
-
+    /// <summary>
+    /// Scene loading only on master client.
+    /// </summary>
     [PunRPC]
     public void LoadScene(string sceneName)
     {
@@ -133,31 +139,42 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         }
     }
 
-
+    /// <summary>
+    /// Configure scene for PC player.
+    /// </summary>
     private void ConfigurePcView()
     {
-        // run this code for PC view
-
         pcPlayerGui.SetActive(true);
 
         foreach (GameObject obj in deactivateObjects)
         {
             obj.SetActive(false);
         }
+        // disable head tracker
         GameObject.Find("AvatarVrRigForMrtk").transform.Find("Head").GetComponent<TrackedPoseDriver>().enabled = false;
     }
 
-
+    /// <summary>
+    /// Assembly of the antenna was successful.
+    /// Start the puzzle.
+    /// </summary>
     public void OnAssemblySuccess(bool success)
     {
         StartPuzzleVR();
     }
 
+    /// <summary>
+    /// Skip assembly.
+    /// </summary>
     public void OnAssemblySuccessPcShortcut(bool success)
     {
         _photonView.RPC("StartPuzzleVR", RpcTarget.Others);
     }
 
+    /// <summary>
+    /// Start puzzle RPC. Executed on VR.
+    /// Show glyphs and enable drawing screen.
+    /// </summary>
     [PunRPC]
     public void StartPuzzleVR()
     {
@@ -177,6 +194,10 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         _photonView.RPC("StartPuzzlePcRpc", RpcTarget.Others, solution);
     }
 
+    /// <summary>
+    /// Start puzzle RPC. Executed on PC.
+    /// Enable puzzle GUI.
+    /// </summary>
     [PunRPC]
     public void StartPuzzlePcRpc(int[] solution)
     {
@@ -189,14 +210,20 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         {
             Debug.Log("PC_GUI_Manager is null");
         }
-
     }
 
+    /// <summary>
+    /// Puzzle success event.
+    /// </summary>
+    /// <param name="success">Boolean for inspector convenience</param>
     public void OnPuzzleSuccess(bool success)
     {
         StartCoroutine(PuzzleSuccess());
     }
 
+    /// <summary>
+    /// Puzzle was solved successfully.
+    /// </summary>
     private IEnumerator PuzzleSuccess()
     {
         fadeScreen.FadeOut();
@@ -205,6 +232,10 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
         _photonView.RPC("PuzzleSolved", RpcTarget.All);
     }
 
+    /// <summary>
+    /// Puzzle was solved successfully RPC.
+    /// Load end scene if master.
+    /// </summary>
     [PunRPC]
     public void PuzzleSolved()
     {
@@ -223,7 +254,7 @@ public class AssemblySceneManager : MonoBehaviourPunCallbacks
     private IEnumerator PublishDummyEvent(float delay)
     {
         yield return new WaitForSeconds(delay);
-        dummyEvent.Invoke(true);
+        assemblySuccessDebugEvent.Invoke(true);
     }
 
 

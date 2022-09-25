@@ -2,11 +2,11 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Enable sound and vibration triggering over the network.
+/// </summary>
 public class VibrationAndSound : MonoBehaviour
 {
-    [SerializeField]
-    private bool vibrationEnabled; // this does nothing. if the vib button is pressed in assembly, the event is simply not thrown by the UI
-
     [Header("Vibration Settings")]
     [SerializeField]
     private XRBaseController leftController;
@@ -30,23 +30,31 @@ public class VibrationAndSound : MonoBehaviour
     {
         _photonView = GetComponent<PhotonView>();
         _detectorAudio = GetComponent<AudioSource>();
-
     }
 
+    /// <summary>
+    /// Trigger the vibration for the controller of the VR player
+    /// </summary>
     public void TriggerVibration()
     {
         _photonView.RPC("TriggerVibrationRpc", RpcTarget.All);
     }
 
+    /// <summary>
+    /// Trigger the sound for every player.
+    /// </summary>
     public void TriggerSound()
     {
         _photonView.RPC("TriggerSoundRpc", RpcTarget.All);
     }
 
-
+    /// <summary>
+    /// Corresponding RPC for triggering vibration.
+    /// </summary>
     [PunRPC]
     public void TriggerVibrationRpc()
     {
+        // only trigger vibration if detector in hand
         if (InventoryManager.DetectorIsInLeftHand())
             leftController.SendHapticImpulse(vibrationIntensity, vibrationDuration);
         else if (InventoryManager.DetectorIsInRightHand())
@@ -57,7 +65,9 @@ public class VibrationAndSound : MonoBehaviour
         Debug.Log("Trigger vibration");
     }
 
-
+    /// <summary>
+    /// Corresponding RPC for triggering sound feedback.
+    /// </summary>
     [PunRPC]
     public void TriggerSoundRpc()
     {

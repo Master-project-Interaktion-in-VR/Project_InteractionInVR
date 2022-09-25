@@ -1,8 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Smoothly track the gaze of the VR player.
+/// Interpolate between positions.
+/// </summary>
 public class GazeTracker : MonoBehaviour
 {
     [SerializeField]
@@ -16,20 +17,10 @@ public class GazeTracker : MonoBehaviour
 
     private float _startTime;
     private bool _slerping;
-    private float _diff;
-    private Vector3 _from;
-    private Vector3 _targetRotation;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void Update()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
         float targetY = centerEyeAnchor.rotation.eulerAngles.y;
         if (targetY < 0)
             targetY += 360;
@@ -37,7 +28,7 @@ public class GazeTracker : MonoBehaviour
         float distance = Mathf.Abs(targetY - transform.rotation.eulerAngles.y);
         if (distance > 360 * 0.5f)
         {
-            distance = 360 - distance; // shortest distance
+            distance = 360 - distance; // is the shortest distance
         }
 
 
@@ -52,16 +43,12 @@ public class GazeTracker : MonoBehaviour
         }
         if (_slerping)
         {
-
             float fracComplete = (Time.time - _startTime) / slerpSeconds;
             float nextY = Mathf.LerpAngle(transform.rotation.eulerAngles.y, targetY, fracComplete);
 
             Vector3 nextRotation = Vector3.zero;
             nextRotation.y = nextY;
             transform.rotation = Quaternion.Euler(nextRotation);
-
-
-            // TODO: FIX BUTTON DISABLE
         }
     }
 }

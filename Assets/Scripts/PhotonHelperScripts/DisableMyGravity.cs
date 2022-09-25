@@ -1,8 +1,11 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Make the (Photon) owner of an object deal with gravity calculations.
+/// Disables gravity if not the owner.
+/// Otherwise weird effects occur.
+/// </summary>
 public class DisableMyGravity : MonoBehaviour
 {
     private PhotonView _photonView;

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Rotate the avatar on y according to the head.
+/// Smoothly rotate the avatar around y axis according to the head.
 /// </summary>
 public class RotateAroundY : MonoBehaviour
 {
@@ -18,20 +18,18 @@ public class RotateAroundY : MonoBehaviour
 	private bool _slerping;
 	private float _startTime;
 
-    private void Awake()
-    {
-    }
 
-    void Update()
+    private void Update()
 	{
 		float headY = targetTransform.rotation.eulerAngles.y;
 		if (headY < 0)
 			headY += 360;
 
+		// find shortest distance
 		float difference = Mathf.Abs(headY - transform.rotation.eulerAngles.y);
 		if (difference > 360 * 0.5f)
 		{
-			difference = 360 - difference; // shortest distance
+			difference = 360 - difference; // is the shortest distance
 		}
 
 
@@ -47,14 +45,13 @@ public class RotateAroundY : MonoBehaviour
 
 		if (_slerping)
 		{
-
+			// smooth rotation
 			float fracComplete = (Time.time - _startTime) / slerpSeconds;
 			float nextY = Mathf.LerpAngle(transform.rotation.eulerAngles.y, headY, fracComplete);
 
 			Vector3 nextRotation = Vector3.zero;
 			nextRotation.y = nextY;
 			transform.rotation = Quaternion.Euler(nextRotation);
-
 		}
 	}
 }

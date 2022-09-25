@@ -14,11 +14,13 @@ public class FingerDrawUnityEvent : UnityEvent<Vector2>
 {
     public FingerDrawUnityEvent()
     {
-
     }
 }
 
-
+/// <summary>
+/// Microsoft script modified for drawing with the index finger.
+/// Modified UV functions and events thrown.
+/// </summary>
 public class CustomHandInteractionPanZoom :
     BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
 {

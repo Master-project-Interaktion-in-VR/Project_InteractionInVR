@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Simulate spacecraft rotation by rotating the sky.
+/// </summary>
 public class SkyboxRotation : MonoBehaviour
 {
     [SerializeField]

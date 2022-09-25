@@ -1,17 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
 
 public static class GUIConstants
 {
-    //public static string CORE = "core";
-    //public static string PHOTON = "photon";
-    //public static string AIR_LOCK = "air lock";
-    //public static string OXYGEN = "oxygen";
-    //public static string PROTECTORS = "protectors";
-
+    /// <summary>
+    /// Types of lights on the lights panel.
+    /// </summary>
     public enum IndicatorLight
     {
         CORE,

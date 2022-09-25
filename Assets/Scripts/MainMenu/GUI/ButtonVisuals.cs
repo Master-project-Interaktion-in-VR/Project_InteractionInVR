@@ -1,11 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ---- Not used ----
+/// Callbacks for button events changing the 
+/// button visuals of VR menu buttons.
+/// Types of events: hover, unhover, down, up.
+/// Also provide disabling of buttons.
+/// </summary>
 public class ButtonVisuals : MonoBehaviour
 {
-
     [SerializeField]
     private Color normal;
 
@@ -21,21 +26,9 @@ public class ButtonVisuals : MonoBehaviour
 
     private List<Selectable> _disabledButtons;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _disabledButtons = new List<Selectable>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnEnable()
-    {
-        
     }
 
     public void DisableButton(Selectable button)
@@ -48,6 +41,7 @@ public class ButtonVisuals : MonoBehaviour
         button.transform.parent.GetComponent<Image>().color = tempColor;
         _disabledButtons.Add(button);
     }
+
     public void EnableButton(Selectable button)
     {
         button.interactable = true;
@@ -67,6 +61,7 @@ public class ButtonVisuals : MonoBehaviour
         button.gameObject.GetComponent<Image>().color = hover;
         button.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = hover;
     }
+
     public void OnButtonUnhovered(Selectable button)
     {
         if (_disabledButtons.Contains(button))

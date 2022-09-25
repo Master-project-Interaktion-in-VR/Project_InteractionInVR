@@ -1,9 +1,10 @@
 using Oculus.Interaction;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Special menu panel to hold text messages.
+/// </summary>
 public class TextPanel : MonoBehaviour
 {
     [SerializeField]
@@ -20,6 +21,9 @@ public class TextPanel : MonoBehaviour
         _text = GetComponent<TMPro.TextMeshProUGUI>();
     }
 
+    /// <summary>
+    /// Write a line to the text panel.
+    /// </summary>
     public void WriteLine(string line)
     {
         _lastWritten = Time.time;

@@ -1,6 +1,4 @@
 using Photon.Pun;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -50,6 +48,9 @@ public class IngameMenuController : MonoBehaviour
         CloseToUICollision.OnExitUIArea -= Exit;
     }
 
+    /// <summary>
+    /// Invoke the button down event on the corresponding button.
+    /// </summary>
     private void Enter(GameObject triggered)
     {
         foreach (GameObject button in buttons)
@@ -62,6 +63,9 @@ public class IngameMenuController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Invoke the button up event on the corresponding button.
+    /// </summary>
     private void Exit(GameObject triggered)
     {
         foreach (GameObject button in buttons)
@@ -75,6 +79,9 @@ public class IngameMenuController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Toggle menu visibility.
+    /// </summary>
     private void OnMenuToggle(InputAction.CallbackContext callback)
     {
         onButtonUp.Invoke();
@@ -101,6 +108,9 @@ public class IngameMenuController : MonoBehaviour
         confirmMenuContainer.SetActive(true);
     }
 
+    /// <summary>
+    /// Handle the confirmation request which is used for quit and menu options.
+    /// </summary>
     public void OnConfirm()
     {
         if (_quitting)
@@ -121,6 +131,9 @@ public class IngameMenuController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Confirmation request was aborted.
+    /// </summary>
     public void OnAbort()
     {
         _quitting = false;
