@@ -31,6 +31,13 @@ public class TrackingManager : MonoBehaviour
         DontDestroyOnLoad(transform.gameObject); //makes TrackingManager accessible from all scenes
     }
 
+    /// <summary>
+    /// When the scene is loaded, if the scene is the environment scene, start the timer for the environment
+    /// scene. If the scene is the assembly scene, stop the timer for the environment scene and start the
+    /// timer for the assembly scene. If the scene is the end scene, stop the timer for the assembly scene
+    /// </summary>
+    /// <param name="Scene">The scene that was loaded.</param>
+    /// <param name="LoadSceneMode"></param>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if(scene.name == "EnvironmentGameScene") //TODO: change to buildIndex
@@ -58,18 +65,30 @@ public class TrackingManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    /// <summary>
+    /// This function increases the number of button presses by one that trigger the VR player sound
+    /// </summary>
     public void IncreaseButtonSound()
     {
         this.buttonPressesSound += 1;
     }
+    /// <summary>
+    /// This function increases the number of the vibration button presses by 1
+    /// </summary>
     public void IncreaseButtonVibration()
     {
         this.buttonPressesVibration += 1;
     }
+    /// <summary>
+    /// This function increases the number of button presses on the assembly tutorial video by 1
+    /// </summary>
     public void IncreaseButtonAssemblyTutorial()
     {
         this.buttonPressesAssemblyTutorial += 1;
     }
+    /// <summary>
+    /// This function increases the number of times the reset drawing button has been pressed by 1.
+    /// </summary>
     public void IncreaseButtonResetDrawing()
     {
         this.buttonPressesResetDrawing += 1;
@@ -84,6 +103,11 @@ public class TrackingManager : MonoBehaviour
         this.usedAutomatedAssembly = usedAutomatedAssembly;
     }
 
+    /// <summary>
+    /// When the application quits, the tracking object is updated with the number of button presses and the
+    /// number of build tries. Then, the tracking object is added to the list of trackings and the tracking
+    /// object is sent to the server
+    /// </summary>
     private void OnApplicationQuit()
     {
         trackingObject.SetButtonPresses(this.buttonPressesSound, this.buttonPressesVibration, this.buttonPressesAssemblyTutorial, this.buttonPressesResetDrawing);
@@ -94,6 +118,9 @@ public class TrackingManager : MonoBehaviour
         StartCoroutine(Send());
     }
 
+    /// <summary>
+    /// It takes the trackingObject and sends it to the server
+    /// </summary>
     public IEnumerator Send()
     {
         // Setup form responses
