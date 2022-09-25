@@ -2743,13 +2743,13 @@ MonoBehaviour:
   - {fileID: 1635504096}
   - {fileID: 836698411}
   inventory: {fileID: 11400000, guid: d1a255b4b746e304eb02fa463a55d96e, type: 2}
+  fadeScreen: {fileID: 0}
   detectorAnimator: {fileID: 8808705143029787924}
   glassAnimator: {fileID: 82095887}
   actionAsset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   itemAnchor: {fileID: 0}
   antennaPartsPickedUp: 0
   maxAntennaParts: 6
-  GameScene_name: AssemblyScene
 --- !u!114 &9210894503293720843
 MonoBehaviour:
   m_ObjectHideFlags: 0
