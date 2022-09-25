@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class allows the PC Player to pan and zoom the camera.
+/// </summary>
 public class AssistentCameraController : MonoBehaviour
 {
 
@@ -30,6 +33,13 @@ public class AssistentCameraController : MonoBehaviour
 
 		private bool lastActiveManualControl = false;
 
+		/// <summary>
+		/// This method is called after the Update method every frame.
+		/// It implements the following features:
+		/// - If the space bar is pressed, the camera will rotate with the mouse, otherwise it will rotate to look
+		///   at the target.
+		/// - The camera can be zoomed in and out with the mouse wheel.
+		/// </summary>
 		void FixedUpdate()
 		{
 

@@ -7,6 +7,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// This class allows the user to draw on the canvas using the mouse.
+/// </summary>
 public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 
@@ -72,12 +76,19 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				Init();
 		}
 
+		/// <summary>
+		/// When the script is enabled, get the RawImage component and hide the pen pointer
+		/// </summary>
 		private void OnEnable()
 		{
 				m_image = transform.GetComponent<RawImage>();
 				TogglePenPointerVisibility(false);
 		}
 
+		/// <summary>
+		/// On every frame, if the mouse is in focus, set the pen pointer position, and if the left mouse button is pressed,
+		/// write pixels to the texture
+		/// </summary>
 		void Update()
 		{
 				var pos = Input.mousePosition;
@@ -106,6 +117,10 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 		}
 
+		/// <summary>
+		/// We create a new texture, set the pixels to the background colour, and then apply the texture to the
+		/// canvas texture
+		/// </summary>
 		private void Init()
 		{
 				m_scaleFactor = HostCanvas.scaleFactor * 2;
@@ -125,6 +140,14 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 		}
 
+		/// <summary>
+		/// It takes a screen position and returns a normalized position within the drawRect
+		/// </summary>
+		/// <param name="Vector2">The position of the mouse in screen space.</param>
+		/// <param name="Vector2">The position of the mouse in screen space.</param>
+		/// <returns>
+		/// Returns true if the position is within the drawRect, otherwise false.
+		/// </returns>
 		private bool GetNormalizedPosition(Vector2 pos, out Vector2 normalizedPosition)
 		{
 				normalizedPosition = default;
@@ -136,6 +159,14 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				return true;
 		}
 
+		/// <summary>
+		/// We're taking the current texture, converting it to a 2D texture, then we're getting the neighbouring
+		/// pixels of the current position and setting them to the pen color.
+		/// </summary>
+		/// <param name="Vector2">The position of the touch on the screen.</param>
+		/// <returns>
+		/// A list of Vector2's
+		/// </returns>
 		private void WritePixels(Vector2 pos)
 		{
 				var mainTex = m_image.texture;
@@ -185,6 +216,9 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 		}
 
+		/// <summary>
+		/// Resets the texture to the background colour
+		/// </summary>
 		[ContextMenu("Clear Texture")]
 		public void ClearTexture()
 		{
@@ -207,6 +241,9 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				plane.RPC("ResetDrawingRpc", RpcTarget.All);
 		}
 
+		/// <summary>
+		/// It returns a list of all the pixels that are within a certain radius of the given position
+		/// </summary>
 		private List<Vector2> GetNeighbouringPixels(Vector2 textureSize, Vector2 position, int brushRadius)
 		{
 				var pixels = new List<Vector2>();
@@ -223,6 +260,7 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 				return pixels;
 		}
+
 		private List<Vector2> GetLinearPositions(Vector2 firstPos, Vector2 secondPos, int spacing = 2)
 		{
 				var positions = new List<Vector2>();
@@ -245,8 +283,16 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				return positions;
 		}
 
+		/// <summary>
+		/// It sets the penColour variable to the value of the color parameter.
+		/// </summary>
+		/// <param name="color">The colour of the pen.</param>
 		public void SetPenColour(Color32 color) => penColour = color;
 
+		/// <summary>
+		/// Set the pen radius to the given value.
+		/// </summary>
+		/// <param name="radius">The radius of the pen.</param>
 		public void SetPenRadius(int radius) => penRadius = radius;
 
 		private void SetPenPointerSize()
@@ -255,11 +301,20 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				rt.sizeDelta = new Vector2(penRadius * 5 + 30, penRadius * 5 + 30);
 		}
 
+		/// <summary>
+		/// Sets the position of the pen pointer to the given position
+		/// </summary>
 		private void SetPenPointerPosition(Vector2 pos)
 		{
 				penPointer.transform.position = pos;
 		}
 
+		/// <summary>
+		/// If the pen pointer is visible, set its size. Then, set the pen pointer's visibility to the value of
+		/// the isVisible parameter
+		/// </summary>
+		/// <param name="isVisible">true if the pen pointer should be visible, false if it should be
+		/// hidden</param>
 		private void TogglePenPointerVisibility(bool isVisible)
 		{
 				if (isVisible)
@@ -269,6 +324,16 @@ public class MouseDraw : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 				// Cursor.visible = !isVisible;
 				PCCursor.SetActive(!isVisible);
 		}
+
+		/// <summary>
+		/// When the mouse enters the button, set the IsInFocus variable to true
+		/// </summary>
+		/// <param name="eventData">This is the data that is passed to the event.</param>
 		public void OnPointerEnter(PointerEventData eventData) => IsInFocus = true;
+
+		/// <summary>
+		/// When the mouse pointer exits the button, set the IsInFocus property to false
+		/// </summary>
+		/// <param name="eventData">This is the data that is passed to the event.</param>
 		public void OnPointerExit(PointerEventData eventData) => IsInFocus = false;
 }
