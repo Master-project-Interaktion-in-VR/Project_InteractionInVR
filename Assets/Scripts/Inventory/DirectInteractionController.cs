@@ -5,7 +5,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class DirectInteractionController : MonoBehaviour
 {
-    [SerializeField] private bool rightHand;
+    [SerializeField] 
+    private bool rightHand;
+    
+    
     private InventoryManager _inventoryManager;
 
     private void Awake()
@@ -13,6 +16,11 @@ public class DirectInteractionController : MonoBehaviour
         _inventoryManager = GameObject.FindGameObjectWithTag("Inventory Manager").GetComponent<InventoryManager>();
     }
 
+    /// <summary>
+    /// Called when grabbing an item.
+    /// Just calls the PutItemInHand method from inventory manager depending on which hand this is
+    /// </summary>
+    /// <param name="args"></param>
     public void SelectEnter(SelectEnterEventArgs args)
     {
         if (_inventoryManager != null)
@@ -24,6 +32,11 @@ public class DirectInteractionController : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Called when releasing an item.
+    /// Just calls the DropItemFromHand method from inventory manager depending on which hand this is
+    /// </summary>
+    /// <param name="args"></param>
     public void SelectExit(SelectExitEventArgs args)
     {
         if (_inventoryManager != null)
