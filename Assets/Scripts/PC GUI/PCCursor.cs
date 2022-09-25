@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class sets the custom cursor for the PC Player.
+/// </summary>
 public class PCCursor : MonoBehaviour
 {
 

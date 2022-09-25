@@ -6,8 +6,8 @@ using UnityEngine;
 public class TrackingObject 
 {
     [SerializeField] private string userID = "tbd";
-    [SerializeField] private int buildTries = 0; //TODO: implement
-    [SerializeField] private bool usedAutomatedAssembly = false; //TODO: implement
+    [SerializeField] private int buildTries = 0;
+    [SerializeField] private bool usedAutomatedAssembly = false;
     [SerializeField] private string timeInEnvironmentScene;
     [SerializeField] private string timeInAssemblyScene;
     [SerializeField] private int buttonPressesSound = 0;
