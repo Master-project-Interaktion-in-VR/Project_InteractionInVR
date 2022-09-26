@@ -85,4 +85,4 @@ crashlytics-build.properties
 
 /OVRAssetBundles/*
 
-/[Aa]ssets/MRTK/**
+#/[Aa]ssets/MRTK/**
