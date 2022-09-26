@@ -10,22 +10,22 @@ using UnityEngine.UI;
 
 public class CalibrationMenu : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     private InputActionAsset actionAsset;
-    
-    [SerializeField] 
+
+    [SerializeField]
     private GameObject menuUI;
-    
-    [SerializeField] 
-    private TeleportHandler teleportHandler;
-    
-    [SerializeField] 
+
+    [SerializeField]
+    private SaveWallHandler saveWallHandler;
+
+    [SerializeField]
     private List<GameObject> buttons;
 
-    [SerializeField] 
+    [SerializeField]
     private UnityEvent onButtonDown;
-    
-    [SerializeField] 
+
+    [SerializeField]
     private UnityEvent onButtonUp;
 
 
@@ -34,7 +34,7 @@ public class CalibrationMenu : MonoBehaviour
     private InputActionMap _leftHandLocomotion;
     private InputActionMap _rightHandLocomotion;
     private InputActionMap _rightHandCalibration;
-    
+
     private void Start()
     {
         // Get Primary Action and all Locomotion Actions for both Controllers
@@ -48,12 +48,12 @@ public class CalibrationMenu : MonoBehaviour
         _rightHandPrimaryAction.Disable();
         _leftHandLocomotion.Disable();
         _rightHandLocomotion.Disable();
-        
+
         // Action for right hand calibration (primary button on right controller)
         _rightHandCalibration = actionAsset.FindActionMap("XRI RightHand Calibration");
         _rightHandCalibration.FindAction("Calibrate").performed += ActivateMenu;
     }
-    
+
     private void OnEnable()
     {
         CloseToUICollision.OnEnterUIArea += Enter;
@@ -65,7 +65,7 @@ public class CalibrationMenu : MonoBehaviour
         CloseToUICollision.OnEnterUIArea -= Enter;
         CloseToUICollision.OnExitUIArea -= Exit;
     }
-    
+
     /// <summary>
     /// After the UI button to confirm the calibration is pressed, all Locomotion and Inventory Actions are enabled
     /// </summary>
@@ -75,11 +75,11 @@ public class CalibrationMenu : MonoBehaviour
         _rightHandPrimaryAction.Enable();
         _leftHandLocomotion.Enable();
         _rightHandLocomotion.Enable();
-        
+
         _rightHandCalibration.Disable(); // disable calibration action
-        
+
         menuUI.SetActive(false); // disable calibration menu
-        teleportHandler.ConfirmCalibration(); // invoke teleportHandler method to enable the save wall
+        saveWallHandler.ConfirmCalibration(); // invoke saveWallHandler method to enable the save wall
     }
 
     /// <summary>
