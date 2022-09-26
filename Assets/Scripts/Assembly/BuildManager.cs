@@ -9,10 +9,48 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+/// <summary>
+/// The BuildManager class is responsible for assembling the antenna pieces 
+/// </summary>
 public class BuildManager : MonoBehaviour
 {
     [SerializeField]
+    private AssemblySuccessUnityEvent assemblySuccess = new AssemblySuccessUnityEvent();
+
+    [SerializeField]
     private TrackingManager trackingManager;
+
+    // a list that holds the prefabs of the antenna pieces
+    [SerializeField]
+    private List<GameObject> build_objects_Prefab;
+
+    // the assembled antenna prefab
+    [SerializeField]
+    private GameObject assembledAntenna_Prefab;
+
+    [SerializeField]
+    private GameObject infoCanvas_Prefab;
+
+    [SerializeField]
+    private GameObject dialog_Prefab;
+
+    private static GameObject dialog;
+
+    private static List<GameObject> holdingObjects_List;
+
+    private static List<AssembledBuildPoints> assembledBuildPoints;
+
+    private static int buildTries = 0;
+
+    private const int maxTries = 3;
+
+    private static bool assembledAntenna = false;
+    
+    private static SnapID snapID = SnapID.Default;
+
+    public static List<GameObject> build_objects;
+
+    public static Queue<CollisionEvent> collisions;
 
     [Serializable]
     public class AssemblySuccessUnityEvent : UnityEvent<bool>
@@ -20,6 +58,7 @@ public class BuildManager : MonoBehaviour
         public AssemblySuccessUnityEvent() { }
     }
 
+    // It's a class that holds information about a collision event 
     public class CollisionEvent
     {
         public GameObject object1;
@@ -27,6 +66,7 @@ public class BuildManager : MonoBehaviour
         public Vector3 position;
     }
 
+    // state of the build objects of the collision 
     public enum SnapID
     {
         NoneInHoldingBody = 0,
@@ -36,8 +76,7 @@ public class BuildManager : MonoBehaviour
         Default = 4,
     }
 
-    public static SnapID snapID = SnapID.Default;
-
+    // a struct for the build points of the objects that are assembled
     struct AssembledBuildPoints
     {
         public GameObject buildPoint1 { get; set; }
@@ -50,29 +89,7 @@ public class BuildManager : MonoBehaviour
         }
     }
 
-    public static Queue<CollisionEvent> collisions;
-
-    public List<GameObject> build_objects_Prefab;
-    public static List<GameObject> build_objects;
-
-    public static List<GameObject> holdingObjects_List;
-    static List<AssembledBuildPoints> assembledBuildPoints;
-
-    public GameObject assembledAntenna_Prefab;
-    public GameObject infoCanvas_Prefab;
-    public GameObject dialog_Prefab;
-    static GameObject dialog;
-
-    [SerializeField]
-    private AssemblySuccessUnityEvent assemblySuccess = new AssemblySuccessUnityEvent();
-
-    static int buildTries = 0;
-    const int maxTries = 3;
-
-    static bool assembledAntenna = false;
-
-
-    void Awake()
+    private void Awake()
     {
         collisions = new Queue<CollisionEvent>();
         build_objects = new List<GameObject>();
@@ -89,8 +106,7 @@ public class BuildManager : MonoBehaviour
         trackingManager = FindObjectOfType<TrackingManager>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (collisions.Count > 0)
         {
@@ -104,7 +120,14 @@ public class BuildManager : MonoBehaviour
         }
     }
 
-    public void AssembleObjects(GameObject buildPoint1, GameObject buildPoint2)
+    /// <summary>
+    /// assemble the objects that collided
+    /// If the object is already in the holding list, then snap the new object to the old object,
+    /// otherwise snap the old object to the new object.
+    /// </summary>
+    /// <param name="GameObject">buildPoint1 red collision point of the first object</param>
+    /// <param name="GameObject">buildPoint2 red collision point of the second object</param>
+    private void AssembleObjects(GameObject buildPoint1, GameObject buildPoint2)
     {
         AssembledBuildPoints assembledBuildPoint = new AssembledBuildPoints(buildPoint1, buildPoint2);
         assembledBuildPoints.Add(assembledBuildPoint);
@@ -127,21 +150,30 @@ public class BuildManager : MonoBehaviour
         }
     }
 
-    void SnapObjectsTogether(GameObject snapPoint1, GameObject snapPoint2)
+    /// <summary>
+    /// The function takes two objects and assembles them together
+    /// It checks if they are in the same parent object. If they are
+    /// not, it creates a new parent object and makes the two objects children of it. If they are, it
+    /// makes the second object a child of the first object
+    /// </summary>
+    /// <param name="GameObject">snapPoint1, snapPoint2</param>
+    /// <param name="GameObject">snapPoint1, snapPoint2</param>
+    private void SnapObjectsTogether(GameObject snapPoint1, GameObject snapPoint2)
     {
         // get the parent of the Building Point (actual object)
         GameObject buildModel1 = snapPoint1.transform.parent.gameObject;
         GameObject buildModel2 = snapPoint2.transform.parent.gameObject;
 
-        Debug.Log("obj1: " + buildModel1 + " obj2: " + buildModel2);
+        //Debug.Log("obj1: " + buildModel1 + " obj2: " + buildModel2);
 
         // turn snapPoint
         snapPoint1.transform.localEulerAngles = new Vector3(snapPoint1.transform.localEulerAngles.x, snapPoint1.transform.localEulerAngles.y, snapPoint1.transform.localEulerAngles.z + 180);
 
+        // get the parent of the objects
         GameObject parent1 = buildModel1.transform.parent.gameObject;
         GameObject parent2 = buildModel2.transform.parent.gameObject;
 
-        // check parents of the buildObjects for right snapping
+        // check parents of the buildObjects and setting snapID for right snapping
         switch (parent1.name.Substring(0, 11))
         {
             case "AntennaPiec":
@@ -168,13 +200,12 @@ public class BuildManager : MonoBehaviour
                 break;
         }
 
+        // snap the objects together depending on the snapID
         switch (snapID)
         {
+            // if both objects are not in the holdingBody, create a new holdingBody and make the objects children of it
             case SnapID.NoneInHoldingBody:
                 GameObject newHoldingObject = PhotonNetwork.Instantiate("holdingBody", Vector3.zero, Quaternion.identity);
-                //Microsoft.MixedReality.Toolkit.UI.ObjectManipulator om = newHoldingObject.AddComponent<Microsoft.MixedReality.Toolkit.UI.ObjectManipulator>();
-                //om.TwoHandedManipulationType = Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Move | Microsoft.MixedReality.Toolkit.Utilities.TransformFlags.Rotate;
-                //om.AllowFarManipulation = false;
                 newHoldingObject.GetComponent<NetworkHelper>().SetName($"holdingBody{holdingObjects_List.Count}");
                 holdingObjects_List.Add(newHoldingObject);
 
@@ -196,6 +227,7 @@ public class BuildManager : MonoBehaviour
                 buildModel1.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
                 buildModel2.GetComponent<NetworkHelper>().SetParent(newHoldingObject.transform);
                 break;
+            // if both objects are in the holdingBody, make the second object a child of the holdingBody the first object is in
             case SnapID.BothInHoldingBody:
                 // find the holdingObjects of buildModels and make it the main holdingObject
                 GameObject snap_HoldingObject = holdingObjects_List.Find(x => x.transform.Find(buildModel1.name));
@@ -233,11 +265,13 @@ public class BuildManager : MonoBehaviour
 
                 Destroy(snap_HoldingObject);
                 break;
+            // if the first object is in the holdingBody, make the second object a child of the holdingBody the first object is in
             case SnapID.FirstInHoldingBody:
                 Snap(snapPoint2, buildModel2, snapPoint1);
                 buildModel2.GetComponent<NetworkHelper>().SetParent(buildModel1.transform.parent);
                 buildModel2.GetComponent<NetworkHelper>().RemoveComponents();
                 break;
+            // if the second object is in the holdingBody, make the first object a child of the holdingBody the second object is in
             case SnapID.SecondInHoldingBody:
                 Snap(snapPoint1, buildModel1, snapPoint2);
                 buildModel1.GetComponent<NetworkHelper>().SetParent(buildModel2.transform.parent);
@@ -247,11 +281,14 @@ public class BuildManager : MonoBehaviour
                 // do nothing
                 break;
         }
+        // set position of the objects within the network
         buildModel1.GetComponent<NetworkHelper>().SetPosition(buildModel1.transform);
         buildModel2.GetComponent<NetworkHelper>().SetPosition(buildModel2.transform);
 
+        // reset snapID
         snapID = SnapID.Default;
 
+        // check if the antenna is complete
         CheckAssembly();
     }
 
@@ -259,8 +296,8 @@ public class BuildManager : MonoBehaviour
     /// moving the objects snapPoint to the goalPoint
     /// moving snapObject accordingly as a child of the snapPoint
     /// </summary>
-    /// <param name="snapPoint"></param>
-    /// <param name="snapObject"></param>
+    /// <param name="snapPoint">the snapPoint of the Object</param>
+    /// <param name="snapObject">the object</param>
     public void Snap(GameObject snapPoint, GameObject snapObject, GameObject goalPoint)
     {
         // make buildPoint to Parent for moving object
@@ -281,9 +318,11 @@ public class BuildManager : MonoBehaviour
     /// </summary>
     public void DisassembleObjects()
     {
+        // if the antenna is already assembled, do nothing
         if (assembledAntenna)
             return;
 
+        // destroy all build objects
         DestroyAllBuildObjects();
 
         collisions = new Queue<CollisionEvent>();
@@ -292,6 +331,8 @@ public class BuildManager : MonoBehaviour
         build_objects = new List<GameObject>();
 
         GameObject antennaPieces = Calibration.table.transform.Find("AntennaPieces(Clone)").gameObject;
+        /* Instantiating the prefabs in the build_objects_Prefab list and adding them to the
+        build_objects list. */
         foreach (GameObject buildObj_prefab in build_objects_Prefab)
         {
             Vector3 pos = buildObj_prefab.transform.localPosition;
@@ -311,13 +352,11 @@ public class BuildManager : MonoBehaviour
         // check newest assembling
         AssembledBuildPoints newest_assembledBuildPoint = assembledBuildPoints.Last();
         bool newest_correctAssembling = CollisionManager.correct_AssembledBuildPoints.Contains((newest_assembledBuildPoint.buildPoint1.name, newest_assembledBuildPoint.buildPoint2.name));
-        Debug.Log("--- " + newest_assembledBuildPoint.buildPoint1.name + " + " + newest_assembledBuildPoint.buildPoint2.name + (newest_correctAssembling == true ? " CORRECT ASSEMBLED!" : " NOT CORECT ASSEMBLED. Try again..."));
+        //Debug.Log("--- " + newest_assembledBuildPoint.buildPoint1.name + " + " + newest_assembledBuildPoint.buildPoint2.name + (newest_correctAssembling == true ? " CORRECT ASSEMBLED!" : " NOT CORECT ASSEMBLED. Try again..."));
 
         // if not all objects are assembled do nothing
         if (holdingObjects_List[0].transform.childCount < 6)
             return;
-
-        Debug.Log("--- you have assembled all objects - checking if assmbled correctly");
 
         // checking all assembled Build Points
         foreach (AssembledBuildPoints assembledBuildPoint in assembledBuildPoints)
@@ -334,7 +373,9 @@ public class BuildManager : MonoBehaviour
 
             if (!correctAssembling)
             {
+                // increment the number of wrong assembling
                 buildTries++;
+                // if the number of wrong assembling is higher than the max number of tries, ask the user if he wants to spawn the antenna
                 if (buildTries >= maxTries)
                 {
                     dialog = Instantiate(dialog_Prefab);
@@ -356,7 +397,7 @@ public class BuildManager : MonoBehaviour
                 return;
             }
         }
-        string winText = "WHOOO you have build the Antenna!";
+        string winText = "you have build the Antenna!";
         StartCoroutine(DespawnAfterSeconds(1f));
         assembledAntenna = true;
         Debug.Log(winText);
@@ -365,7 +406,11 @@ public class BuildManager : MonoBehaviour
         assemblySuccess.Invoke(true);
     }
 
-    IEnumerator DespawnAfterSeconds(float waitTime)
+    /// <summary>
+    /// Wait for a certain amount of time, then destroy all the objects in the scene
+    /// </summary>
+    /// <param name="waitTime">The amount of time to wait before despawning the object.</param>
+    private IEnumerator DespawnAfterSeconds(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         DestroyAllBuildObjects();
@@ -374,7 +419,7 @@ public class BuildManager : MonoBehaviour
     /// <summary>
     /// Spawns the assembled antenna and destroyes every build object and holding object
     /// </summary>
-    public void SpawnAssembledAntenna()
+    private void SpawnAssembledAntenna()
     {
         trackingManager.SetUsedAutomatedAssembly(true);
         DestroyAllBuildObjects();
@@ -393,6 +438,7 @@ public class BuildManager : MonoBehaviour
     /// <param name="objectName">The object name.</param>
     public void Respawn_object(string objectName)
     {
+        // if the antenna is already assembled, do nothing
         if (assembledAntenna)
             return;
 
@@ -424,12 +470,10 @@ public class BuildManager : MonoBehaviour
             holdingObjects_List.Remove(parent.gameObject);
         }
 
+        // Instantiating the prefabs that are in the list toBeInstantiated
         foreach (string prefabName in toBeInstantiated)
         {
             GameObject prefab = build_objects_Prefab.Find(x => x.name.Contains(prefabName));
-            //Vector3 pos = prefab.transform.localPosition;
-            //pos.y += 0.5f;
-            //pos += Calibration.table.transform.position;
             Vector3 pos = GameObject.Find("Table/SpawnPoint").transform.position;
             pos.y += 0.5f;
             GameObject new_object = PhotonNetwork.Instantiate("AssemblyAntennaPieces/" + prefabName, pos, prefab.transform.rotation);
@@ -439,7 +483,11 @@ public class BuildManager : MonoBehaviour
         }
     }
 
-    public void DestroyAllBuildObjects()
+    /// <summary>
+    /// This function destroys all the objects that are in the build_objects list and the
+    /// holdingObjects_List
+    /// </summary>
+    private void DestroyAllBuildObjects()
     {
         foreach (GameObject buildObj in build_objects)
         {
@@ -456,7 +504,7 @@ public class BuildManager : MonoBehaviour
     /// </summary>
     /// <param name="text">The text.</param>
     /// <param name="seconds">number of seconds.</param>
-    public void ShowTextForSeconds(string text, int seconds)
+    private void ShowTextForSeconds(string text, int seconds)
     {
         GameObject infoCanvas = Instantiate(infoCanvas_Prefab);
         infoCanvas.transform.Find("InfoText_VR").GetComponent<TextMeshPro>().text = text;
@@ -465,6 +513,11 @@ public class BuildManager : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
+    /// <summary>
+    /// Wait for a certain amount of time, then disable the object
+    /// </summary>
+    /// <param name="waitTime">The amount of time to wait before hiding the object.</param>
+    /// <param name="GameObject">The object you want to hide.</param>
     private IEnumerator WaitAndDelete(float waitTime, GameObject hideObject)
     {
         yield return new WaitForSeconds(waitTime);
