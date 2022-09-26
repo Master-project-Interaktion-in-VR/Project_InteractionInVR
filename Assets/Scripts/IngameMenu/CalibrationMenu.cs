@@ -12,7 +12,7 @@ public class CalibrationMenu : MonoBehaviour
     [SerializeField] private InputActionAsset actionAsset;
     [SerializeField] private GameObject menuUI;
     
-    [SerializeField] private TeleportHandler teleportHandler;
+    [SerializeField] private SaveWallHandler teleportHandler;
     
     [SerializeField] private List<GameObject> buttons;
 

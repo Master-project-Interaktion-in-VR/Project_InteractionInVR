@@ -5,25 +5,40 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// It's a class that is used to calibrate the table with the fixed marker
+/// </summary>
 public class Calibration : MonoBehaviour
 {
-    Transform CameraRig;
-    Transform handMarker;  //the controller on the hand
-    static Transform fixedMarker; //the fixed controller
-    public GameObject table_Prefab;
+    [SerializeField]
+    private List<GameObject> build_objects_Prefab;
+
+    [SerializeField]
+    private GameObject table_Prefab;
+
+    private Transform CameraRig;
+
+    //the controller on the hand
+    private Transform handMarker;  
+    
+    //the fixed controller
+    private static Transform fixedMarker; 
+
+    private static GameObject antennaPieces;
+
+    private static BuildManager manager;
+
+    private static List<GameObject> disassembleButtons;
+
     public static GameObject table;
-    public List<GameObject> build_objects_Prefab;
-    static GameObject antennaPieces;
 
-    static BuildManager manager;
-    static List<GameObject> disassembleButtons;
-
-    void Start()
+    private void Start()
     {
         CameraRig = GameObject.Find("MRTK-Quest_OVRCameraRig(Clone)").transform;
         handMarker = CameraRig.FindChildRecursive("RightControllerAnchor").transform;
         table = GameObject.Find("Table");
 
+        // check for headset type and set the fixed marker accordingly
         OVRPlugin.SystemHeadset headset = OVRPlugin.GetSystemHeadsetType();
         if (headset == OVRPlugin.SystemHeadset.Oculus_Link_Quest || headset == OVRPlugin.SystemHeadset.Oculus_Quest)
         {
@@ -42,19 +57,24 @@ public class Calibration : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (OVRInput.GetActiveController() == OVRInput.Controller.Touch)
         {
-            if (OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch)) //detect is button 'A' has been pressed
+            //detect is button 'A' has been pressed
+            if (OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch)) 
             {
                 Calibrate(handMarker.position, handMarker.rotation, false);
             }
         }
     }
 
+    /// <summary>
+    /// tries to calibrate the table with the saved information from the calibration in the environment scene
+    /// </summary>
     private void PreCalibrate()
     {
+        // if the calibration has been done before, load the saved information
         Vector3 position = SceneInformationManager.CrossSceneInformation_position;
         Quaternion rotation = SceneInformationManager.CrossSceneInformation_rotation;
         if (position != null && rotation != null)
@@ -63,13 +83,15 @@ public class Calibration : MonoBehaviour
         }
     }
 
-    public void Calibrate(Vector3 position, Quaternion rotation, bool moveTable)
+    /// <summary>
+    /// calibrates the table with the position of rotation the hand marker
+    /// </summary>
+    /// <param name="Vector3">position</param>
+    /// <param name="Quaternion">rotation</param>
+    /// <param name="moveTable">true if the table should be moved</param>
+    private void Calibrate(Vector3 position, Quaternion rotation, bool moveTable)
     {
-        //if(table == null)
-        //{
-        //    table = Instantiate(table_Prefab);
-        //}
-
+        // if the antenna pieces are not instantiated, instantiate them
         if (BuildManager.build_objects.Count == 0)
         {
             if (antennaPieces == null)
@@ -87,9 +109,11 @@ public class Calibration : MonoBehaviour
                 BuildManager.build_objects.Add(obj);
             }
 
+            // add the listeners to the disassemble buttons
             AddDisassembleListeners();
         }
 
+        // if table was already calibrated in the environment scene, move the table to the new position
         if (moveTable)
         {
             table.transform.position = position;
@@ -97,17 +121,19 @@ public class Calibration : MonoBehaviour
         }
         else
         {
+            // make fixed marker the parent of the table
             fixedMarker.transform.parent = null;
             table.transform.parent = fixedMarker.transform;
 
+            // move the table to the position of the hand marker
             fixedMarker.transform.position = position;
-
             fixedMarker.transform.rotation = rotation;
 
+            // make the table the parent of the fixed marker again
             table.transform.parent = null;
             fixedMarker.transform.parent = table.transform.parent;
         }
-        Debug.Log("Calibrate with position " + position + " and rotation " + rotation + " moveTable: " + moveTable);
+        // Debug.Log("Calibrate with position " + position + " and rotation " + rotation + " moveTable: " + moveTable);
     }
 
     /// <summary>
@@ -138,6 +164,5 @@ public class Calibration : MonoBehaviour
     {
         // add listener for the button in disassembleButtons
         disassembleButtons.Find(x => x.name == buttonName).GetComponent<Interactable>().OnClick.AddListener(() => manager.Respawn_object(objectName));
-
     }
 }
