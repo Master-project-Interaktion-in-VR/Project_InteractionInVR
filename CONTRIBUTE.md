@@ -9,6 +9,7 @@ Dieses Projekt wurde mit Unity 2021.3.0f1 erstellt.
 2. Projekt in Unity öffnen, auftretende Fehler ignorieren (diese entstehen durch fehlende Referenzen, die noch importiert werden)
 3. Assets > Import Package > Custom Package.. > ImportedAssets.unitypackage auswählen und importieren
 4. MRTK Project Configurator: Always Skip Setup auswählen
+5. Wenn beim Build für Android Shader-Errors im MRTK auftauchen, muss der Shader in Zeile 775ff angepasst werden. Das Problem ist hier zu finden: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5844
 
 Wenn bei einem bestehenden Projekt Probleme / Fehler auftreten, kann es helfen, den Library Ordner des Projektes zu löschen.
     
