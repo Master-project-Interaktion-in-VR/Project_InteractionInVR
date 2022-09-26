@@ -310,8 +310,8 @@ public class StartSceneManager : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsMasterClient)
             infoTextPanel.WriteLine("Sorry, only your boss is allowed to start the game.");
         else
-        {
-            StartCoroutine(LoadGame());
+        { 
+            LoadGame();
         }
     }
 
@@ -326,10 +326,10 @@ public class StartSceneManager : MonoBehaviourPunCallbacks
     /// <summary>
     /// Load game scene.
     /// </summary>
-    private IEnumerator LoadGame()
+    private void LoadGame()
     {
-        fadeScreen.FadeOut();
-        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        //fadeScreen.FadeOut();
+        //yield return new WaitForSeconds(fadeScreen.fadeDuration);
 
         PhotonNetwork.LoadLevel(gameSceneName);
     }
